@@ -1,0 +1,23 @@
+import Foundation
+
+enum VolumeMath {
+    static let minDecibels: Float = -120
+    static let maxDecibels: Float = 0
+
+    /// Maps linear slider value (0.0–1.0) to decibels.
+    static func linearToDecibels(_ linear: Float) -> Float {
+        guard linear > 0 else { return minDecibels }
+        return 20 * log10(linear)
+    }
+
+    /// Maps decibels to linear gain (0.0–1.0).
+    static func decibelsToLinear(_ decibels: Float) -> Float {
+        guard decibels > minDecibels else { return 0 }
+        return pow(10, decibels / 20)
+    }
+
+    /// Logarithmic slider mapping for human perception.
+    static func sliderToGain(_ sliderValue: Float) -> Float {
+        decibelsToLinear(linearToDecibels(sliderValue))
+    }
+}

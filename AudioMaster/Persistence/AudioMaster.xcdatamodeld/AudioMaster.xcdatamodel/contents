@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+	<entity name="AppAudioPreferencesEntity" representedClassName="AppAudioPreferencesEntity" syncable="YES" codeGenerationType="class">
+		<attribute name="appName" attributeType="String"/>
+		<attribute name="bundleID" attributeType="String"/>
+		<attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+		<attribute name="deviceID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+		<attribute name="isMuted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+		<attribute name="lastUsed" attributeType="Date" usesScalarValueType="NO"/>
+		<attribute name="normalizeAudio" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+		<attribute name="volumeLevel" attributeType="Float" defaultValueString="1.0" usesScalarValueType="YES"/>
+		<relationship name="presets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AudioRoutingPresetEntity" inverseName="appMappings" inverseEntity="AudioRoutingPresetEntity"/>
+	</entity>
+	<entity name="AudioDeviceEntity" representedClassName="AudioDeviceEntity" syncable="YES" codeGenerationType="class">
+		<attribute name="channels" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+		<attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+		<attribute name="deviceUID" optional="YES" attributeType="String"/>
+		<attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+		<attribute name="isInput" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+		<attribute name="isOutput" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+		<attribute name="isSystemDefault" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+		<attribute name="lastUsed" attributeType="Date" usesScalarValueType="NO"/>
+		<attribute name="manufacturer" optional="YES" attributeType="String"/>
+		<attribute name="name" attributeType="String"/>
+		<attribute name="sampleRate" attributeType="Double" defaultValueString="44100" usesScalarValueType="YES"/>
+		<attribute name="type" attributeType="String"/>
+	</entity>
+	<entity name="AudioRoutingPresetEntity" representedClassName="AudioRoutingPresetEntity" syncable="YES" codeGenerationType="class">
+		<attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+		<attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+		<attribute name="name" attributeType="String"/>
+		<attribute name="outputDeviceID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+		<attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO"/>
+		<relationship name="appMappings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AppAudioPreferencesEntity" inverseName="presets" inverseEntity="AppAudioPreferencesEntity"/>
+	</entity>
+	<entity name="BluetoothDeviceEntity" representedClassName="BluetoothDeviceEntity" syncable="YES" codeGenerationType="class">
+		<attribute name="address" attributeType="String"/>
+		<attribute name="autoConnect" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+		<attribute name="connected" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+		<attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+		<attribute name="lastBatteryLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+		<attribute name="lastBatteryUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+		<attribute name="lastConnected" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+		<attribute name="name" attributeType="String"/>
+		<attribute name="paired" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+		<attribute name="uuid" attributeType="String"/>
+	</entity>
+	<entity name="PreferencesEntity" representedClassName="PreferencesEntity" syncable="YES" codeGenerationType="class">
+		<attribute name="key" attributeType="String"/>
+		<attribute name="value" attributeType="String"/>
+	</entity>
+</model>
