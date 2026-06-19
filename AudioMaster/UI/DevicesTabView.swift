@@ -4,6 +4,8 @@ struct DevicesTabView: View {
     @ObservedObject var deviceManager: AudioDeviceManager
     @State private var hoveredDeviceID: UUID?
     @State private var selectedDeviceID: UUID?
+    @State private var isOutputExpanded = true
+    @State private var isInputExpanded = true
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -95,80 +97,116 @@ struct DevicesTabView: View {
     // MARK: - Output Section
 
     private var outputSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            sectionHeader(title: "Output", icon: "speaker.wave.2.fill", count: deviceManager.outputDevices.count)
+        VStack(alignment: .leading, spacing: 0) {
+            sectionHeader(
+                title: "Output",
+                icon: "speaker.wave.2.fill",
+                count: deviceManager.outputDevices.count,
+                isExpanded: $isOutputExpanded
+            )
 
-            VStack(spacing: 1) {
-                ForEach(deviceManager.outputDevices) { device in
-                    DeviceRow(
-                        device: device,
-                        isDefault: device.id == deviceManager.defaultOutputDevice?.id,
-                        isHovered: hoveredDeviceID == device.id,
-                        isExpanded: selectedDeviceID == device.id,
-                        onSelect: { selectDevice(device) }
-                    )
-                    .onHover { hovered in
-                        withAnimation(.easeInOut(duration: 0.1)) {
-                            hoveredDeviceID = hovered ? device.id : nil
+            if isOutputExpanded {
+                VStack(spacing: 1) {
+                    ForEach(deviceManager.outputDevices) { device in
+                        DeviceRow(
+                            device: device,
+                            isDefault: device.id == deviceManager.defaultOutputDevice?.id,
+                            isHovered: hoveredDeviceID == device.id,
+                            isExpanded: selectedDeviceID == device.id,
+                            onSelect: { selectDevice(device) }
+                        )
+                        .onHover { hovered in
+                            withAnimation(.easeInOut(duration: 0.1)) {
+                                hoveredDeviceID = hovered ? device.id : nil
+                            }
                         }
-                    }
-                    .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            selectedDeviceID = selectedDeviceID == device.id ? nil : device.id
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                selectedDeviceID = selectedDeviceID == device.id ? nil : device.id
+                            }
                         }
                     }
                 }
+                .padding(4)
+                .amGlassCard(cornerRadius: 10)
+                .padding(.top, 10)
+                .transition(.opacity.combined(with: .move(edge: .top)))
             }
-            .padding(4)
-            .amGlassCard(cornerRadius: 10)
         }
     }
 
     // MARK: - Input Section
 
     private var inputSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            sectionHeader(title: "Input", icon: "mic.fill", count: deviceManager.inputDevices.count)
+        VStack(alignment: .leading, spacing: 0) {
+            sectionHeader(
+                title: "Input",
+                icon: "mic.fill",
+                count: deviceManager.inputDevices.count,
+                isExpanded: $isInputExpanded
+            )
 
-            VStack(spacing: 1) {
-                ForEach(deviceManager.inputDevices) { device in
-                    DeviceRow(
-                        device: device,
-                        isDefault: device.id == deviceManager.defaultInputDevice?.id,
-                        isHovered: hoveredDeviceID == device.id,
-                        isExpanded: false,
-                        onSelect: { selectInputDevice(device) }
-                    )
-                    .onHover { hovered in
-                        withAnimation(.easeInOut(duration: 0.1)) {
-                            hoveredDeviceID = hovered ? device.id : nil
+            if isInputExpanded {
+                VStack(spacing: 1) {
+                    ForEach(deviceManager.inputDevices) { device in
+                        DeviceRow(
+                            device: device,
+                            isDefault: device.id == deviceManager.defaultInputDevice?.id,
+                            isHovered: hoveredDeviceID == device.id,
+                            isExpanded: selectedDeviceID == device.id,
+                            onSelect: { selectInputDevice(device) }
+                        )
+                        .onHover { hovered in
+                            withAnimation(.easeInOut(duration: 0.1)) {
+                                hoveredDeviceID = hovered ? device.id : nil
+                            }
+                        }
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                selectedDeviceID = selectedDeviceID == device.id ? nil : device.id
+                            }
                         }
                     }
                 }
+                .padding(4)
+                .amGlassCard(cornerRadius: 10)
+                .padding(.top, 10)
+                .transition(.opacity.combined(with: .move(edge: .top)))
             }
-            .padding(4)
-            .amGlassCard(cornerRadius: 10)
         }
     }
 
     // MARK: - Section Header
 
-    private func sectionHeader(title: String, icon: String, count: Int) -> some View {
-        HStack(spacing: 6) {
-            Image(systemName: icon)
-                .font(.system(size: 11))
-                .foregroundStyle(.tertiary)
+    private func sectionHeader(title: String, icon: String, count: Int, isExpanded: Binding<Bool>) -> some View {
+        Button(action: {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isExpanded.wrappedValue.toggle()
+            }
+        }) {
+            HStack(spacing: 6) {
+                Image(systemName: isExpanded.wrappedValue ? "chevron.down" : "chevron.right")
+                    .font(.system(size: 9, weight: .semibold))
+                    .foregroundStyle(.tertiary)
+                    .frame(width: 12)
 
-            Text(title.uppercased())
-                .font(.system(size: 11, weight: .semibold))
-                .foregroundStyle(.secondary)
+                Image(systemName: icon)
+                    .font(.system(size: 11))
+                    .foregroundStyle(.tertiary)
 
-            Spacer()
+                Text(title.uppercased())
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(.secondary)
 
-            Text("\(count)")
-                .font(.system(size: 11, weight: .medium, design: .monospaced))
-                .foregroundStyle(.tertiary)
+                Spacer()
+
+                Text("\(count)")
+                    .font(.system(size: 11, weight: .medium, design: .monospaced))
+                    .foregroundStyle(.tertiary)
+            }
+            .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Actions

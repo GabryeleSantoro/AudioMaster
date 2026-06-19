@@ -56,10 +56,6 @@ struct MainWindowView: View {
             .padding(.horizontal, 14)
 
             Spacer()
-
-            nowPlayingFooter
-                .padding(.horizontal, 16)
-                .padding(.bottom, 20)
         }
         .frame(width: 210)
         .background(AMTheme.surfaceElevated)
@@ -89,47 +85,6 @@ struct MainWindowView: View {
 
             WaveformView(barCount: 4)
         }
-    }
-
-    private var nowPlayingFooter: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("OUTPUT")
-                .font(.system(size: 9, weight: .bold))
-                .foregroundStyle(.tertiary)
-
-            if let device = deviceManager.defaultOutputDevice {
-                HStack(spacing: 8) {
-                    Image(systemName: device.type.sfSymbol)
-                        .font(.system(size: 12))
-                        .foregroundStyle(AMTheme.deviceAccent(for: device.type))
-                        .frame(width: 22, height: 22)
-                        .background(
-                            RoundedRectangle(cornerRadius: 5)
-                                .fill(AMTheme.deviceAccent(for: device.type).opacity(0.12))
-                        )
-
-                    VStack(alignment: .leading, spacing: 1) {
-                        Text(device.name)
-                            .font(.system(size: 11, weight: .medium))
-                            .lineLimit(1)
-                        HStack(spacing: 4) {
-                            Circle()
-                                .fill(Color.green)
-                                .frame(width: 5, height: 5)
-                            Text("Active")
-                                .font(.system(size: 9))
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                }
-            } else {
-                Text("No output device")
-                    .font(.system(size: 11))
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .padding(12)
-        .amGlassCard(cornerRadius: 8)
     }
 
     // MARK: - Content
