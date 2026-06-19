@@ -21,9 +21,19 @@ final class MainWindow: NSWindow {
         titlebarAppearsTransparent = true
         titleVisibility = .hidden
         isReleasedWhenClosed = false
+        delegate = self
         center()
         setFrameAutosaveName("AudioMasterMain")
         minSize = NSSize(width: 720, height: 480)
         backgroundColor = .windowBackgroundColor
+    }
+}
+
+extension MainWindow: NSWindowDelegate {
+    func windowWillClose(_ notification: Notification) {
+        Task { @MainActor in
+            guard let appDelegate = NSApp.delegate as? AppDelegate else { return }
+            appDelegate.hideMainWindow()
+        }
     }
 }

@@ -3,6 +3,7 @@ import SwiftUI
 struct PreferencesTabView: View {
     @State private var launchAtLogin = false
     @State private var showInMenuBar = true
+    @State private var openWindowOnLaunch = AppDelegate.openWindowOnLaunch
     @State private var rememberAppVolumes = true
     @State private var defaultVolume: Double = 1.0
     @State private var volumeCurve: VolumeCurveOption = .logarithmic
@@ -38,6 +39,14 @@ struct PreferencesTabView: View {
         PreferenceSection(title: "General") {
             PreferenceToggle(title: "Launch at login", subtitle: "Start AudioMaster when you log in", isOn: $launchAtLogin)
             PreferenceToggle(title: "Show in menu bar", subtitle: "Display volume control in the menu bar", isOn: $showInMenuBar)
+            PreferenceToggle(
+                title: "Open window on launch",
+                subtitle: "Show the main window when AudioMaster starts",
+                isOn: $openWindowOnLaunch
+            )
+            .onChange(of: openWindowOnLaunch) { newValue in
+                AppDelegate.openWindowOnLaunch = newValue
+            }
             PreferenceToggle(title: "Remember app volumes", subtitle: "Persist volume levels across restarts", isOn: $rememberAppVolumes)
         }
     }
@@ -127,6 +136,8 @@ struct PreferencesTabView: View {
     private func resetDefaults() {
         launchAtLogin = false
         showInMenuBar = true
+        openWindowOnLaunch = false
+        AppDelegate.openWindowOnLaunch = false
         rememberAppVolumes = true
         defaultVolume = 1.0
         volumeCurve = .logarithmic

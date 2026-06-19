@@ -7,8 +7,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var menuBarController: MenuBarController?
     private var mainWindow: MainWindow?
 
+    static var hasCompletedOnboarding: Bool {
+        get { UserDefaults.standard.bool(forKey: "hasCompletedOnboarding") }
+        set { UserDefaults.standard.set(newValue, forKey: "hasCompletedOnboarding") }
+    }
+
+    static var openWindowOnLaunch: Bool {
+        get { UserDefaults.standard.bool(forKey: "openWindowOnLaunch") }
+        set { UserDefaults.standard.set(newValue, forKey: "openWindowOnLaunch") }
+    }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
-        NSApp.setActivationPolicy(.regular)
+        let needsOnboarding = !AppDelegate.hasCompletedOnboarding
+        let shouldShowWindow = needsOnboarding || AppDelegate.openWindowOnLaunch
+
+        NSApp.setActivationPolicy(shouldShowWindow ? .regular : .accessory)
 
         Task { @MainActor in
             let manager = AudioDeviceManager()
@@ -31,7 +44,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 deviceManager: manager,
                 appVolumeController: volumeController
             )
-            showMainWindow()
+
+            if shouldShowWindow {
+                showMainWindow()
+            }
         }
     }
 
@@ -52,6 +68,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     @MainActor
     func showMainWindow() {
         guard let deviceManager, let appVolumeController else { return }
+        NSApp.setActivationPolicy(.regular)
         NSApp.activate(ignoringOtherApps: true)
         if let window = mainWindow {
             window.makeKeyAndOrderFront(nil)
@@ -63,6 +80,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             mainWindow = window
             window.makeKeyAndOrderFront(nil)
         }
+    }
+
+    @MainActor
+    func hideMainWindow() {
+        mainWindow?.orderOut(nil)
+        mainWindow = nil
+        if !AppDelegate.openWindowOnLaunch {
+            NSApp.setActivationPolicy(.accessory)
+        }
+    }
+
+    @MainActor
+    func completeOnboarding() {
+        AppDelegate.hasCompletedOnboarding = true
     }
 }
 

@@ -85,6 +85,9 @@ final class AppVolumeMixer {
             ),
             "AudioDeviceCreateIOProcIDWithBlock"
         )
+        guard let procID else {
+            throw ProcessTapRuntimeError(description: "AudioDeviceCreateIOProcIDWithBlock returned nil procID")
+        }
         ioProcID = procID
 
         try processTapCheck(AudioDeviceStart(aggregate, procID), "AudioDeviceStart")
