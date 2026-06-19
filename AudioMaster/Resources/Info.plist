@@ -20,11 +20,11 @@
 	<string>1</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
-	<key>LSUIElement</key>
-	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2026 AudioMaster. All rights reserved.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>AudioMaster needs microphone access to enumerate and manage audio input devices.</string>
+	<key>NSAudioCaptureUsageDescription</key>
+	<string>AudioMaster needs audio capture permission to control per-app volume levels.</string>
 </dict>
 </plist>

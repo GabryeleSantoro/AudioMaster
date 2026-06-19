@@ -23,6 +23,11 @@
 		B1000000000000000000000E /* DevicesTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000013 /* DevicesTabView.swift */; };
 		B1000000000000000000000F /* AppsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000014 /* AppsTabView.swift */; };
 		B10000000000000000000010 /* PreferencesTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000015 /* PreferencesTabView.swift */; };
+		B10000000000000000000011 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000016 /* Theme.swift */; };
+		B10000000000000000000012 /* AppVolumeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000017 /* AppVolumeController.swift */; };
+		B10000000000000000000013 /* ProcessTapHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000018 /* ProcessTapHelpers.swift */; };
+		B10000000000000000000014 /* AudioProcessList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000019 /* AudioProcessList.swift */; };
+		B10000000000000000000015 /* AppVolumeMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001A /* AppVolumeMixer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +61,11 @@
 		F10000000000000000000013 /* DevicesTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesTabView.swift; sourceTree = "<group>"; };
 		F10000000000000000000014 /* AppsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsTabView.swift; sourceTree = "<group>"; };
 		F10000000000000000000015 /* PreferencesTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTabView.swift; sourceTree = "<group>"; };
+		F10000000000000000000016 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		F10000000000000000000017 /* AppVolumeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVolumeController.swift; sourceTree = "<group>"; };
+		F10000000000000000000018 /* ProcessTapHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessTapHelpers.swift; sourceTree = "<group>"; };
+		F10000000000000000000019 /* AudioProcessList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioProcessList.swift; sourceTree = "<group>"; };
+		F1000000000000000000001A /* AppVolumeMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVolumeMixer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +117,7 @@
 				F10000000000000000000013 /* DevicesTabView.swift */,
 				F10000000000000000000014 /* AppsTabView.swift */,
 				F10000000000000000000015 /* PreferencesTabView.swift */,
+				F10000000000000000000016 /* Theme.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -141,7 +152,9 @@
 			children = (
 				F10000000000000000000005 /* CoreAudioHelpers.swift */,
 				F10000000000000000000006 /* AudioDeviceManager.swift */,
+				F10000000000000000000017 /* AppVolumeController.swift */,
 				F10000000000000000000004 /* VolumeMath.swift */,
+				G1000000000000000000000B /* ProcessTap */,
 				G10000000000000000000009 /* Models */,
 			);
 			path = Audio;
@@ -163,6 +176,16 @@
 				F1000000000000000000000B /* AudioMaster.entitlements */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		G1000000000000000000000B /* ProcessTap */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000018 /* ProcessTapHelpers.swift */,
+				F10000000000000000000019 /* AudioProcessList.swift */,
+				F1000000000000000000001A /* AppVolumeMixer.swift */,
+			);
+			path = ProcessTap;
 			sourceTree = "<group>";
 		};
 		G10000000000000000000009 /* Models */ = {
@@ -279,6 +302,11 @@
 				B1000000000000000000000E /* DevicesTabView.swift in Sources */,
 				B1000000000000000000000F /* AppsTabView.swift in Sources */,
 				B10000000000000000000010 /* PreferencesTabView.swift in Sources */,
+				B10000000000000000000011 /* Theme.swift in Sources */,
+				B10000000000000000000012 /* AppVolumeController.swift in Sources */,
+				B10000000000000000000013 /* ProcessTapHelpers.swift in Sources */,
+				B10000000000000000000014 /* AudioProcessList.swift in Sources */,
+				B10000000000000000000015 /* AppVolumeMixer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,7 +379,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -406,7 +434,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -470,7 +498,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.audiomaster.app.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -487,7 +515,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.audiomaster.app.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

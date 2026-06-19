@@ -18,7 +18,7 @@ struct PreferencesTabView: View {
                 Spacer().frame(height: 40)
 
                 Text("Preferences")
-                    .font(.system(size: 22, weight: .semibold))
+                    .font(.system(size: 26, weight: .bold, design: .rounded))
 
                 generalSection
                 volumeSection
@@ -63,7 +63,7 @@ struct PreferencesTabView: View {
                             .frame(height: 4)
 
                         Capsule()
-                            .fill(Color.primary.opacity(0.4))
+                            .fill(AMTheme.accentGradient)
                             .frame(width: geometry.size.width * defaultVolume, height: 4)
                     }
                     .frame(maxHeight: .infinity, alignment: .center)

@@ -9,33 +9,41 @@ enum SidebarTab: String, CaseIterable, Identifiable {
 
     var icon: String {
         switch self {
-        case .devices: return "hifispeaker.2"
-        case .apps: return "square.grid.2x2"
-        case .preferences: return "gearshape"
+        case .devices: return "hifispeaker.2.fill"
+        case .apps: return "square.grid.2x2.fill"
+        case .preferences: return "gearshape.fill"
         }
     }
 }
 
 struct MainWindowView: View {
     @ObservedObject var deviceManager: AudioDeviceManager
+    @ObservedObject var appVolumeController: AppVolumeController
     @State private var selectedTab: SidebarTab = .devices
 
     var body: some View {
-        HStack(spacing: 0) {
-            sidebar
-            Divider().opacity(0.4)
-            content
+        ZStack {
+            AMBackground()
+
+            HStack(spacing: 0) {
+                sidebar
+                content
+            }
         }
-        .frame(minWidth: 580, minHeight: 420)
+        .frame(minWidth: 720, minHeight: 480)
+        .preferredColorScheme(.dark)
     }
 
     // MARK: - Sidebar
 
     private var sidebar: some View {
         VStack(spacing: 0) {
-            Spacer().frame(height: 52)
+            brandHeader
+                .padding(.horizontal, 20)
+                .padding(.top, 28)
+                .padding(.bottom, 24)
 
-            VStack(spacing: 2) {
+            VStack(spacing: 4) {
                 ForEach(SidebarTab.allCases) { tab in
                     SidebarItem(
                         title: tab.rawValue,
@@ -43,50 +51,118 @@ struct MainWindowView: View {
                         isSelected: selectedTab == tab
                     )
                     .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.2)) {
+                        withAnimation(.spring(response: 0.28, dampingFraction: 0.82)) {
                             selectedTab = tab
                         }
                     }
                 }
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, 14)
 
             Spacer()
 
-            VStack(spacing: 4) {
-                if let device = deviceManager.defaultOutputDevice {
-                    HStack(spacing: 6) {
-                        Circle()
-                            .fill(Color.green.opacity(0.8))
-                            .frame(width: 6, height: 6)
+            nowPlayingFooter
+                .padding(.horizontal, 16)
+                .padding(.bottom, 20)
+        }
+        .frame(width: 210)
+        .background(
+            AMTheme.surfaceElevated.opacity(0.55)
+                .overlay(
+                    Rectangle()
+                        .fill(AMTheme.surfaceBorder)
+                        .frame(width: 1),
+                    alignment: .trailing
+                )
+        )
+    }
+
+    private var brandHeader: some View {
+        HStack(spacing: 10) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(AMTheme.accentGradient.opacity(0.25))
+                    .frame(width: 36, height: 36)
+                Image(systemName: "waveform.circle.fill")
+                    .font(.system(size: 20))
+                    .foregroundStyle(AMTheme.accentGradient)
+            }
+
+            VStack(alignment: .leading, spacing: 1) {
+                Text("AudioMaster")
+                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                Text("Sound control")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            WaveformView(barCount: 4)
+        }
+    }
+
+    private var nowPlayingFooter: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("OUTPUT")
+                .font(.system(size: 9, weight: .bold))
+                .foregroundStyle(.tertiary)
+
+            if let device = deviceManager.defaultOutputDevice {
+                HStack(spacing: 8) {
+                    Image(systemName: device.type.sfSymbol)
+                        .font(.system(size: 12))
+                        .foregroundStyle(AMTheme.deviceAccent(for: device.type))
+                        .frame(width: 22, height: 22)
+                        .background(
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(AMTheme.deviceAccent(for: device.type).opacity(0.15))
+                        )
+
+                    VStack(alignment: .leading, spacing: 1) {
                         Text(device.name)
-                            .font(.system(size: 10))
-                            .foregroundStyle(.secondary)
+                            .font(.system(size: 11, weight: .medium))
                             .lineLimit(1)
+                        HStack(spacing: 4) {
+                            Circle()
+                                .fill(Color.green)
+                                .frame(width: 5, height: 5)
+                            Text("Active")
+                                .font(.system(size: 9))
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
-                Text("v1.0")
-                    .font(.system(size: 10, weight: .light, design: .monospaced))
-                    .foregroundStyle(.quaternary)
+            } else {
+                Text("No output device")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
             }
-            .padding(.bottom, 16)
         }
-        .frame(width: 180)
-        .background(Color.primary.opacity(0.02))
+        .padding(12)
+        .amGlassCard(cornerRadius: 10)
     }
 
     // MARK: - Content
 
     @ViewBuilder
     private var content: some View {
-        switch selectedTab {
-        case .devices:
-            DevicesTabView(deviceManager: deviceManager)
-        case .apps:
-            AppsTabView(deviceManager: deviceManager)
-        case .preferences:
-            PreferencesTabView()
+        Group {
+            switch selectedTab {
+            case .devices:
+                DevicesTabView(deviceManager: deviceManager)
+            case .apps:
+                AppsTabView(
+                    deviceManager: deviceManager,
+                    appVolumeController: appVolumeController
+                )
+            case .preferences:
+                PreferencesTabView()
+            }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .transition(.opacity.combined(with: .move(edge: .trailing)))
+        .animation(.easeInOut(duration: 0.2), value: selectedTab)
     }
 }
 
@@ -100,23 +176,33 @@ struct SidebarItem: View {
     @State private var isHovered = false
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 10) {
             Image(systemName: icon)
                 .font(.system(size: 13))
-                .foregroundStyle(isSelected ? .primary : .secondary)
-                .frame(width: 20)
+                .foregroundStyle(isSelected ? AMTheme.accent : .secondary)
+                .frame(width: 22)
 
             Text(title)
-                .font(.system(size: 13, weight: isSelected ? .medium : .regular))
+                .font(.system(size: 13, weight: isSelected ? .semibold : .regular))
                 .foregroundStyle(isSelected ? .primary : .secondary)
 
             Spacer()
+
+            if isSelected {
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(AMTheme.accentGradient)
+                    .frame(width: 3, height: 14)
+            }
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 7)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 9)
         .background(
-            RoundedRectangle(cornerRadius: 6)
+            RoundedRectangle(cornerRadius: 8)
                 .fill(backgroundColor)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .strokeBorder(isSelected ? AMTheme.accent.opacity(0.35) : Color.clear, lineWidth: 1)
         )
         .onHover { hovering in
             withAnimation(.easeInOut(duration: 0.12)) {
@@ -128,9 +214,9 @@ struct SidebarItem: View {
 
     private var backgroundColor: Color {
         if isSelected {
-            return Color.primary.opacity(0.08)
+            return AMTheme.accent.opacity(0.12)
         } else if isHovered {
-            return Color.primary.opacity(0.04)
+            return Color.white.opacity(0.04)
         }
         return .clear
     }

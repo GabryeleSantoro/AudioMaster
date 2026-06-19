@@ -6,10 +6,13 @@ final class MenuBarController: NSObject, ObservableObject {
     private var statusItem: NSStatusItem?
     private var popover: NSPopover?
     private var eventMonitor: Any?
+    private var mainWindow: MainWindow?
     private let deviceManager: AudioDeviceManager
+    private let appVolumeController: AppVolumeController
 
-    init(deviceManager: AudioDeviceManager) {
+    init(deviceManager: AudioDeviceManager, appVolumeController: AppVolumeController) {
         self.deviceManager = deviceManager
+        self.appVolumeController = appVolumeController
         super.init()
         setupStatusItem()
         setupPopover()
@@ -28,11 +31,15 @@ final class MenuBarController: NSObject, ObservableObject {
 
     private func setupPopover() {
         let popover = NSPopover()
-        popover.contentSize = NSSize(width: 320, height: 420)
+        popover.contentSize = NSSize(width: 340, height: 440)
         popover.behavior = .transient
         popover.animates = true
 
-        let popoverView = PopoverView(deviceManager: deviceManager, menuBarController: self)
+        let popoverView = PopoverView(
+            deviceManager: deviceManager,
+            appVolumeController: appVolumeController,
+            menuBarController: self
+        )
         popover.contentViewController = NSHostingController(rootView: popoverView)
         self.popover = popover
     }
@@ -56,10 +63,16 @@ final class MenuBarController: NSObject, ObservableObject {
     func openMainWindow() {
         closePopover()
         NSApp.activate(ignoringOtherApps: true)
-        if let window = NSApp.windows.first(where: { $0.title == "AudioMaster" }) {
+        if let window = mainWindow {
+            window.makeKeyAndOrderFront(nil)
+        } else if let window = NSApp.windows.first(where: { $0.title == "AudioMaster" }) {
             window.makeKeyAndOrderFront(nil)
         } else {
-            let window = MainWindow(deviceManager: deviceManager)
+            let window = MainWindow(
+                deviceManager: deviceManager,
+                appVolumeController: appVolumeController
+            )
+            mainWindow = window
             window.makeKeyAndOrderFront(nil)
         }
     }

@@ -1,75 +1,122 @@
 import SwiftUI
 
-struct AppAudioItem: Identifiable {
-    let id = UUID()
-    let name: String
-    let bundleID: String
-    var volume: Double
-    var isMuted: Bool
-    let icon: NSImage?
-}
-
 struct AppsTabView: View {
     @ObservedObject var deviceManager: AudioDeviceManager
+    @ObservedObject var appVolumeController: AppVolumeController
     @State private var searchText: String = ""
-    @State private var apps: [AppAudioItem] = AppAudioItem.sampleApps()
-    @State private var hoveredAppID: UUID?
+    @State private var hoveredPID: pid_t?
 
-    private var filteredApps: [AppAudioItem] {
-        if searchText.isEmpty { return apps }
-        return apps.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+    private var filteredApps: [AppVolumeEntry] {
+        if searchText.isEmpty { return appVolumeController.apps }
+        return appVolumeController.apps.filter {
+            $0.displayName.localizedCaseInsensitiveContains(searchText)
+        }
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Spacer().frame(height: 40)
+            Spacer().frame(height: 36)
 
             headerSection
-                .padding(.horizontal, 32)
+                .padding(.horizontal, 28)
+
+            if !appVolumeController.isProcessTapAvailable {
+                unavailableBanner
+                    .padding(.horizontal, 28)
+                    .padding(.top, 16)
+            }
 
             Spacer().frame(height: 16)
 
             searchBar
-                .padding(.horizontal, 32)
+                .padding(.horizontal, 28)
 
             Spacer().frame(height: 16)
 
-            ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack(spacing: 2) {
-                    ForEach(Array(filteredApps.enumerated()), id: \.element.id) { index, app in
-                        AppVolumeRow(
-                            app: app,
-                            isHovered: hoveredAppID == app.id,
-                            onVolumeChange: { newVolume in
-                                apps[index].volume = newVolume
-                            },
-                            onMuteToggle: {
-                                apps[index].isMuted.toggle()
-                            }
-                        )
-                        .onHover { hovered in
-                            withAnimation(.easeInOut(duration: 0.1)) {
-                                hoveredAppID = hovered ? app.id : nil
+            if filteredApps.isEmpty {
+                emptyState
+            } else {
+                ScrollView(.vertical, showsIndicators: false) {
+                    LazyVStack(spacing: 2) {
+                        ForEach(filteredApps) { app in
+                            AppVolumeRow(
+                                app: app,
+                                volume: appVolumeController.sliderValue(for: app.pid),
+                                isMuted: appVolumeController.isMuted(pid: app.pid),
+                                isActive: appVolumeController.isActive(pid: app.pid),
+                                isHovered: hoveredPID == app.pid,
+                                errorMessage: appVolumeController.errors[app.pid],
+                                onVolumeChange: { newVolume in
+                                    appVolumeController.setGain(pid: app.pid, gain: Float(newVolume))
+                                },
+                                onMuteToggle: {
+                                    appVolumeController.toggleMute(pid: app.pid)
+                                }
+                            )
+                            .onHover { hovered in
+                                withAnimation(.easeInOut(duration: 0.1)) {
+                                    hoveredPID = hovered ? app.pid : nil
+                                }
                             }
                         }
                     }
+                    .padding(.horizontal, 28)
+                    .padding(.bottom, 24)
                 }
-                .padding(.horizontal, 32)
-                .padding(.bottom, 24)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onAppear {
+            appVolumeController.refresh()
+        }
     }
 
     private var headerSection: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("App Volumes")
-                .font(.system(size: 22, weight: .semibold))
+                .font(.system(size: 26, weight: .bold, design: .rounded))
 
-            Text("\(apps.count) apps detected")
+            let playing = appVolumeController.apps.filter(\.isPlayingAudio).count
+            let total = appVolumeController.apps.count
+            if playing > 0 {
+                Text("\(playing) playing · \(total) apps open")
+                    .font(.system(size: 13))
+                    .foregroundStyle(.secondary)
+            } else {
+                Text("\(total) apps open")
+                    .font(.system(size: 13))
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    private var unavailableBanner: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(.orange)
+            Text("Per-app volume requires macOS 14.2 or later.")
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
         }
+        .padding(12)
+        .amGlassCard(cornerRadius: 10)
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "speaker.slash")
+                .font(.system(size: 32))
+                .foregroundStyle(.tertiary)
+            Text("No apps running")
+                .font(.system(size: 14, weight: .medium))
+            Text("Open an app to control its volume here.")
+                .font(.system(size: 12))
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: 280)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.bottom, 80)
     }
 
     private var searchBar: some View {
@@ -98,8 +145,12 @@ struct AppsTabView: View {
 // MARK: - App Volume Row
 
 struct AppVolumeRow: View {
-    let app: AppAudioItem
+    let app: AppVolumeEntry
+    let volume: Double
+    let isMuted: Bool
+    let isActive: Bool
     let isHovered: Bool
+    let errorMessage: String?
     let onVolumeChange: (Double) -> Void
     let onMuteToggle: () -> Void
 
@@ -119,8 +170,17 @@ struct AppVolumeRow: View {
             RoundedRectangle(cornerRadius: 8)
                 .fill(isHovered ? Color.primary.opacity(0.03) : Color.clear)
         )
-        .onAppear { localVolume = app.volume }
-        .onChange(of: app.volume) { newValue in localVolume = newValue }
+        .overlay(alignment: .bottomLeading) {
+            if let errorMessage {
+                Text(errorMessage)
+                    .font(.system(size: 9))
+                    .foregroundStyle(.orange)
+                    .padding(.horizontal, 14)
+                    .padding(.bottom, 2)
+            }
+        }
+        .onAppear { localVolume = volume }
+        .onChange(of: volume) { newValue in localVolume = newValue }
     }
 
     private var appIcon: some View {
@@ -145,15 +205,15 @@ struct AppVolumeRow: View {
 
     private var appName: some View {
         VStack(alignment: .leading, spacing: 1) {
-            Text(app.name)
+            Text(app.displayName)
                 .font(.system(size: 13, weight: .medium))
                 .lineLimit(1)
 
             Text(volumeLabel)
                 .font(.system(size: 10, weight: .medium, design: .monospaced))
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(isActive ? AMTheme.accent : Color.secondary)
         }
-        .frame(width: 100, alignment: .leading)
+        .frame(width: 120, alignment: .leading)
     }
 
     private var volumeSlider: some View {
@@ -164,7 +224,11 @@ struct AppVolumeRow: View {
                     .frame(height: 4)
 
                 Capsule()
-                    .fill(app.isMuted ? Color.primary.opacity(0.15) : Color.primary.opacity(0.45))
+                    .fill(
+                        isMuted
+                            ? AnyShapeStyle(Color.white.opacity(0.12))
+                            : AnyShapeStyle(AMTheme.accentGradient)
+                    )
                     .frame(width: max(0, geometry.size.width * localVolume), height: 4)
 
                 Circle()
@@ -189,37 +253,17 @@ struct AppVolumeRow: View {
 
     private var muteButton: some View {
         Button(action: onMuteToggle) {
-            Image(systemName: app.isMuted ? "speaker.slash.fill" : "speaker.wave.2.fill")
+            Image(systemName: isMuted ? "speaker.slash.fill" : "speaker.wave.2.fill")
                 .font(.system(size: 11))
-                .foregroundStyle(app.isMuted ? .primary : .tertiary)
+                .foregroundStyle(isMuted ? .primary : .tertiary)
                 .frame(width: 24, height: 24)
         }
         .buttonStyle(.plain)
     }
 
     private var volumeLabel: String {
-        if app.isMuted { return "Muted" }
-        return "\(Int(localVolume * 100))%"
-    }
-}
-
-// MARK: - Sample Data
-
-extension AppAudioItem {
-    static func sampleApps() -> [AppAudioItem] {
-        let workspace = NSWorkspace.shared
-        let runningApps = workspace.runningApplications.filter { app in
-            app.activationPolicy == .regular && app.bundleIdentifier != nil
-        }
-
-        return runningApps.prefix(12).map { app in
-            AppAudioItem(
-                name: app.localizedName ?? "Unknown",
-                bundleID: app.bundleIdentifier ?? "",
-                volume: Double.random(in: 0.4...1.0),
-                isMuted: false,
-                icon: app.icon
-            )
-        }
+        if isMuted { return "Muted" }
+        if isActive || app.isPlayingAudio { return "\(Int(localVolume * 100))%" }
+        return "Ready"
     }
 }

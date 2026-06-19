@@ -3,12 +3,18 @@ import SwiftUI
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var deviceManager: AudioDeviceManager?
+    private var appVolumeController: AppVolumeController?
     private var menuBarController: MenuBarController?
+    private var mainWindow: MainWindow?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        NSApp.setActivationPolicy(.regular)
+
         Task { @MainActor in
             let manager = AudioDeviceManager()
+            let volumeController = AppVolumeController()
             deviceManager = manager
+            appVolumeController = volumeController
 
             do {
                 let cached = try PersistenceController.shared.fetchDevices()
@@ -19,14 +25,42 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
             manager.refreshDevices()
             manager.startMonitoring()
+            volumeController.startMonitoring()
 
-            menuBarController = MenuBarController(deviceManager: manager)
+            menuBarController = MenuBarController(
+                deviceManager: manager,
+                appVolumeController: volumeController
+            )
+            showMainWindow(deviceManager: manager, appVolumeController: volumeController)
         }
+    }
+
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if !flag, let manager = deviceManager, let volumeController = appVolumeController {
+            showMainWindow(deviceManager: manager, appVolumeController: volumeController)
+        }
+        return true
     }
 
     func applicationWillTerminate(_ notification: Notification) {
         Task { @MainActor in
             deviceManager?.stopMonitoring()
+            appVolumeController?.stopMonitoring()
+        }
+    }
+
+    @MainActor
+    private func showMainWindow(deviceManager: AudioDeviceManager, appVolumeController: AppVolumeController) {
+        NSApp.activate(ignoringOtherApps: true)
+        if let window = mainWindow {
+            window.makeKeyAndOrderFront(nil)
+        } else {
+            let window = MainWindow(
+                deviceManager: deviceManager,
+                appVolumeController: appVolumeController
+            )
+            mainWindow = window
+            window.makeKeyAndOrderFront(nil)
         }
     }
 }

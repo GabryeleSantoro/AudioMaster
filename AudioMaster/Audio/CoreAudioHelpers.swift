@@ -257,6 +257,56 @@ enum CoreAudioHelpers {
         }
     }
 
+    // MARK: - System Volume
+
+    static func getOutputVolume() throws -> Float {
+        let deviceID = try getDefaultDevice(scope: .output)
+        guard hasVolumeControl(deviceID: deviceID) else {
+            throw CoreAudioError.propertyError(-1, "getOutputVolume - no volume control")
+        }
+
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyVolumeScalar,
+            mScope: kAudioObjectPropertyScopeOutput,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var volume: Float32 = 0
+        var dataSize = UInt32(MemoryLayout<Float32>.size)
+        let status = AudioObjectGetPropertyData(deviceID, &address, 0, nil, &dataSize, &volume)
+        guard status == noErr else {
+            throw CoreAudioError.propertyError(status, "getOutputVolume")
+        }
+        return volume
+    }
+
+    static func setOutputVolume(_ scalar: Float) throws {
+        let deviceID = try getDefaultDevice(scope: .output)
+        guard hasVolumeControl(deviceID: deviceID) else {
+            throw CoreAudioError.propertyError(-1, "setOutputVolume - no volume control")
+        }
+
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyVolumeScalar,
+            mScope: kAudioObjectPropertyScopeOutput,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var volume = max(0, min(1, scalar))
+        let dataSize = UInt32(MemoryLayout<Float32>.size)
+        let status = AudioObjectSetPropertyData(deviceID, &address, 0, nil, dataSize, &volume)
+        guard status == noErr else {
+            throw CoreAudioError.propertyError(status, "setOutputVolume")
+        }
+    }
+
+    private static func hasVolumeControl(deviceID: AudioDeviceID) -> Bool {
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyVolumeScalar,
+            mScope: kAudioObjectPropertyScopeOutput,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        return AudioObjectHasProperty(deviceID, &address)
+    }
+
     // MARK: - Build AudioDevice Model
 
     static func buildAudioDevice(
