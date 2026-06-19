@@ -14,11 +14,11 @@ struct PreferencesTabView: View {
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 28) {
-                Spacer().frame(height: 40)
+            VStack(alignment: .leading, spacing: 24) {
+                Spacer().frame(height: 32)
 
                 Text("Preferences")
-                    .font(.system(size: 26, weight: .bold, design: .rounded))
+                    .font(.system(size: 24, weight: .bold))
 
                 generalSection
                 volumeSection
@@ -27,7 +27,7 @@ struct PreferencesTabView: View {
 
                 Spacer(minLength: 24)
             }
-            .padding(.horizontal, 32)
+            .padding(.horizontal, 28)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -63,7 +63,7 @@ struct PreferencesTabView: View {
                             .frame(height: 4)
 
                         Capsule()
-                            .fill(AMTheme.accentGradient)
+                            .fill(AMTheme.accent)
                             .frame(width: geometry.size.width * defaultVolume, height: 4)
                     }
                     .frame(maxHeight: .infinity, alignment: .center)
@@ -154,7 +154,7 @@ struct PreferenceSection<Content: View>: View {
     @ViewBuilder let content: Content
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 10) {
             Text(title.uppercased())
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundStyle(.secondary)
@@ -164,11 +164,11 @@ struct PreferenceSection<Content: View>: View {
             }
             .padding(14)
             .background(
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: 8)
                     .fill(Color.primary.opacity(0.03))
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: 8)
                     .strokeBorder(Color.primary.opacity(0.06), lineWidth: 0.5)
             )
         }
@@ -206,16 +206,12 @@ struct DestructiveButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.system(size: 12, weight: .medium))
-            .foregroundStyle(.secondary)
+            .foregroundStyle(.red)
             .padding(.horizontal, 12)
             .padding(.vertical, 6)
             .background(
                 RoundedRectangle(cornerRadius: 6)
-                    .fill(Color.primary.opacity(configuration.isPressed ? 0.08 : 0.04))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 6)
-                    .strokeBorder(Color.primary.opacity(0.08), lineWidth: 0.5)
+                    .fill(Color.red.opacity(configuration.isPressed ? 0.12 : 0.06))
             )
     }
 }

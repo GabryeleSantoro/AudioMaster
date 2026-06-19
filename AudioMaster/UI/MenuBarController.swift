@@ -6,7 +6,6 @@ final class MenuBarController: NSObject, ObservableObject {
     private var statusItem: NSStatusItem?
     private var popover: NSPopover?
     private var eventMonitor: Any?
-    private var mainWindow: MainWindow?
     private let deviceManager: AudioDeviceManager
     private let appVolumeController: AppVolumeController
 
@@ -62,19 +61,8 @@ final class MenuBarController: NSObject, ObservableObject {
 
     func openMainWindow() {
         closePopover()
-        NSApp.activate(ignoringOtherApps: true)
-        if let window = mainWindow {
-            window.makeKeyAndOrderFront(nil)
-        } else if let window = NSApp.windows.first(where: { $0.title == "AudioMaster" }) {
-            window.makeKeyAndOrderFront(nil)
-        } else {
-            let window = MainWindow(
-                deviceManager: deviceManager,
-                appVolumeController: appVolumeController
-            )
-            mainWindow = window
-            window.makeKeyAndOrderFront(nil)
-        }
+        guard let appDelegate = NSApp.delegate as? AppDelegate else { return }
+        appDelegate.showMainWindow()
     }
 
     private func setupEventMonitor() {

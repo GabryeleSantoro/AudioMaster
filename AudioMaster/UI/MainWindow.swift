@@ -24,6 +24,6 @@ final class MainWindow: NSWindow {
         center()
         setFrameAutosaveName("AudioMasterMain")
         minSize = NSSize(width: 720, height: 480)
-        backgroundColor = NSColor(red: 0.082, green: 0.082, blue: 0.118, alpha: 1)
+        backgroundColor = .windowBackgroundColor
     }
 }

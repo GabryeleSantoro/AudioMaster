@@ -31,13 +31,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 deviceManager: manager,
                 appVolumeController: volumeController
             )
-            showMainWindow(deviceManager: manager, appVolumeController: volumeController)
+            showMainWindow()
         }
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        if !flag, let manager = deviceManager, let volumeController = appVolumeController {
-            showMainWindow(deviceManager: manager, appVolumeController: volumeController)
+        if !flag {
+            showMainWindow()
         }
         return true
     }
@@ -50,7 +50,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @MainActor
-    private func showMainWindow(deviceManager: AudioDeviceManager, appVolumeController: AppVolumeController) {
+    func showMainWindow() {
+        guard let deviceManager, let appVolumeController else { return }
         NSApp.activate(ignoringOtherApps: true)
         if let window = mainWindow {
             window.makeKeyAndOrderFront(nil)

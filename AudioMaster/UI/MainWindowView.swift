@@ -22,16 +22,12 @@ struct MainWindowView: View {
     @State private var selectedTab: SidebarTab = .devices
 
     var body: some View {
-        ZStack {
-            AMBackground()
-
-            HStack(spacing: 0) {
-                sidebar
-                content
-            }
+        HStack(spacing: 0) {
+            sidebar
+            content
         }
         .frame(minWidth: 720, minHeight: 480)
-        .preferredColorScheme(.dark)
+        .background(AMBackground())
     }
 
     // MARK: - Sidebar
@@ -43,7 +39,7 @@ struct MainWindowView: View {
                 .padding(.top, 28)
                 .padding(.bottom, 24)
 
-            VStack(spacing: 4) {
+            VStack(spacing: 2) {
                 ForEach(SidebarTab.allCases) { tab in
                     SidebarItem(
                         title: tab.rawValue,
@@ -51,7 +47,7 @@ struct MainWindowView: View {
                         isSelected: selectedTab == tab
                     )
                     .onTapGesture {
-                        withAnimation(.spring(response: 0.28, dampingFraction: 0.82)) {
+                        withAnimation(.easeInOut(duration: 0.2)) {
                             selectedTab = tab
                         }
                     }
@@ -66,31 +62,24 @@ struct MainWindowView: View {
                 .padding(.bottom, 20)
         }
         .frame(width: 210)
-        .background(
-            AMTheme.surfaceElevated.opacity(0.55)
-                .overlay(
-                    Rectangle()
-                        .fill(AMTheme.surfaceBorder)
-                        .frame(width: 1),
-                    alignment: .trailing
-                )
+        .background(AMTheme.surfaceElevated)
+        .overlay(
+            Rectangle()
+                .fill(AMTheme.surfaceBorder)
+                .frame(width: 1),
+            alignment: .trailing
         )
     }
 
     private var brandHeader: some View {
         HStack(spacing: 10) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(AMTheme.accentGradient.opacity(0.25))
-                    .frame(width: 36, height: 36)
-                Image(systemName: "waveform.circle.fill")
-                    .font(.system(size: 20))
-                    .foregroundStyle(AMTheme.accentGradient)
-            }
+            Image(systemName: "waveform.circle.fill")
+                .font(.system(size: 22))
+                .foregroundStyle(AMTheme.accent)
 
             VStack(alignment: .leading, spacing: 1) {
                 Text("AudioMaster")
-                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                    .font(.system(size: 14, weight: .semibold))
                 Text("Sound control")
                     .font(.system(size: 10, weight: .medium))
                     .foregroundStyle(.secondary)
@@ -115,8 +104,8 @@ struct MainWindowView: View {
                         .foregroundStyle(AMTheme.deviceAccent(for: device.type))
                         .frame(width: 22, height: 22)
                         .background(
-                            RoundedRectangle(cornerRadius: 6)
-                                .fill(AMTheme.deviceAccent(for: device.type).opacity(0.15))
+                            RoundedRectangle(cornerRadius: 5)
+                                .fill(AMTheme.deviceAccent(for: device.type).opacity(0.12))
                         )
 
                     VStack(alignment: .leading, spacing: 1) {
@@ -140,7 +129,7 @@ struct MainWindowView: View {
             }
         }
         .padding(12)
-        .amGlassCard(cornerRadius: 10)
+        .amGlassCard(cornerRadius: 8)
     }
 
     // MARK: - Content
@@ -161,8 +150,8 @@ struct MainWindowView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .transition(.opacity.combined(with: .move(edge: .trailing)))
-        .animation(.easeInOut(duration: 0.2), value: selectedTab)
+        .transition(.opacity)
+        .animation(.easeInOut(duration: 0.15), value: selectedTab)
     }
 }
 
@@ -183,29 +172,19 @@ struct SidebarItem: View {
                 .frame(width: 22)
 
             Text(title)
-                .font(.system(size: 13, weight: isSelected ? .semibold : .regular))
+                .font(.system(size: 13, weight: isSelected ? .medium : .regular))
                 .foregroundStyle(isSelected ? .primary : .secondary)
 
             Spacer()
-
-            if isSelected {
-                RoundedRectangle(cornerRadius: 2)
-                    .fill(AMTheme.accentGradient)
-                    .frame(width: 3, height: 14)
-            }
         }
         .padding(.horizontal, 12)
-        .padding(.vertical, 9)
+        .padding(.vertical, 8)
         .background(
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: 6)
                 .fill(backgroundColor)
         )
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .strokeBorder(isSelected ? AMTheme.accent.opacity(0.35) : Color.clear, lineWidth: 1)
-        )
         .onHover { hovering in
-            withAnimation(.easeInOut(duration: 0.12)) {
+            withAnimation(.easeInOut(duration: 0.1)) {
                 isHovered = hovering
             }
         }
@@ -214,9 +193,9 @@ struct SidebarItem: View {
 
     private var backgroundColor: Color {
         if isSelected {
-            return AMTheme.accent.opacity(0.12)
+            return AMTheme.accent.opacity(0.1)
         } else if isHovered {
-            return Color.white.opacity(0.04)
+            return Color.primary.opacity(0.04)
         }
         return .clear
     }

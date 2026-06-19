@@ -15,7 +15,7 @@ struct AppsTabView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Spacer().frame(height: 36)
+            Spacer().frame(height: 32)
 
             headerSection
                 .padding(.horizontal, 28)
@@ -23,21 +23,21 @@ struct AppsTabView: View {
             if !appVolumeController.isProcessTapAvailable {
                 unavailableBanner
                     .padding(.horizontal, 28)
-                    .padding(.top, 16)
+                    .padding(.top, 14)
             }
 
-            Spacer().frame(height: 16)
+            Spacer().frame(height: 14)
 
             searchBar
                 .padding(.horizontal, 28)
 
-            Spacer().frame(height: 16)
+            Spacer().frame(height: 14)
 
             if filteredApps.isEmpty {
                 emptyState
             } else {
                 ScrollView(.vertical, showsIndicators: false) {
-                    LazyVStack(spacing: 2) {
+                    LazyVStack(spacing: 1) {
                         ForEach(filteredApps) { app in
                             AppVolumeRow(
                                 app: app,
@@ -74,7 +74,7 @@ struct AppsTabView: View {
     private var headerSection: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("App Volumes")
-                .font(.system(size: 26, weight: .bold, design: .rounded))
+                .font(.system(size: 24, weight: .bold))
 
             let playing = appVolumeController.apps.filter(\.isPlayingAudio).count
             let total = appVolumeController.apps.count
@@ -91,21 +91,22 @@ struct AppsTabView: View {
     }
 
     private var unavailableBanner: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 8) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .foregroundStyle(.orange)
+                .font(.system(size: 12))
             Text("Per-app volume requires macOS 14.2 or later.")
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
         }
-        .padding(12)
-        .amGlassCard(cornerRadius: 10)
+        .padding(10)
+        .amGlassCard(cornerRadius: 8)
     }
 
     private var emptyState: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 10) {
             Image(systemName: "speaker.slash")
-                .font(.system(size: 32))
+                .font(.system(size: 28))
                 .foregroundStyle(.tertiary)
             Text("No apps running")
                 .font(.system(size: 14, weight: .medium))
@@ -113,10 +114,10 @@ struct AppsTabView: View {
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-                .frame(maxWidth: 280)
+                .frame(maxWidth: 260)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.bottom, 80)
+        .padding(.bottom, 60)
     }
 
     private var searchBar: some View {
@@ -132,11 +133,11 @@ struct AppsTabView: View {
         .padding(.horizontal, 10)
         .padding(.vertical, 7)
         .background(
-            RoundedRectangle(cornerRadius: 7)
+            RoundedRectangle(cornerRadius: 6)
                 .fill(Color.primary.opacity(0.04))
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 7)
+            RoundedRectangle(cornerRadius: 6)
                 .strokeBorder(Color.primary.opacity(0.06), lineWidth: 0.5)
         )
     }
@@ -164,10 +165,10 @@ struct AppVolumeRow: View {
             volumeSlider
             muteButton
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 7)
         .background(
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: 6)
                 .fill(isHovered ? Color.primary.opacity(0.03) : Color.clear)
         )
         .overlay(alignment: .bottomLeading) {
@@ -175,7 +176,7 @@ struct AppVolumeRow: View {
                 Text(errorMessage)
                     .font(.system(size: 9))
                     .foregroundStyle(.orange)
-                    .padding(.horizontal, 14)
+                    .padding(.horizontal, 12)
                     .padding(.bottom, 2)
             }
         }
@@ -188,15 +189,15 @@ struct AppVolumeRow: View {
             if let icon = app.icon {
                 Image(nsImage: icon)
                     .resizable()
-                    .frame(width: 28, height: 28)
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    .frame(width: 26, height: 26)
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
             } else {
-                RoundedRectangle(cornerRadius: 6)
-                    .fill(Color.primary.opacity(0.06))
-                    .frame(width: 28, height: 28)
+                RoundedRectangle(cornerRadius: 5)
+                    .fill(Color.primary.opacity(0.05))
+                    .frame(width: 26, height: 26)
                     .overlay(
                         Image(systemName: "app.fill")
-                            .font(.system(size: 14))
+                            .font(.system(size: 13))
                             .foregroundStyle(.tertiary)
                     )
             }
@@ -224,11 +225,7 @@ struct AppVolumeRow: View {
                     .frame(height: 4)
 
                 Capsule()
-                    .fill(
-                        isMuted
-                            ? AnyShapeStyle(Color.white.opacity(0.12))
-                            : AnyShapeStyle(AMTheme.accentGradient)
-                    )
+                    .fill(isMuted ? Color.secondary.opacity(0.3) : AMTheme.accent)
                     .frame(width: max(0, geometry.size.width * localVolume), height: 4)
 
                 Circle()
@@ -248,7 +245,7 @@ struct AppVolumeRow: View {
                     }
             )
         }
-        .frame(width: 140, height: 24)
+        .frame(width: 140, height: 22)
     }
 
     private var muteButton: some View {
@@ -256,7 +253,7 @@ struct AppVolumeRow: View {
             Image(systemName: isMuted ? "speaker.slash.fill" : "speaker.wave.2.fill")
                 .font(.system(size: 11))
                 .foregroundStyle(isMuted ? .primary : .tertiary)
-                .frame(width: 24, height: 24)
+                .frame(width: 22, height: 22)
         }
         .buttonStyle(.plain)
     }
