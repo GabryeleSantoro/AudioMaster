@@ -30,7 +30,7 @@ final class MenuBarController: NSObject, ObservableObject {
 
     private func setupPopover() {
         let popover = NSPopover()
-        popover.contentSize = NSSize(width: 340, height: 440)
+        popover.contentSize = NSSize(width: 340, height: 480)
         popover.behavior = .transient
         popover.animates = true
 
