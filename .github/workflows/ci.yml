@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        run: |
+          chmod +x Scripts/run-tests.sh
+          ./Scripts/run-tests.sh
+
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: macos-15
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve version metadata
+        id: meta
+        run: |
+          VERSION=$(xcodebuild -showBuildSettings -project AudioMaster.xcodeproj -scheme AudioMaster -configuration Release 2>/dev/null | awk -F' = ' '/ MARKETING_VERSION / {print $2; exit}')
+          TAG="v${VERSION}-build.${GITHUB_RUN_NUMBER}"
+          DMG_NAME="AudioMaster-${VERSION}-build.${GITHUB_RUN_NUMBER}.dmg"
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "dmg_name=$DMG_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Build DMG
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: |
+          chmod +x Scripts/build-dmg.sh
+          ./Scripts/build-dmg.sh "${{ steps.meta.outputs.version }}"
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: AudioMaster ${{ steps.meta.outputs.tag }}
+          body: |
+            Automated release from [`${{ github.sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}).
+
+            **Version:** ${{ steps.meta.outputs.version }}
+            **Build:** ${{ github.run_number }}
+            **Commit:** ${{ github.event.head_commit.message }}
+          files: build/${{ steps.meta.outputs.dmg_name }}
+          make_latest: true
+          generate_release_notes: false
