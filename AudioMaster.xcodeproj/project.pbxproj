@@ -29,6 +29,13 @@
 		B10000000000000000000014 /* AudioProcessList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000019 /* AudioProcessList.swift */; };
 		B10000000000000000000015 /* AppVolumeMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001A /* AppVolumeMixer.swift */; };
 		B10000000000000000000016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001B /* Assets.xcassets */; };
+		B10000000000000000000017 /* VolumeMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001C /* VolumeMathTests.swift */; };
+		B10000000000000000000018 /* CoreAudioHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001D /* CoreAudioHelpersTests.swift */; };
+		B10000000000000000000019 /* AudioDeviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001E /* AudioDeviceTests.swift */; };
+		B1000000000000000000001A /* DeviceTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001F /* DeviceTypeTests.swift */; };
+		B1000000000000000000001B /* PersistenceControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000020 /* PersistenceControllerTests.swift */; };
+		B1000000000000000000001C /* AppVolumeControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000021 /* AppVolumeControllerTests.swift */; };
+		B1000000000000000000001D /* ProcessTapHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000022 /* ProcessTapHelpersTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +75,13 @@
 		F10000000000000000000019 /* AudioProcessList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioProcessList.swift; sourceTree = "<group>"; };
 		F1000000000000000000001A /* AppVolumeMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVolumeMixer.swift; sourceTree = "<group>"; };
 		F1000000000000000000001B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F1000000000000000000001C /* VolumeMathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMathTests.swift; sourceTree = "<group>"; };
+		F1000000000000000000001D /* CoreAudioHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAudioHelpersTests.swift; sourceTree = "<group>"; };
+		F1000000000000000000001E /* AudioDeviceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDeviceTests.swift; sourceTree = "<group>"; };
+		F1000000000000000000001F /* DeviceTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTypeTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000020 /* PersistenceControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceControllerTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000021 /* AppVolumeControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVolumeControllerTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000022 /* ProcessTapHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessTapHelpersTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +127,13 @@
 			isa = PBXGroup;
 			children = (
 				F10000000000000000000009 /* AudioDeviceManagerTests.swift */,
+				F10000000000000000000021 /* AppVolumeControllerTests.swift */,
+				F1000000000000000000001E /* AudioDeviceTests.swift */,
+				F1000000000000000000001D /* CoreAudioHelpersTests.swift */,
+				F1000000000000000000001F /* DeviceTypeTests.swift */,
+				F10000000000000000000020 /* PersistenceControllerTests.swift */,
+				F10000000000000000000022 /* ProcessTapHelpersTests.swift */,
+				F1000000000000000000001C /* VolumeMathTests.swift */,
 			);
 			path = AudioMasterTests;
 			sourceTree = "<group>";
@@ -319,6 +340,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B10000000000000000000009 /* AudioDeviceManagerTests.swift in Sources */,
+				B1000000000000000000001C /* AppVolumeControllerTests.swift in Sources */,
+				B10000000000000000000019 /* AudioDeviceTests.swift in Sources */,
+				B10000000000000000000018 /* CoreAudioHelpersTests.swift in Sources */,
+				B1000000000000000000001A /* DeviceTypeTests.swift in Sources */,
+				B1000000000000000000001B /* PersistenceControllerTests.swift in Sources */,
+				B1000000000000000000001D /* ProcessTapHelpersTests.swift in Sources */,
+				B10000000000000000000017 /* VolumeMathTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
