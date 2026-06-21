@@ -219,6 +219,8 @@ struct AppVolumeRow: View {
 
     private var volumeSlider: some View {
         GeometryReader { geometry in
+            let fillRatio = VolumeMath.sliderFillRatio(localVolume)
+
             ZStack(alignment: .leading) {
                 Capsule()
                     .fill(Color.primary.opacity(0.06))
@@ -226,12 +228,12 @@ struct AppVolumeRow: View {
 
                 Capsule()
                     .fill(isMuted ? Color.secondary.opacity(0.3) : AMTheme.accent)
-                    .frame(width: max(0, geometry.size.width * localVolume), height: 4)
+                    .frame(width: max(0, geometry.size.width * fillRatio), height: 4)
 
                 Circle()
                     .fill(Color.primary.opacity(0.8))
                     .frame(width: 10, height: 10)
-                    .offset(x: max(0, geometry.size.width * localVolume - 5))
+                    .offset(x: max(0, geometry.size.width * fillRatio - 5))
                     .opacity(isHovered ? 1 : 0)
             }
             .frame(maxHeight: .infinity, alignment: .center)
@@ -239,7 +241,8 @@ struct AppVolumeRow: View {
             .gesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged { value in
-                        let newVolume = max(0, min(1, value.location.x / geometry.size.width))
+                        let normalized = value.location.x / geometry.size.width
+                        let newVolume = VolumeMath.sliderValue(fromNormalizedPosition: normalized)
                         localVolume = newVolume
                         onVolumeChange(newVolume)
                     }
@@ -260,7 +263,9 @@ struct AppVolumeRow: View {
 
     private var volumeLabel: String {
         if isMuted { return "Muted" }
-        if isActive || app.isPlayingAudio { return "\(Int(localVolume * 100))%" }
+        if isActive || app.isPlayingAudio {
+            return "\(VolumeMath.displayPercent(localVolume))%"
+        }
         return "Ready"
     }
 }

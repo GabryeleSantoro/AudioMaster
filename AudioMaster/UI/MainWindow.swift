@@ -30,10 +30,11 @@ final class MainWindow: NSWindow {
 }
 
 extension MainWindow: NSWindowDelegate {
-    func windowWillClose(_ notification: Notification) {
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
         Task { @MainActor in
             guard let appDelegate = NSApp.delegate as? AppDelegate else { return }
             appDelegate.hideMainWindow()
         }
+        return false
     }
 }

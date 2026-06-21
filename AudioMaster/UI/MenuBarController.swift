@@ -18,14 +18,26 @@ final class MenuBarController: NSObject, ObservableObject {
     }
 
     private func setupStatusItem() {
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 
         if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: "speaker.wave.2.fill", accessibilityDescription: "AudioMaster")
-            button.image?.size = NSSize(width: 16, height: 16)
-            button.action = #selector(togglePopover)
+            button.image = Self.menuBarIcon()
+            button.image?.accessibilityDescription = "AudioMaster"
+            button.action = #selector(statusItemClicked)
             button.target = self
+            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
+    }
+
+    private static func menuBarIcon() -> NSImage? {
+        guard let source = NSApp.applicationIconImage ?? NSImage(named: "AppIcon") else {
+            return NSImage(systemSymbolName: "waveform.circle.fill", accessibilityDescription: "AudioMaster")
+        }
+
+        let icon = (source.copy() as? NSImage) ?? source
+        icon.size = NSSize(width: 18, height: 18)
+        icon.isTemplate = false
+        return icon
     }
 
     private func setupPopover() {
@@ -41,6 +53,51 @@ final class MenuBarController: NSObject, ObservableObject {
         )
         popover.contentViewController = NSHostingController(rootView: popoverView)
         self.popover = popover
+    }
+
+    @objc private func statusItemClicked(_ sender: NSStatusBarButton) {
+        if NSApp.currentEvent?.type == .rightMouseUp {
+            buildContextMenu().popUp(
+                positioning: nil,
+                at: NSPoint(x: 0, y: sender.bounds.height + 4),
+                in: sender
+            )
+        } else {
+            togglePopover()
+        }
+    }
+
+    private func buildContextMenu() -> NSMenu {
+        let menu = NSMenu()
+
+        let openItem = NSMenuItem(
+            title: "Open AudioMaster",
+            action: #selector(openMainWindowFromMenu),
+            keyEquivalent: ""
+        )
+        openItem.target = self
+        menu.addItem(openItem)
+
+        menu.addItem(.separator())
+
+        let quitItem = NSMenuItem(
+            title: "Quit AudioMaster",
+            action: #selector(quitFromMenu),
+            keyEquivalent: ""
+        )
+        quitItem.target = self
+        menu.addItem(quitItem)
+
+        return menu
+    }
+
+    @objc private func openMainWindowFromMenu() {
+        openMainWindow()
+    }
+
+    @objc private func quitFromMenu() {
+        guard let appDelegate = NSApp.delegate as? AppDelegate else { return }
+        appDelegate.quitApplication()
     }
 
     @objc private func togglePopover() {

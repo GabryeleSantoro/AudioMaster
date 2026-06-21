@@ -6,6 +6,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var appVolumeController: AppVolumeController?
     private var menuBarController: MenuBarController?
     private var mainWindow: MainWindow?
+    private var isQuittingForReal = false
 
     static var hasCompletedOnboarding: Bool {
         get { UserDefaults.standard.bool(forKey: "hasCompletedOnboarding") }
@@ -51,6 +52,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        false
+    }
+
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        if isQuittingForReal {
+            return .terminateNow
+        }
+
+        DispatchQueue.main.async { [weak self] in
+            Task { @MainActor in
+                self?.hideToMenuBar()
+            }
+        }
+        return .terminateCancel
+    }
+
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         if !flag {
             showMainWindow()
@@ -83,12 +101,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @MainActor
-    func hideMainWindow() {
+    func hideToMenuBar() {
+        menuBarController?.closePopover()
         mainWindow?.orderOut(nil)
-        mainWindow = nil
-        if !AppDelegate.openWindowOnLaunch {
-            NSApp.setActivationPolicy(.accessory)
-        }
+        NSApp.setActivationPolicy(.accessory)
+    }
+
+    @MainActor
+    func hideMainWindow() {
+        hideToMenuBar()
+    }
+
+    @MainActor
+    func quitApplication() {
+        isQuittingForReal = true
+        menuBarController?.closePopover()
+        deviceManager?.stopMonitoring()
+        appVolumeController?.stopMonitoring()
+        NSApp.terminate(nil)
     }
 
     @MainActor
@@ -107,6 +137,14 @@ struct AudioMasterApp: App {
         }
         .commands {
             CommandGroup(replacing: .appSettings) {}
+            CommandGroup(replacing: .appTermination) {
+                Button("Hide AudioMaster") {
+                    Task { @MainActor in
+                        (NSApp.delegate as? AppDelegate)?.hideToMenuBar()
+                    }
+                }
+                .keyboardShortcut("q", modifiers: .command)
+            }
         }
     }
 }

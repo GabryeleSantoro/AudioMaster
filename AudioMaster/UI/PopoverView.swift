@@ -252,7 +252,7 @@ struct PopoverAppVolumeRow: View {
             Text(volumeLabel)
                 .font(.system(size: 9, weight: .medium, design: .monospaced))
                 .foregroundStyle(isActive || app.isPlayingAudio ? AMTheme.accent : .secondary)
-                .frame(width: 28, alignment: .trailing)
+                .frame(width: 36, alignment: .trailing)
 
             volumeSlider
 
@@ -306,6 +306,8 @@ struct PopoverAppVolumeRow: View {
 
     private var volumeSlider: some View {
         GeometryReader { geometry in
+            let fillRatio = VolumeMath.sliderFillRatio(localVolume)
+
             ZStack(alignment: .leading) {
                 Capsule()
                     .fill(Color.primary.opacity(0.08))
@@ -313,14 +315,15 @@ struct PopoverAppVolumeRow: View {
 
                 Capsule()
                     .fill(isMuted ? Color.secondary.opacity(0.3) : AMTheme.accent)
-                    .frame(width: max(0, geometry.size.width * localVolume), height: 3)
+                    .frame(width: max(0, geometry.size.width * fillRatio), height: 3)
             }
             .frame(maxHeight: .infinity, alignment: .center)
             .contentShape(Rectangle())
             .gesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged { value in
-                        let newVolume = max(0, min(1, value.location.x / geometry.size.width))
+                        let normalized = value.location.x / geometry.size.width
+                        let newVolume = VolumeMath.sliderValue(fromNormalizedPosition: normalized)
                         localVolume = newVolume
                         onVolumeChange(newVolume)
                     }
@@ -331,7 +334,7 @@ struct PopoverAppVolumeRow: View {
 
     private var volumeLabel: String {
         if isMuted { return "—" }
-        return "\(Int(localVolume * 100))"
+        return "\(VolumeMath.displayPercent(localVolume))%"
     }
 }
 

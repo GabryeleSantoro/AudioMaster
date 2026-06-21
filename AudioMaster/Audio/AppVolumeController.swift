@@ -97,7 +97,7 @@ final class AppVolumeController: ObservableObject {
     }
 
     func setGain(pid: pid_t, gain: Float) {
-        gains[pid] = max(0, min(1.5, gain))
+        gains[pid] = VolumeMath.clampSliderValue(gain)
         saveGain(for: pid)
         if isPlayingAudio(pid: pid) {
             applyEffectiveGain(pid: pid)

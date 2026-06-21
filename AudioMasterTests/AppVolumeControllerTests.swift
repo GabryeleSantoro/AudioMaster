@@ -30,7 +30,13 @@ final class AppVolumeControllerTests: XCTestCase {
     }
 
     func testSetGainClampsHighValues() {
-        controller.setGain(pid: 42_001, gain: 2.0)
+        controller.setGain(pid: 42_001, gain: 3.0)
+        XCTAssertEqual(controller.sliderValue(for: 42_001), Double(VolumeMath.maxSliderValue), accuracy: 0.001)
+        XCTAssertEqual(controller.gain(for: 42_001), VolumeMath.maxSliderValue, accuracy: 0.001)
+    }
+
+    func testSetGainAllowsBoostAboveUnity() {
+        controller.setGain(pid: 42_001, gain: 1.5)
         XCTAssertEqual(controller.sliderValue(for: 42_001), 1.5, accuracy: 0.001)
         XCTAssertEqual(controller.gain(for: 42_001), 1.5, accuracy: 0.001)
     }
