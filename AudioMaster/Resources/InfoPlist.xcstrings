@@ -69,6 +69,40 @@
         }
       }
     },
+    "NSBluetoothAlwaysUsageDescription": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster needs Bluetooth access to list paired devices, manage connections, and display battery levels."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster a besoin de l'accès Bluetooth pour lister les appareils appairés, gérer les connexions et afficher les niveaux de batterie."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster benötigt Bluetooth-Zugriff, um gekoppelte Geräte aufzulisten, Verbindungen zu verwalten und Batteriestände anzuzeigen."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster necessita dell'accesso Bluetooth per elencare i dispositivi associati, gestire le connessioni e mostrare i livelli di batteria."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster necesita acceso Bluetooth para listar dispositivos emparejados, gestionar conexiones y mostrar niveles de batería."
+          }
+        }
+      }
+    },
     "NSHumanReadableCopyright": {
       "localizations": {
         "en": {

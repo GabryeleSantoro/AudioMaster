@@ -7,10 +7,16 @@ final class MenuBarController: NSObject, ObservableObject {
     private var popover: NSPopover?
     private var eventMonitor: Any?
     private let deviceManager: AudioDeviceManager
+    private let bluetoothManager: BluetoothDeviceManager
     private let appVolumeController: AppVolumeController
 
-    init(deviceManager: AudioDeviceManager, appVolumeController: AppVolumeController) {
+    init(
+        deviceManager: AudioDeviceManager,
+        bluetoothManager: BluetoothDeviceManager,
+        appVolumeController: AppVolumeController
+    ) {
         self.deviceManager = deviceManager
+        self.bluetoothManager = bluetoothManager
         self.appVolumeController = appVolumeController
         super.init()
         setupStatusItem()
@@ -51,6 +57,7 @@ final class MenuBarController: NSObject, ObservableObject {
 
         let popoverView = PopoverView(
             deviceManager: deviceManager,
+            bluetoothManager: bluetoothManager,
             appVolumeController: appVolumeController,
             menuBarController: self
         )

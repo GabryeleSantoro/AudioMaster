@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PopoverView: View {
     @ObservedObject var deviceManager: AudioDeviceManager
+    @ObservedObject var bluetoothManager: BluetoothDeviceManager
     @ObservedObject var appVolumeController: AppVolumeController
     let menuBarController: MenuBarController
 
@@ -121,10 +122,15 @@ struct PopoverView: View {
                     Spacer()
 
                     if let current = deviceManager.defaultOutputDevice {
-                        Text(current.name)
-                            .font(.system(size: 11))
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1)
+                        HStack(spacing: 6) {
+                            Text(current.name)
+                                .font(.system(size: 11))
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                            if let battery = bluetoothManager.battery(for: current) {
+                                BatteryIndicatorView(level: battery.primaryLevel, compact: true)
+                            }
+                        }
                     }
                 }
                 .padding(.horizontal, 14)
@@ -145,7 +151,8 @@ struct PopoverView: View {
                                 DeviceRowCompact(
                                     device: device,
                                     isSelected: device.id == deviceManager.defaultOutputDevice?.id,
-                                    isHovered: hoveredDeviceID == device.id
+                                    isHovered: hoveredDeviceID == device.id,
+                                    battery: bluetoothManager.battery(for: device)
                                 )
                                 .onHover { hovered in
                                     withAnimation(.easeInOut(duration: 0.1)) {
@@ -330,6 +337,7 @@ struct DeviceRowCompact: View {
     let device: AudioDevice
     let isSelected: Bool
     let isHovered: Bool
+    var battery: BluetoothBatteryReading?
 
     var body: some View {
         HStack(spacing: 10) {
@@ -343,6 +351,10 @@ struct DeviceRowCompact: View {
                 .lineLimit(1)
 
             Spacer()
+
+            if let battery {
+                BatteryIndicatorView(level: battery.primaryLevel, compact: true)
+            }
 
             if isSelected {
                 Image(systemName: "checkmark")

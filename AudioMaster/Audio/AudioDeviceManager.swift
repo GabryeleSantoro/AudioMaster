@@ -10,6 +10,8 @@ final class AudioDeviceManager: ObservableObject {
     @Published private(set) var defaultOutputDevice: AudioDevice?
     @Published private(set) var defaultInputDevice: AudioDevice?
 
+    var onDevicesUpdated: (([AudioDevice]) -> Void)?
+
     private let persistence: PersistenceController
     private let logger = Logger(subsystem: "com.audiomaster.app", category: "AudioDeviceManager")
     private let refreshQueue = DispatchQueue(label: "com.audiomaster.audio.refresh", qos: .userInitiated)
@@ -205,6 +207,7 @@ final class AudioDeviceManager: ObservableObject {
         defaultInputDevice = snapshot.defaultInput
 
         persistDevices(snapshot.outputs + snapshot.inputs)
+        onDevicesUpdated?(snapshot.outputs + snapshot.inputs)
         logDeviceSummary()
     }
 

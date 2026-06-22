@@ -30,5 +30,7 @@
 	<string>AudioMaster needs microphone access to enumerate and manage audio input devices.</string>
 	<key>NSAudioCaptureUsageDescription</key>
 	<string>AudioMaster needs audio capture permission to control per-app volume levels.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>AudioMaster needs Bluetooth access to list paired devices, manage connections, and display battery levels.</string>
 </dict>
 </plist>

@@ -3,6 +3,7 @@ import SwiftUI
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var deviceManager: AudioDeviceManager?
+    private var bluetoothManager: BluetoothDeviceManager?
     private var appVolumeController: AppVolumeController?
     private var menuBarController: MenuBarController?
     private var mainWindow: MainWindow?
@@ -19,6 +20,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         set { UserDefaults.standard.set(newValue, forKey: "openWindowOnLaunch") }
     }
 
+    private static var isRunningTests: Bool {
+        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+    }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         let needsOnboarding = !AppDelegate.hasCompletedOnboarding
         let shouldShowWindow = needsOnboarding || AppDelegate.openWindowOnLaunch
@@ -27,9 +32,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         Task { @MainActor in
             let manager = AudioDeviceManager()
+            let bluetooth = BluetoothDeviceManager()
             let volumeController = AppVolumeController()
             deviceManager = manager
+            bluetoothManager = bluetooth
             appVolumeController = volumeController
+
+            manager.onDevicesUpdated = { [weak bluetooth] devices in
+                Task { @MainActor in
+                    bluetooth?.updateAudioDeviceContext(from: devices)
+                }
+            }
 
             do {
                 let cached = try PersistenceController.shared.fetchDevices()
@@ -40,10 +53,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
             manager.refreshDevices()
             manager.startMonitoring()
+            if !Self.isRunningTests {
+                bluetooth.startMonitoring()
+            }
             volumeController.startMonitoring()
 
             menuBarController = MenuBarController(
                 deviceManager: manager,
+                bluetoothManager: bluetooth,
                 appVolumeController: volumeController
             )
 
@@ -85,6 +102,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         Task { @MainActor in
             deviceManager?.stopMonitoring()
+            bluetoothManager?.stopMonitoring()
             appVolumeController?.stopMonitoring()
         }
     }
@@ -122,7 +140,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @MainActor
     func showMainWindow() {
-        guard let deviceManager, let appVolumeController else { return }
+        guard let deviceManager, let bluetoothManager, let appVolumeController else { return }
         NSApp.setActivationPolicy(.regular)
         NSApp.activate(ignoringOtherApps: true)
         if let window = mainWindow {
@@ -130,6 +148,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         } else {
             let window = MainWindow(
                 deviceManager: deviceManager,
+                bluetoothManager: bluetoothManager,
                 appVolumeController: appVolumeController
             )
             mainWindow = window
@@ -156,6 +175,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         isQuittingForReal = true
         menuBarController?.closePopover()
         deviceManager?.stopMonitoring()
+        bluetoothManager?.stopMonitoring()
         appVolumeController?.stopMonitoring()
         NSApp.terminate(nil)
     }

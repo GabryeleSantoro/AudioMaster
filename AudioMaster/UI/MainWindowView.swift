@@ -26,6 +26,7 @@ enum SidebarTab: CaseIterable, Identifiable {
 
 struct MainWindowView: View {
     @ObservedObject var deviceManager: AudioDeviceManager
+    @ObservedObject var bluetoothManager: BluetoothDeviceManager
     @ObservedObject var appVolumeController: AppVolumeController
     @State private var selectedTab: SidebarTab = .devices
 
@@ -102,7 +103,10 @@ struct MainWindowView: View {
         Group {
             switch selectedTab {
             case .devices:
-                DevicesTabView(deviceManager: deviceManager)
+                DevicesTabView(
+                    deviceManager: deviceManager,
+                    bluetoothManager: bluetoothManager
+                )
             case .apps:
                 AppsTabView(
                     deviceManager: deviceManager,

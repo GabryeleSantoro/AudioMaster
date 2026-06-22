@@ -40,6 +40,13 @@
 		B1000000000000000000001D /* ProcessTapHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000022 /* ProcessTapHelpersTests.swift */; };
 		B1000000000000000000001E /* VolumeSliderControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000023 /* VolumeSliderControl.swift */; };
 		B1000000000000000000001F /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000024 /* AppPreferences.swift */; };
+		B10000000000000000000022 /* BluetoothDeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000027 /* BluetoothDeviceInfo.swift */; };
+		B10000000000000000000023 /* BluetoothBatteryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000028 /* BluetoothBatteryReader.swift */; };
+		B10000000000000000000024 /* BluetoothDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000029 /* BluetoothDeviceManager.swift */; };
+		B10000000000000000000025 /* BatteryIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002A /* BatteryIndicatorView.swift */; };
+		B10000000000000000000026 /* BluetoothBatteryReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002B /* BluetoothBatteryReaderTests.swift */; };
+		B10000000000000000000027 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002C /* IOBluetooth.framework */; };
+		B10000000000000000000028 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002D /* IOKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +97,13 @@
 		F10000000000000000000024 /* AppPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
 		F10000000000000000000025 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		F10000000000000000000026 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		F10000000000000000000027 /* BluetoothDeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDeviceInfo.swift; sourceTree = "<group>"; };
+		F10000000000000000000028 /* BluetoothBatteryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothBatteryReader.swift; sourceTree = "<group>"; };
+		F10000000000000000000029 /* BluetoothDeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDeviceManager.swift; sourceTree = "<group>"; };
+		F1000000000000000000002A /* BatteryIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryIndicatorView.swift; sourceTree = "<group>"; };
+		F1000000000000000000002B /* BluetoothBatteryReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothBatteryReaderTests.swift; sourceTree = "<group>"; };
+		F1000000000000000000002C /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = System/Library/Frameworks/IOBluetooth.framework; sourceTree = SDKROOT; };
+		F1000000000000000000002D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +111,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B10000000000000000000027 /* IOBluetooth.framework in Frameworks */,
+				B10000000000000000000028 /* IOKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +158,7 @@
 				F10000000000000000000020 /* PersistenceControllerTests.swift */,
 				F10000000000000000000022 /* ProcessTapHelpersTests.swift */,
 				F1000000000000000000001C /* VolumeMathTests.swift */,
+				F1000000000000000000002B /* BluetoothBatteryReaderTests.swift */,
 			);
 			path = AudioMasterTests;
 			sourceTree = "<group>";
@@ -171,10 +188,20 @@
 				F10000000000000000000006 /* AudioDeviceManager.swift */,
 				F10000000000000000000017 /* AppVolumeController.swift */,
 				F10000000000000000000004 /* VolumeMath.swift */,
+				G1000000000000000000000C /* Bluetooth */,
 				G1000000000000000000000B /* ProcessTap */,
 				G10000000000000000000009 /* Models */,
 			);
 			path = Audio;
+			sourceTree = "<group>";
+		};
+		G1000000000000000000000C /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000028 /* BluetoothBatteryReader.swift */,
+				F10000000000000000000029 /* BluetoothDeviceManager.swift */,
+			);
+			path = Bluetooth;
 			sourceTree = "<group>";
 		};
 		G10000000000000000000007 /* Persistence */ = {
@@ -203,6 +230,7 @@
 			children = (
 				F10000000000000000000002 /* DeviceType.swift */,
 				F10000000000000000000003 /* AudioDevice.swift */,
+				F10000000000000000000027 /* BluetoothDeviceInfo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -219,6 +247,7 @@
 				F10000000000000000000015 /* PreferencesTabView.swift */,
 				F10000000000000000000016 /* Theme.swift */,
 				F10000000000000000000023 /* VolumeSliderControl.swift */,
+				F1000000000000000000002A /* BatteryIndicatorView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -352,6 +381,10 @@
 				B10000000000000000000015 /* AppVolumeMixer.swift in Sources */,
 				B1000000000000000000001E /* VolumeSliderControl.swift in Sources */,
 				B1000000000000000000001F /* AppPreferences.swift in Sources */,
+				B10000000000000000000022 /* BluetoothDeviceInfo.swift in Sources */,
+				B10000000000000000000023 /* BluetoothBatteryReader.swift in Sources */,
+				B10000000000000000000024 /* BluetoothDeviceManager.swift in Sources */,
+				B10000000000000000000025 /* BatteryIndicatorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +400,7 @@
 				B1000000000000000000001B /* PersistenceControllerTests.swift in Sources */,
 				B1000000000000000000001D /* ProcessTapHelpersTests.swift in Sources */,
 				B10000000000000000000017 /* VolumeMathTests.swift in Sources */,
+				B10000000000000000000026 /* BluetoothBatteryReaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
