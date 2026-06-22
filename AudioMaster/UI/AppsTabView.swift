@@ -156,7 +156,28 @@ struct AppVolumeRow: View {
     let onMuteToggle: () -> Void
 
     @AppStorage(AppPreferences.Keys.showDecibels) private var showDecibels = false
-    @State private var localVolume: Double = 0
+    @State private var localVolume: Double
+
+    init(
+        app: AppVolumeEntry,
+        volume: Double,
+        isMuted: Bool,
+        isActive: Bool,
+        isHovered: Bool,
+        errorMessage: String?,
+        onVolumeChange: @escaping (Double) -> Void,
+        onMuteToggle: @escaping () -> Void
+    ) {
+        self.app = app
+        self.volume = volume
+        self.isMuted = isMuted
+        self.isActive = isActive
+        self.isHovered = isHovered
+        self.errorMessage = errorMessage
+        self.onVolumeChange = onVolumeChange
+        self.onMuteToggle = onMuteToggle
+        _localVolume = State(initialValue: volume)
+    }
 
     var body: some View {
         HStack(spacing: 12) {
@@ -181,8 +202,9 @@ struct AppVolumeRow: View {
                     .padding(.bottom, 2)
             }
         }
-        .onAppear { localVolume = volume }
-        .onChange(of: volume) { newValue in localVolume = newValue }
+        .onChange(of: volume) { _, newValue in
+            localVolume = newValue
+        }
     }
 
     private var appIcon: some View {

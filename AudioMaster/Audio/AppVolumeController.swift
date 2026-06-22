@@ -101,6 +101,7 @@ final class AppVolumeController: ObservableObject {
         gains[pid] = VolumeMath.clampSliderValue(gain)
         lastModifiedPID = pid
         saveGain(for: pid)
+        objectWillChange.send()
         if isPlayingAudio(pid: pid) {
             applyEffectiveGain(pid: pid)
         }
@@ -113,6 +114,7 @@ final class AppVolumeController: ObservableObject {
             muted.insert(pid)
         }
         lastModifiedPID = pid
+        objectWillChange.send()
         if isPlayingAudio(pid: pid) {
             applyEffectiveGain(pid: pid)
         }

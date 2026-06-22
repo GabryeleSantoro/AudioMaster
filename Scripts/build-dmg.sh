@@ -30,8 +30,13 @@ if [[ ! -d "$APP_PATH" ]]; then
   exit 1
 fi
 
+if [[ "${RELEASE_DMG:-}" == "1" ]]; then
+  DMG_NAME="${APP_NAME}-${VERSION}.dmg"
+else
+  DMG_NAME="${APP_NAME}-${VERSION}-build.${BUILD_NUMBER}.dmg"
+fi
+
 DMG_STAGING="$BUILD_DIR/dmg"
-DMG_NAME="${APP_NAME}-${VERSION}-build.${BUILD_NUMBER}.dmg"
 DMG_PATH="$BUILD_DIR/$DMG_NAME"
 
 rm -rf "$DMG_STAGING"

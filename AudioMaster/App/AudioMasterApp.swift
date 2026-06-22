@@ -169,6 +169,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct AudioMasterApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @AppStorage(AppPreferences.Keys.volumeShortcutsEnabled) private var volumeShortcutsEnabled = true
 
     var body: some Scene {
         Settings {
@@ -191,7 +192,7 @@ struct AudioMasterApp: App {
                     }
                 }
                 .keyboardShortcut(.upArrow, modifiers: [.command, .option])
-                .disabled(!AppPreferences.volumeShortcutsEnabled)
+                .disabled(!volumeShortcutsEnabled)
 
                 Button("Decrease Volume of Last App") {
                     Task { @MainActor in
@@ -199,7 +200,7 @@ struct AudioMasterApp: App {
                     }
                 }
                 .keyboardShortcut(.downArrow, modifiers: [.command, .option])
-                .disabled(!AppPreferences.volumeShortcutsEnabled)
+                .disabled(!volumeShortcutsEnabled)
             }
         }
     }
