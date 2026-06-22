@@ -25,10 +25,11 @@ final class BluetoothDeviceManager: ObservableObject {
     func updateAudioDeviceContext(from audioDevices: [AudioDevice]) {
         audioDeviceNames = audioDevices.map(\.name)
         audioDeviceUIDs = Dictionary(
-            uniqueKeysWithValues: audioDevices.compactMap { device in
+            audioDevices.compactMap { device in
                 guard let uid = device.deviceUID else { return nil }
                 return (BluetoothNameMatcher.normalizedName(device.name), uid)
-            }
+            },
+            uniquingKeysWith: { first, _ in first }
         )
         refreshDevices()
     }

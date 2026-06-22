@@ -1,2726 +1,2765 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "Devices": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Devices"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "—" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "—"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Périphériques"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "—"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geräte"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "—"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dispositivi"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "—"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dispositivos"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "—"
           }
         }
       }
     },
-    "Apps": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apps"
+    "·" : {
+
+    },
+    "%.1f kHz" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.1f kHz"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apps"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.1f kHz"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apps"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.1f kHz"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "App"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.1f kHz"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apps"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.1f kHz"
           }
         }
       }
     },
-    "Preferences": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Preferences"
+    "%+.1f dB" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%+.1f dB"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Préférences"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%+.1f dB"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Einstellungen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%+.1f dB"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Preferenze"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%+.1f dB"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Preferencias"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%+.1f dB"
           }
         }
       }
+    },
+    "%lld" : {
+
     },
-    "AudioMaster": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster"
+    "%lld apps open" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Apps geöffnet"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld apps open"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld apps abiertas"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld apps ouvertes"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld app aperte"
           }
         }
       }
     },
-    "Sound control": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sound control"
+    "%lld devices connected" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Geräte verbunden"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Contrôle audio"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld devices connected"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tonsteuerung"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld dispositivos conectados"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Controllo audio"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld périphériques connectés"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Control de sonido"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld dispositivi connessi"
           }
         }
       }
     },
-    "App Volumes": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "App Volumes"
+    "%lld kHz" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld kHz"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volumes des apps"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld kHz"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "App-Lautstärke"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld kHz"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volumi app"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld kHz"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volúmenes de apps"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld kHz"
           }
         }
       }
     },
-    "%lld playing · %lld apps open": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld playing · %lld apps open"
+    "%lld playing" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld wiedergeben"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld en lecture · %lld apps ouvertes"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld playing"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld wiedergeben · %lld Apps geöffnet"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld reproduciendo"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld in riproduzione · %lld app aperte"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld en lecture"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld reproduciendo · %lld apps abiertas"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld in riproduzione"
           }
         }
       }
     },
-    "%lld apps open": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld apps open"
+    "%lld playing · %lld apps open" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld wiedergeben · %lld Apps geöffnet"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld apps ouvertes"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld playing · %lld apps open"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld Apps geöffnet"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld reproduciendo · %lld apps abiertas"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld app aperte"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld en lecture · %lld apps ouvertes"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld apps abiertas"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld in riproduzione · %lld app aperte"
           }
         }
       }
     },
-    "Per-app volume requires macOS 14.2 or later.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Per-app volume requires macOS 14.2 or later."
+    "%lld%%" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Le volume par app nécessite macOS 14.2 ou ultérieur."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "App-Lautstärke erfordert macOS 14.2 oder neuer."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Il volume per app richiede macOS 14.2 o successivo."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "El volumen por app requiere macOS 14.2 o posterior."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%"
           }
         }
       }
     },
-    "No apps running": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No apps running"
+    "%lld%% · %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%% · %@"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucune app en cours"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%% · %@"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keine Apps geöffnet"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%% · %@"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nessuna app in esecuzione"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%% · %@"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No hay apps en ejecución"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%% · %@"
           }
         }
       }
     },
-    "Open an app to control its volume here.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open an app to control its volume here."
+    "⌘⌥↑" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌘⌥↑"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ouvrez une app pour contrôler son volume ici."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌘⌥↑"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Öffnen Sie eine App, um die Lautstärke hier zu steuern."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌘⌥↑"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apri un'app per controllarne il volume qui."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌘⌥↑"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre una app para controlar su volumen aquí."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌘⌥↑"
           }
         }
       }
     },
-    "Filter apps...": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Filter apps..."
+    "⌘⌥↓" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌘⌥↓"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Filtrer les apps..."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌘⌥↓"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apps filtern..."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌘⌥↓"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Filtra app..."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌘⌥↓"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Filtrar apps..."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌘⌥↓"
           }
         }
       }
     },
-    "Muted": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Muted"
+    "Adjust the last modified app volume from anywhere" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lautstärke der zuletzt geänderten App von überall anpassen"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Silencieux"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adjust the last modified app volume from anywhere"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stumm"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustar el volumen de la última app modificada desde cualquier lugar"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Silenziato"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajuster le volume de la dernière app modifiée depuis n'importe où"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Silenciado"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regola il volume dell'ultima app modificata da qualsiasi punto"
           }
         }
       }
     },
-    "Ready": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ready"
+    "Advanced" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erweitert"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prêt"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bereit"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avanzado"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pronto"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avancé"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Listo"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avanzate"
           }
         }
       }
     },
-    "Audio Devices": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Audio Devices"
+    "Aggregate" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggregat"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Périphériques audio"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggregate"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Audiogeräte"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agregado"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dispositivi audio"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agrégat"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dispositivos de audio"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggregato"
           }
         }
       }
     },
-    "%lld devices connected": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld devices connected"
+    "AirPods" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AirPods"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld périphériques connectés"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AirPods"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld Geräte verbunden"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AirPods"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld dispositivi connessi"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AirPods"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld dispositivos conectados"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AirPods"
           }
         }
       }
     },
-    "Now playing through": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Now playing through"
+    "App Volumes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-Lautstärke"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lecture via"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Volumes"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wiedergabe über"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volúmenes de apps"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Riproduzione tramite"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volumes des apps"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reproduciendo a través de"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volumi app"
           }
         }
       }
     },
-    "Default": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Default"
+    "Apps" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apps"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Par défaut"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apps"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Standard"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apps"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Predefinito"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apps"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Predeterminado"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App"
           }
         }
       }
     },
-    "Output": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Output"
+    "Audio" : {
+
+    },
+    "Audio Devices" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audiogeräte"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sortie"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio Devices"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ausgabe"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispositivos de audio"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uscita"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Périphériques audio"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Salida"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispositivi audio"
           }
         }
       }
     },
-    "Input": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Input"
+    "AudioMaster" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Entrée"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eingabe"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ingresso"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Entrada"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster"
           }
         }
       }
     },
-    "Use": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Use"
+    "Automatic updates" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatische Updates"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Utiliser"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatic updates"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Verwenden"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualizaciones automáticas"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Usa"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mises à jour automatiques"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Usar"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiornamenti automatici"
           }
         }
       }
     },
-    "Channels": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Channels"
+    "Battery" : {
+
+    },
+    "Bluetooth" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bluetooth"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Canaux"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bluetooth"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kanäle"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bluetooth"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Canali"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bluetooth"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Canales"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bluetooth"
           }
         }
       }
+    },
+    "Bluetooth Device" : {
+
     },
-    "Sample Rate": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sample Rate"
+    "Case" : {
+
+    },
+    "Channels" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kanäle"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fréquence d'échantillonnage"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Channels"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abtastrate"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canales"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Frequenza di campionamento"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canaux"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Frecuencia de muestreo"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canali"
           }
         }
       }
     },
-    "UID": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "UID"
+    "Check for and install updates automatically" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updates automatisch suchen und installieren"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "UID"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check for and install updates automatically"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "UID"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar e instalar actualizaciones automáticamente"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "UID"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechercher et installer les mises à jour automatiquement"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "UID"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca e installa aggiornamenti automaticamente"
           }
         }
       }
+    },
+    "Connect" : {
+
+    },
+    "Connected" : {
+
     },
-    "%lld kHz": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld kHz"
+    "Core Audio error %lld in %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Core-Audio-Fehler %lld in %@"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld kHz"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Core Audio error %lld in %@"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld kHz"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error de Core Audio %lld en %@"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld kHz"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erreur Core Audio %lld dans %@"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld kHz"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Errore Core Audio %lld in %@"
           }
         }
       }
     },
-    "%.1f kHz": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%.1f kHz"
+    "Debug logging" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Debug-Protokollierung"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%.1f kHz"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Debug logging"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%.1f kHz"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registro de depuración"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%.1f kHz"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Journal de débogage"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%.1f kHz"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registro di debug"
           }
         }
       }
     },
-    "%lld playing": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld playing"
+    "Decrease volume of last app" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lautstärke der letzten App verringern"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld en lecture"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Decrease volume of last app"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld wiedergeben"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bajar volumen de la última app"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld in riproduzione"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diminuer le volume de la dernière app"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld reproduciendo"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diminuisci volume dell'ultima app"
           }
         }
       }
     },
-    "Master": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Master"
+    "Decrease Volume of Last App" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lautstärke der letzten App verringern"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Principal"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Decrease Volume of Last App"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Master"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bajar volumen de la última app"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Principale"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diminuer le volume de la dernière app"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Principal"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diminuisci volume dell'ultima app"
           }
         }
       }
     },
-    "Open AudioMaster": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open AudioMaster"
+    "Default" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ouvrir AudioMaster"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster öffnen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predeterminado"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apri AudioMaster"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Par défaut"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir AudioMaster"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predefinito"
           }
         }
       }
     },
-    "—": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "—"
+    "Default volume for new apps" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standardlautstärke für neue Apps"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "—"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default volume for new apps"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "—"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volumen predeterminado para apps nuevas"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "—"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume par défaut pour les nouvelles apps"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "—"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume predefinito per le nuove app"
           }
         }
       }
     },
-    "General": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "General"
+    "Devices" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geräte"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Général"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devices"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Allgemein"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispositivos"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Generale"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Périphériques"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "General"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispositivi"
           }
         }
       }
     },
-    "Launch at login": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Launch at login"
+    "Disconnect" : {
+
+    },
+    "Display dB values alongside percentages" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "dB-Werte neben Prozent anzeigen"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lancer à la connexion"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display dB values alongside percentages"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Beim Anmelden starten"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar valores dB junto a porcentajes"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avvia all'accesso"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher les valeurs dB avec les pourcentages"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Iniciar al iniciar sesión"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra valori dB accanto alle percentuali"
           }
         }
       }
     },
-    "Start AudioMaster when you log in": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start AudioMaster when you log in"
+    "Display volume control in the menu bar" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lautstärkeregelung in der Menüleiste anzeigen"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Démarrer AudioMaster à la connexion"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display volume control in the menu bar"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster beim Anmelden starten"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar el control de volumen en la barra de menús"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avvia AudioMaster all'accesso"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher le contrôle du volume dans la barre de menus"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Iniciar AudioMaster al iniciar sesión"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra il controllo volume nella barra dei menu"
           }
         }
       }
     },
-    "Show in menu bar": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show in menu bar"
+    "Enable verbose logging for troubleshooting" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausführliche Protokollierung zur Fehlerbehebung aktivieren"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Afficher dans la barre de menus"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable verbose logging for troubleshooting"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In der Menüleiste anzeigen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activar registro detallado para solución de problemas"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostra nella barra dei menu"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activer la journalisation détaillée pour le dépannage"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostrar en la barra de menús"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abilita registro dettagliato per la risoluzione problemi"
           }
         }
       }
     },
-    "Display volume control in the menu bar": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Display volume control in the menu bar"
+    "Filter apps..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apps filtern..."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Afficher le contrôle du volume dans la barre de menus"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter apps..."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lautstärkeregelung in der Menüleiste anzeigen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrar apps..."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostra il controllo volume nella barra dei menu"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrer les apps..."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostrar el control de volumen en la barra de menús"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtra app..."
           }
         }
       }
     },
-    "Open window on launch": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open window on launch"
+    "General" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allgemein"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ouvrir la fenêtre au lancement"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fenster beim Start öffnen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apri finestra all'avvio"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Général"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir ventana al iniciar"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generale"
           }
         }
       }
     },
-    "Show the main window when AudioMaster starts": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show the main window when AudioMaster starts"
+    "Grant Audio Capture in System Settings → Privacy & Security" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erteilen Sie Audioaufnahme in Systemeinstellungen → Datenschutz & Sicherheit"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Afficher la fenêtre principale au démarrage d'AudioMaster"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grant Audio Capture in System Settings → Privacy & Security"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hauptfenster beim Start von AudioMaster anzeigen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Concede captura de audio en Ajustes del sistema → Privacidad y seguridad"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostra la finestra principale all'avvio di AudioMaster"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accordez la capture audio dans Réglages système → Confidentialité et sécurité"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostrar la ventana principal al iniciar AudioMaster"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Concedi la captura audio in Impostazioni di sistema → Privacy e sicurezza"
           }
         }
       }
     },
-    "Remember app volumes": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remember app volumes"
+    "HDMI" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HDMI"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mémoriser les volumes des apps"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HDMI"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "App-Lautstärken merken"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HDMI"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ricorda volumi app"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HDMI"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recordar volúmenes de apps"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HDMI"
           }
         }
       }
     },
-    "Persist volume levels across restarts": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Persist volume levels across restarts"
+    "Headphones" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopfhörer"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Conserver les niveaux de volume après redémarrage"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Headphones"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lautstärken über Neustarts hinweg speichern"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auriculares"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mantieni i livelli di volume tra i riavvii"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casque"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Conservar niveles de volumen entre reinicios"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuffie"
           }
         }
       }
     },
-    "Automatic updates": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Automatic updates"
+    "Hide AudioMaster" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster ausblenden"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mises à jour automatiques"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide AudioMaster"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Automatische Updates"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar AudioMaster"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aggiornamenti automatici"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer AudioMaster"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Actualizaciones automáticas"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nascondi AudioMaster"
           }
         }
       }
     },
-    "Check for and install updates automatically": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Check for and install updates automatically"
+    "Increase volume of last app" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lautstärke der letzten App erhöhen"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rechercher et installer les mises à jour automatiquement"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Increase volume of last app"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Updates automatisch suchen und installieren"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subir volumen de la última app"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cerca e installa aggiornamenti automaticamente"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Augmenter le volume de la dernière app"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Buscar e instalar actualizaciones automáticamente"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aumenta volume dell'ultima app"
           }
         }
       }
     },
-    "Volume Control": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volume Control"
+    "Increase Volume of Last App" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lautstärke der letzten App erhöhen"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Contrôle du volume"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Increase Volume of Last App"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lautstärkeregelung"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subir volumen de la última app"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Controllo volume"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Augmenter le volume de la dernière app"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Control de volumen"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aumenta volume dell'ultima app"
           }
         }
       }
     },
-    "Default volume for new apps": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Default volume for new apps"
+    "Input" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eingabe"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volume par défaut pour les nouvelles apps"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Input"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Standardlautstärke für neue Apps"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrada"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volume predefinito per le nuove app"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrée"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volumen predeterminado para apps nuevas"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingresso"
           }
         }
       }
     },
-    "Volume curve": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volume curve"
+    "Invalid audio device" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ungültiges Audiogerät"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Courbe de volume"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid audio device"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lautstärkekurve"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispositivo de audio no válido"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Curva del volume"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Périphérique audio invalide"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Curva de volumen"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispositivo audio non valido"
           }
         }
       }
     },
-    "Linear": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Linear"
+    "Keyboard Shortcuts" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tastaturkürzel"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Linéaire"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keyboard Shortcuts"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Linear"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atajos de teclado"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lineare"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raccourcis clavier"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lineal"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scorciatoie da tastiera"
           }
         }
       }
     },
-    "Logarithmic": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Logarithmic"
+    "Launch at login" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beim Anmelden starten"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Logarithmique"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Launch at login"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Logarithmisch"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar al iniciar sesión"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Logaritmica"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lancer à la connexion"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Logarítmica"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avvia all'accesso"
           }
         }
       }
+    },
+    "Left" : {
+
     },
-    "Show decibels": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show decibels"
+    "Linear" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Linear"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Afficher les décibels"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Linear"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dezibel anzeigen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lineal"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostra decibel"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Linéaire"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostrar decibelios"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lineare"
           }
         }
       }
     },
-    "Display dB values alongside percentages": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Display dB values alongside percentages"
+    "Logarithmic" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logarithmisch"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Afficher les valeurs dB avec les pourcentages"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logarithmic"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "dB-Werte neben Prozent anzeigen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logarítmica"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostra valori dB accanto alle percentuali"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logarithmique"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostrar valores dB junto a porcentajes"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logaritmica"
           }
         }
       }
     },
-    "Keyboard Shortcuts": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keyboard Shortcuts"
+    "Master" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Master"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Raccourcis clavier"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Master"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tastaturkürzel"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Principal"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scorciatoie da tastiera"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Principal"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Atajos de teclado"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Principale"
           }
         }
       }
     },
-    "Volume shortcuts": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volume shortcuts"
+    "Muted" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stumm"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Raccourcis de volume"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muted"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lautstärke-Kürzel"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silenciado"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scorciatoie volume"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silencieux"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Atajos de volumen"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silenziato"
           }
         }
       }
     },
-    "Adjust the last modified app volume from anywhere": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adjust the last modified app volume from anywhere"
+    "No apps running" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Apps geöffnet"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajuster le volume de la dernière app modifiée depuis n'importe où"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No apps running"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lautstärke der zuletzt geänderten App von überall anpassen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay apps en ejecución"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Regola il volume dell'ultima app modificata da qualsiasi punto"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune app en cours"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajustar el volumen de la última app modificada desde cualquier lugar"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna app in esecuzione"
           }
         }
       }
     },
-    "Increase volume of last app": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Increase volume of last app"
+    "No audio devices found" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Audiogeräte gefunden"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Augmenter le volume de la dernière app"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No audio devices found"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lautstärke der letzten App erhöhen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontraron dispositivos de audio"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aumenta volume dell'ultima app"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun périphérique audio trouvé"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Subir volumen de la última app"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun dispositivo audio trovato"
           }
         }
       }
     },
-    "Decrease volume of last app": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Decrease volume of last app"
+    "Now playing through" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiedergabe über"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diminuer le volume de la dernière app"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Now playing through"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lautstärke der letzten App verringern"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reproduciendo a través de"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diminuisci volume dell'ultima app"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lecture via"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bajar volumen de la última app"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riproduzione tramite"
           }
         }
       }
     },
-    "⌘⌥↑": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⌘⌥↑"
+    "Open an app to control its volume here." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffnen Sie eine App, um die Lautstärke hier zu steuern."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⌘⌥↑"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open an app to control its volume here."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⌘⌥↑"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre una app para controlar su volumen aquí."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⌘⌥↑"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrez une app pour contrôler son volume ici."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⌘⌥↑"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri un'app per controllarne il volume qui."
           }
         }
       }
     },
-    "⌘⌥↓": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⌘⌥↓"
+    "Open AudioMaster" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster öffnen"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⌘⌥↓"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open AudioMaster"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⌘⌥↓"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir AudioMaster"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⌘⌥↓"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir AudioMaster"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⌘⌥↓"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri AudioMaster"
           }
         }
       }
     },
-    "Advanced": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Advanced"
+    "Open window on launch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fenster beim Start öffnen"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avancé"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open window on launch"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Erweitert"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir ventana al iniciar"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avanzate"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir la fenêtre au lancement"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avanzado"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri finestra all'avvio"
           }
         }
       }
     },
-    "Debug logging": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Debug logging"
+    "Output" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgabe"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Journal de débogage"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Output"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Debug-Protokollierung"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salida"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Registro di debug"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sortie"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Registro de depuración"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uscita"
           }
         }
       }
     },
-    "Enable verbose logging for troubleshooting": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enable verbose logging for troubleshooting"
+    "Paired" : {
+
+    },
+    "Per-app volume requires macOS 14.2 or later." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-Lautstärke erfordert macOS 14.2 oder neuer."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Activer la journalisation détaillée pour le dépannage"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per-app volume requires macOS 14.2 or later."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ausführliche Protokollierung zur Fehlerbehebung aktivieren"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El volumen por app requiere macOS 14.2 o posterior."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abilita registro dettagliato per la risoluzione problemi"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le volume par app nécessite macOS 14.2 ou ultérieur."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Activar registro detallado para solución de problemas"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il volume per app richiede macOS 14.2 o successivo."
           }
         }
       }
     },
-    "Reset to Defaults": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reset to Defaults"
+    "Persist volume levels across restarts" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lautstärken über Neustarts hinweg speichern"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Réinitialiser"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Persist volume levels across restarts"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Auf Standard zurücksetzen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conservar niveles de volumen entre reinicios"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ripristina impostazioni predefinite"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conserver les niveaux de volume après redémarrage"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Restablecer valores predeterminados"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantieni i livelli di volume tra i riavvii"
           }
         }
       }
     },
-    "Hide AudioMaster": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hide AudioMaster"
+    "Preferences" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellungen"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Masquer AudioMaster"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preferences"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster ausblenden"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preferencias"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nascondi AudioMaster"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Préférences"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ocultar AudioMaster"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preferenze"
           }
         }
       }
     },
-    "Volume": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volume"
+    "Quit AudioMaster" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster beenden"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volume"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quit AudioMaster"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lautstärke"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salir de AudioMaster"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volume"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitter AudioMaster"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volumen"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esci da AudioMaster"
           }
         }
       }
     },
-    "Increase Volume of Last App": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Increase Volume of Last App"
+    "Ready" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bereit"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Augmenter le volume de la dernière app"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lautstärke der letzten App erhöhen"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listo"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aumenta volume dell'ultima app"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prêt"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Subir volumen de la última app"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pronto"
           }
         }
       }
     },
-    "Decrease Volume of Last App": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Decrease Volume of Last App"
+    "Remember app volumes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-Lautstärken merken"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diminuer le volume de la dernière app"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remember app volumes"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lautstärke der letzten App verringern"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recordar volúmenes de apps"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diminuisci volume dell'ultima app"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mémoriser les volumes des apps"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bajar volumen de la última app"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ricorda volumi app"
           }
         }
       }
     },
-    "Quit AudioMaster": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quit AudioMaster"
+    "Reset to Defaults" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf Standard zurücksetzen"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quitter AudioMaster"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset to Defaults"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster beenden"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restablecer valores predeterminados"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Esci da AudioMaster"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Salir de AudioMaster"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ripristina impostazioni predefinite"
           }
         }
       }
+    },
+    "Right" : {
+
     },
-    "Speaker": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Speaker"
+    "Sample Rate" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abtastrate"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Haut-parleur"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sample Rate"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lautsprecher"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frecuencia de muestreo"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Altoparlante"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fréquence d'échantillonnage"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Altavoz"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frequenza di campionamento"
           }
         }
       }
     },
-    "Headphones": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Headphones"
+    "Show decibels" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dezibel anzeigen"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Casque"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show decibels"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kopfhörer"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar decibelios"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cuffie"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher les décibels"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Auriculares"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra decibel"
           }
         }
       }
     },
-    "AirPods": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AirPods"
+    "Show in menu bar" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In der Menüleiste anzeigen"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AirPods"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show in menu bar"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AirPods"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar en la barra de menús"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AirPods"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher dans la barre de menus"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AirPods"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra nella barra dei menu"
           }
         }
       }
     },
-    "USB": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "USB"
+    "Show the main window when AudioMaster starts" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hauptfenster beim Start von AudioMaster anzeigen"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "USB"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show the main window when AudioMaster starts"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "USB"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar la ventana principal al iniciar AudioMaster"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "USB"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher la fenêtre principale au démarrage d'AudioMaster"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "USB"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra la finestra principale all'avvio di AudioMaster"
           }
         }
       }
     },
-    "HDMI": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "HDMI"
+    "Sound control" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tonsteuerung"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "HDMI"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sound control"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "HDMI"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control de sonido"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "HDMI"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contrôle audio"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "HDMI"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controllo audio"
           }
         }
       }
     },
-    "Bluetooth": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth"
+    "Speaker" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lautsprecher"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speaker"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altavoz"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haut-parleur"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altoparlante"
           }
         }
       }
     },
-    "Aggregate": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aggregate"
+    "Start AudioMaster when you log in" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster beim Anmelden starten"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Agrégat"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start AudioMaster when you log in"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aggregat"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar AudioMaster al iniciar sesión"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aggregato"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Démarrer AudioMaster à la connexion"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Agregado"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avvia AudioMaster all'accesso"
           }
         }
       }
     },
-    "Unknown": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unknown"
+    "UID" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UID"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inconnu"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UID"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unbekannt"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UID"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sconosciuto"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UID"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desconocido"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UID"
           }
         }
       }
     },
-    "%lld%%": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld%%"
+    "Unknown" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannt"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld%%"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld%%"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconocido"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld%%"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inconnu"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld%%"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sconosciuto"
           }
         }
       }
     },
-    "%lld%% · %@": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld%% · %@"
+    "Unknown Device" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekanntes Gerät"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld%% · %@"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown Device"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld%% · %@"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispositivo desconocido"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld%% · %@"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Périphérique inconnu"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld%% · %@"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispositivo sconosciuto"
           }
         }
       }
     },
-    "%+.1f dB": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%+.1f dB"
+    "USB" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "USB"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%+.1f dB"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "USB"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%+.1f dB"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "USB"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%+.1f dB"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "USB"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%+.1f dB"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "USB"
           }
         }
       }
     },
-    "Grant Audio Capture in System Settings → Privacy & Security": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grant Audio Capture in System Settings → Privacy & Security"
+    "Use" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwenden"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Accordez la capture audio dans Réglages système → Confidentialité et sécurité"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Erteilen Sie Audioaufnahme in Systemeinstellungen → Datenschutz & Sicherheit"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Concedi la captura audio in Impostazioni di sistema → Privacy e sicurezza"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utiliser"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Concede captura de audio en Ajustes del sistema → Privacidad y seguridad"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa"
           }
         }
       }
     },
-    "Core Audio error %lld in %@": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Core Audio error %lld in %@"
+    "Volume" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lautstärke"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Erreur Core Audio %lld dans %@"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Core-Audio-Fehler %lld in %@"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volumen"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Errore Core Audio %lld in %@"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Error de Core Audio %lld en %@"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume"
           }
         }
       }
     },
-    "Invalid audio device": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Invalid audio device"
+    "Volume Control" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lautstärkeregelung"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Périphérique audio invalide"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume Control"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ungültiges Audiogerät"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control de volumen"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dispositivo audio non valido"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contrôle du volume"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dispositivo de audio no válido"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controllo volume"
           }
         }
       }
     },
-    "No audio devices found": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No audio devices found"
+    "Volume curve" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lautstärkekurve"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucun périphérique audio trouvé"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume curve"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keine Audiogeräte gefunden"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curva de volumen"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nessun dispositivo audio trovato"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Courbe de volume"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se encontraron dispositivos de audio"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curva del volume"
           }
         }
       }
     },
-    "Unknown Device": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unknown Device"
+    "Volume shortcuts" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lautstärke-Kürzel"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Périphérique inconnu"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume shortcuts"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unbekanntes Gerät"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atajos de volumen"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dispositivo sconosciuto"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raccourcis de volume"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dispositivo desconocido"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scorciatoie volume"
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

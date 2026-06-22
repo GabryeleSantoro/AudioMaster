@@ -1,142 +1,158 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "NSMicrophoneUsageDescription": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster needs microphone access to enumerate and manage audio input devices."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster a besoin de l'accès au microphone pour lister et gérer les périphériques d'entrée audio."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster benötigt Mikrofonzugriff, um Audioeingabegeräte aufzulisten und zu verwalten."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster necessita dell'accesso al microfono per elencare e gestire i dispositivi di input audio."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster necesita acceso al micrófono para enumerar y gestionar dispositivos de entrada de audio."
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "AudioMaster"
           }
         }
       }
     },
-    "NSAudioCaptureUsageDescription": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster needs audio capture permission to control per-app volume levels."
+    "NSAudioCaptureUsageDescription" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster benötigt die Audioaufnahme-Berechtigung, um App-Lautstärken zu steuern."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster a besoin de l'autorisation de capture audio pour contrôler le volume par app."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster needs audio capture permission to control per-app volume levels."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster benötigt die Audioaufnahme-Berechtigung, um App-Lautstärken zu steuern."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster necesita permiso de captura de audio para controlar los volúmenes por app."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster necessita del permesso di cattura audio per controllare i volumi per app."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster a besoin de l'autorisation de capture audio pour contrôler le volume par app."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster necesita permiso de captura de audio para controlar los volúmenes por app."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster necessita del permesso di cattura audio per controllare i volumi per app."
           }
         }
       }
     },
-    "NSBluetoothAlwaysUsageDescription": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster needs Bluetooth access to list paired devices, manage connections, and display battery levels."
+    "NSBluetoothAlwaysUsageDescription" : {
+      "comment" : "Privacy - Bluetooth Always Usage Description",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster benötigt Bluetooth-Zugriff, um gekoppelte Geräte aufzulisten, Verbindungen zu verwalten und Batteriestände anzuzeigen."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster a besoin de l'accès Bluetooth pour lister les appareils appairés, gérer les connexions et afficher les niveaux de batterie."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster needs Bluetooth access to list paired devices, manage connections, and display battery levels."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster benötigt Bluetooth-Zugriff, um gekoppelte Geräte aufzulisten, Verbindungen zu verwalten und Batteriestände anzuzeigen."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster necesita acceso Bluetooth para listar dispositivos emparejados, gestionar conexiones y mostrar niveles de batería."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster necessita dell'accesso Bluetooth per elencare i dispositivi associati, gestire le connessioni e mostrare i livelli di batteria."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster a besoin de l'accès Bluetooth pour lister les appareils appairés, gérer les connexions et afficher les niveaux de batterie."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AudioMaster necesita acceso Bluetooth para listar dispositivos emparejados, gestionar conexiones y mostrar niveles de batería."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster necessita dell'accesso Bluetooth per elencare i dispositivi associati, gestire le connessioni e mostrare i livelli di batteria."
           }
         }
       }
     },
-    "NSHumanReadableCopyright": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Copyright © 2026 AudioMaster. All rights reserved."
+    "NSHumanReadableCopyright" : {
+      "comment" : "Copyright (human-readable)",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copyright © 2026 AudioMaster. Alle Rechte vorbehalten."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Copyright © 2026 AudioMaster. Tous droits réservés."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copyright © 2026 AudioMaster. All rights reserved."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Copyright © 2026 AudioMaster. Alle Rechte vorbehalten."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copyright © 2026 AudioMaster. Todos los derechos reservados."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Copyright © 2026 AudioMaster. Tutti i diritti riservati."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copyright © 2026 AudioMaster. Tous droits réservés."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Copyright © 2026 AudioMaster. Todos los derechos reservados."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copyright © 2026 AudioMaster. Tutti i diritti riservati."
+          }
+        }
+      }
+    },
+    "NSMicrophoneUsageDescription" : {
+      "comment" : "Privacy - Microphone Usage Description",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster benötigt Mikrofonzugriff, um Audioeingabegeräte aufzulisten und zu verwalten."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster needs microphone access to enumerate and manage audio input devices."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster necesita acceso al micrófono para enumerar y gestionar dispositivos de entrada de audio."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster a besoin de l'accès au microphone pour lister et gérer les périphériques d'entrée audio."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AudioMaster necessita dell'accesso al microfono per elencare e gestire i dispositivi di input audio."
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

@@ -1,5 +1,6 @@
 import Foundation
 import IOKit
+import IOKit.ps
 
 enum BluetoothBatteryReader {
     struct Entry: Equatable, Sendable {
@@ -11,8 +12,17 @@ enum BluetoothBatteryReader {
     static func collectAllEntries() -> [Entry] {
         var merged: [String: Entry] = [:]
 
-        for entry in readIORegistryEntries() {
+        for entry in readPowerSourceEntries() {
             merged[mergeKey(for: entry)] = entry
+        }
+
+        for entry in readIORegistryEntries() {
+            let key = mergeKey(for: entry)
+            if let existing = merged[key] {
+                merged[key] = preferRicherEntry(existing, entry)
+            } else {
+                merged[key] = entry
+            }
         }
 
         for entry in readPlistCacheEntries() {
@@ -32,6 +42,41 @@ enum BluetoothBatteryReader {
         }
 
         return Array(merged.values)
+    }
+
+    static func readPowerSourceEntries() -> [Entry] {
+        let snapshot = IOPSCopyPowerSourcesInfo().takeRetainedValue()
+        guard let list = IOPSCopyPowerSourcesList(snapshot)?.takeRetainedValue() as? [CFTypeRef] else {
+            return []
+        }
+
+        var entries: [Entry] = []
+
+        for source in list {
+            guard let desc = IOPSGetPowerSourceDescription(snapshot, source)?.takeUnretainedValue() as? [String: Any] else {
+                continue
+            }
+
+            if desc["Type"] as? String == "InternalBattery" { continue }
+
+            guard let name = desc["Name"] as? String,
+                  let capacity = desc["Current Capacity"] as? Int,
+                  let maxCapacity = desc["Max Capacity"] as? Int,
+                  maxCapacity > 0
+            else {
+                continue
+            }
+
+            let level = min(100, (capacity * 100) / maxCapacity)
+
+            entries.append(Entry(
+                name: name,
+                address: nil,
+                reading: BluetoothBatteryReading(primaryLevel: level)
+            ))
+        }
+
+        return entries
     }
 
     static func parsePmsetOutput(_ output: String) -> [Entry] {
@@ -57,7 +102,7 @@ enum BluetoothBatteryReader {
             }
 
             let deviceName = String(trimmed[nameRange]).trimmingCharacters(in: .whitespaces)
-            guard !deviceName.isEmpty else { continue }
+            guard !deviceName.isEmpty, !deviceName.hasPrefix("InternalBattery") else { continue }
 
             entries.append(
                 Entry(
@@ -146,7 +191,7 @@ enum BluetoothBatteryReader {
     private static func readPmsetOutput() -> String {
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/pmset")
-        process.arguments = ["-g", "accps"]
+        process.arguments = ["-g", "batt"]
 
         let pipe = Pipe()
         process.standardOutput = pipe
