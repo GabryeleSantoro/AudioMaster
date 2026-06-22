@@ -22,7 +22,7 @@ final class MenuBarController: NSObject, ObservableObject {
 
         if let button = statusItem?.button {
             button.image = Self.menuBarIcon()
-            button.image?.accessibilityDescription = "AudioMaster"
+            button.image?.accessibilityDescription = String(localized: "AudioMaster")
             button.action = #selector(statusItemClicked)
             button.target = self
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])
@@ -31,7 +31,7 @@ final class MenuBarController: NSObject, ObservableObject {
 
     private static func menuBarIcon() -> NSImage? {
         guard let source = NSApp.applicationIconImage ?? NSImage(named: "AppIcon") else {
-            return NSImage(systemSymbolName: "waveform.circle.fill", accessibilityDescription: "AudioMaster")
+            return NSImage(systemSymbolName: "waveform.circle.fill", accessibilityDescription: String(localized: "AudioMaster"))
         }
 
         let icon = (source.copy() as? NSImage) ?? source
@@ -71,7 +71,7 @@ final class MenuBarController: NSObject, ObservableObject {
         let menu = NSMenu()
 
         let openItem = NSMenuItem(
-            title: "Open AudioMaster",
+            title: String(localized: "Open AudioMaster"),
             action: #selector(openMainWindowFromMenu),
             keyEquivalent: ""
         )
@@ -81,7 +81,7 @@ final class MenuBarController: NSObject, ObservableObject {
         menu.addItem(.separator())
 
         let quitItem = NSMenuItem(
-            title: "Quit AudioMaster",
+            title: String(localized: "Quit AudioMaster"),
             action: #selector(quitFromMenu),
             keyEquivalent: ""
         )

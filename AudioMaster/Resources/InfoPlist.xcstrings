@@ -1,0 +1,108 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSMicrophoneUsageDescription": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster needs microphone access to enumerate and manage audio input devices."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster a besoin de l'accès au microphone pour lister et gérer les périphériques d'entrée audio."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster benötigt Mikrofonzugriff, um Audioeingabegeräte aufzulisten und zu verwalten."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster necessita dell'accesso al microfono per elencare e gestire i dispositivi di input audio."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster necesita acceso al micrófono para enumerar y gestionar dispositivos de entrada de audio."
+          }
+        }
+      }
+    },
+    "NSAudioCaptureUsageDescription": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster needs audio capture permission to control per-app volume levels."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster a besoin de l'autorisation de capture audio pour contrôler le volume par app."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster benötigt die Audioaufnahme-Berechtigung, um App-Lautstärken zu steuern."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster necessita del permesso di cattura audio per controllare i volumi per app."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AudioMaster necesita permiso de captura de audio para controlar los volúmenes por app."
+          }
+        }
+      }
+    },
+    "NSHumanReadableCopyright": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copyright © 2026 AudioMaster. All rights reserved."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copyright © 2026 AudioMaster. Tous droits réservés."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copyright © 2026 AudioMaster. Alle Rechte vorbehalten."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copyright © 2026 AudioMaster. Tutti i diritti riservati."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copyright © 2026 AudioMaster. Todos los derechos reservados."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

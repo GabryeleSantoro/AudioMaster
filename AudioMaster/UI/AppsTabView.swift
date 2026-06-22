@@ -79,11 +79,11 @@ struct AppsTabView: View {
             let playing = appVolumeController.apps.filter(\.isPlayingAudio).count
             let total = appVolumeController.apps.count
             if playing > 0 {
-                Text("\(playing) playing · \(total) apps open")
+                Text(String(format: String(localized: "%lld playing · %lld apps open"), Int64(playing), Int64(total)))
                     .font(.system(size: 13))
                     .foregroundStyle(.secondary)
             } else {
-                Text("\(total) apps open")
+                Text(String(format: String(localized: "%lld apps open"), Int64(total)))
                     .font(.system(size: 13))
                     .foregroundStyle(.secondary)
             }
@@ -155,6 +155,7 @@ struct AppVolumeRow: View {
     let onVolumeChange: (Double) -> Void
     let onMuteToggle: () -> Void
 
+    @AppStorage(AppPreferences.Keys.showDecibels) private var showDecibels = false
     @State private var localVolume: Double = 0
 
     var body: some View {
@@ -218,36 +219,14 @@ struct AppVolumeRow: View {
     }
 
     private var volumeSlider: some View {
-        GeometryReader { geometry in
-            let fillRatio = VolumeMath.sliderFillRatio(localVolume)
-
-            ZStack(alignment: .leading) {
-                Capsule()
-                    .fill(Color.primary.opacity(0.06))
-                    .frame(height: 4)
-
-                Capsule()
-                    .fill(isMuted ? Color.secondary.opacity(0.3) : AMTheme.accent)
-                    .frame(width: max(0, geometry.size.width * fillRatio), height: 4)
-
-                Circle()
-                    .fill(Color.primary.opacity(0.8))
-                    .frame(width: 10, height: 10)
-                    .offset(x: max(0, geometry.size.width * fillRatio - 5))
-                    .opacity(isHovered ? 1 : 0)
-            }
-            .frame(maxHeight: .infinity, alignment: .center)
-            .contentShape(Rectangle())
-            .gesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged { value in
-                        let normalized = value.location.x / geometry.size.width
-                        let newVolume = VolumeMath.sliderValue(fromNormalizedPosition: normalized)
-                        localVolume = newVolume
-                        onVolumeChange(newVolume)
-                    }
-            )
-        }
+        VolumeSliderControl(
+            value: $localVolume,
+            isMuted: isMuted,
+            isHovered: isHovered,
+            trackHeight: 4,
+            trackOpacity: 0.06,
+            onValueChange: onVolumeChange
+        )
         .frame(width: 140, height: 22)
     }
 
@@ -262,10 +241,10 @@ struct AppVolumeRow: View {
     }
 
     private var volumeLabel: String {
-        if isMuted { return "Muted" }
+        if isMuted { return String(localized: "Muted") }
         if isActive || app.isPlayingAudio {
-            return "\(VolumeMath.displayPercent(localVolume))%"
+            return VolumeMath.volumeLabel(for: localVolume, showDecibels: showDecibels)
         }
-        return "Ready"
+        return String(localized: "Ready")
     }
 }

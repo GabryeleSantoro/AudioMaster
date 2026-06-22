@@ -7,10 +7,9 @@ struct PreferencesTabView: View {
     @State private var rememberAppVolumes = true
     @State private var defaultVolume: Double = 1.0
     @State private var volumeCurve: VolumeCurveOption = .logarithmic
-    @State private var showDecibels = false
-    @State private var notifyDeviceSwitch = true
-    @State private var notifyAppDetection = false
-    @State private var notifyBluetoothDisconnect = true
+    @AppStorage(AppPreferences.Keys.showDecibels) private var showDecibels = false
+    @AppStorage(AppPreferences.Keys.volumeShortcutsEnabled) private var volumeShortcutsEnabled = true
+    @AppStorage(AppPreferences.Keys.automaticUpdatesEnabled) private var automaticUpdatesEnabled = true
     @State private var debugLogging = false
 
     var body: some View {
@@ -23,7 +22,7 @@ struct PreferencesTabView: View {
 
                 generalSection
                 volumeSection
-                notificationsSection
+                shortcutsSection
                 advancedSection
 
                 Spacer(minLength: 24)
@@ -48,6 +47,11 @@ struct PreferencesTabView: View {
                 AppDelegate.openWindowOnLaunch = newValue
             }
             PreferenceToggle(title: "Remember app volumes", subtitle: "Persist volume levels across restarts", isOn: $rememberAppVolumes)
+            PreferenceToggle(
+                title: "Automatic updates",
+                subtitle: "Check for and install updates automatically",
+                isOn: $automaticUpdatesEnabled
+            )
         }
     }
 
@@ -60,7 +64,7 @@ struct PreferencesTabView: View {
                     Text("Default volume for new apps")
                         .font(.system(size: 13))
                     Spacer()
-                    Text("\(Int(defaultVolume * 100))%")
+                    Text(VolumeMath.volumeLabel(for: defaultVolume, showDecibels: showDecibels))
                         .font(.system(size: 12, weight: .medium, design: .monospaced))
                         .foregroundStyle(.secondary)
                 }
@@ -94,7 +98,7 @@ struct PreferencesTabView: View {
                 Spacer()
                 Picker("", selection: $volumeCurve) {
                     ForEach(VolumeCurveOption.allCases) { option in
-                        Text(option.rawValue).tag(option)
+                        Text(option.title).tag(option)
                     }
                 }
                 .pickerStyle(.segmented)
@@ -106,13 +110,20 @@ struct PreferencesTabView: View {
         }
     }
 
-    // MARK: - Notifications
+    // MARK: - Shortcuts
 
-    private var notificationsSection: some View {
-        PreferenceSection(title: "Notifications") {
-            PreferenceToggle(title: "Device switch", subtitle: "Notify when audio output changes", isOn: $notifyDeviceSwitch)
-            PreferenceToggle(title: "App detection", subtitle: "Notify when new audio apps are detected", isOn: $notifyAppDetection)
-            PreferenceToggle(title: "Bluetooth disconnect", subtitle: "Notify when a Bluetooth device disconnects", isOn: $notifyBluetoothDisconnect)
+    private var shortcutsSection: some View {
+        PreferenceSection(title: "Keyboard Shortcuts") {
+            PreferenceToggle(
+                title: "Volume shortcuts",
+                subtitle: "Adjust the last modified app volume from anywhere",
+                isOn: $volumeShortcutsEnabled
+            )
+
+            ShortcutRow(title: "Increase volume of last app", shortcut: "⌘⌥↑")
+                .opacity(volumeShortcutsEnabled ? 1 : 0.45)
+            ShortcutRow(title: "Decrease volume of last app", shortcut: "⌘⌥↓")
+                .opacity(volumeShortcutsEnabled ? 1 : 0.45)
         }
     }
 
@@ -141,34 +152,39 @@ struct PreferencesTabView: View {
         rememberAppVolumes = true
         defaultVolume = 1.0
         volumeCurve = .logarithmic
-        showDecibels = false
-        notifyDeviceSwitch = true
-        notifyAppDetection = false
-        notifyBluetoothDisconnect = true
+        AppPreferences.resetToDefaults()
         debugLogging = false
     }
 }
 
 // MARK: - Supporting Types
 
-enum VolumeCurveOption: String, CaseIterable, Identifiable {
-    case linear = "Linear"
-    case logarithmic = "Logarithmic"
+enum VolumeCurveOption: CaseIterable, Identifiable, Hashable {
+    case linear
+    case logarithmic
 
-    var id: String { rawValue }
+    var id: Self { self }
+
+    var title: LocalizedStringKey {
+        switch self {
+        case .linear: "Linear"
+        case .logarithmic: "Logarithmic"
+        }
+    }
 }
 
 // MARK: - Preference Section
 
 struct PreferenceSection<Content: View>: View {
-    let title: String
+    let title: LocalizedStringKey
     @ViewBuilder let content: Content
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(title.uppercased())
+            Text(title)
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundStyle(.secondary)
+                .textCase(.uppercase)
 
             VStack(spacing: 0) {
                 content
@@ -189,8 +205,8 @@ struct PreferenceSection<Content: View>: View {
 // MARK: - Preference Toggle
 
 struct PreferenceToggle: View {
-    let title: String
-    let subtitle: String
+    let title: LocalizedStringKey
+    let subtitle: LocalizedStringKey
     @Binding var isOn: Bool
 
     var body: some View {
@@ -206,6 +222,31 @@ struct PreferenceToggle: View {
             Toggle("", isOn: $isOn)
                 .toggleStyle(.switch)
                 .scaleEffect(0.75)
+        }
+        .padding(.vertical, 4)
+    }
+}
+
+// MARK: - Shortcut Row
+
+struct ShortcutRow: View {
+    let title: LocalizedStringKey
+    let shortcut: LocalizedStringKey
+
+    var body: some View {
+        HStack {
+            Text(title)
+                .font(.system(size: 13))
+            Spacer()
+            Text(shortcut)
+                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color.primary.opacity(0.05))
+                )
         }
         .padding(.vertical, 4)
     }

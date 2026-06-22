@@ -38,7 +38,7 @@ struct DevicesTabView: View {
                     Text("Audio Devices")
                         .font(.system(size: 24, weight: .bold))
 
-                    Text("\(deviceManager.outputDevices.count + deviceManager.inputDevices.count) devices connected")
+                    Text(String(format: String(localized: "%lld devices connected"), Int64(deviceManager.outputDevices.count + deviceManager.inputDevices.count)))
                         .font(.system(size: 13))
                         .foregroundStyle(.secondary)
                 }
@@ -178,7 +178,7 @@ struct DevicesTabView: View {
 
     // MARK: - Section Header
 
-    private func sectionHeader(title: String, icon: String, count: Int, isExpanded: Binding<Bool>) -> some View {
+    private func sectionHeader(title: LocalizedStringKey, icon: String, count: Int, isExpanded: Binding<Bool>) -> some View {
         Button(action: {
             withAnimation(.easeInOut(duration: 0.2)) {
                 isExpanded.wrappedValue.toggle()
@@ -194,9 +194,10 @@ struct DevicesTabView: View {
                     .font(.system(size: 11))
                     .foregroundStyle(.tertiary)
 
-                Text(title.uppercased())
+                Text(title)
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundStyle(.secondary)
+                    .textCase(.uppercase)
 
                 Spacer()
 
@@ -358,7 +359,7 @@ struct DeviceRow: View {
         .transition(.opacity.combined(with: .move(edge: .top)))
     }
 
-    private func detailItem(label: String, value: String) -> some View {
+    private func detailItem(label: LocalizedStringKey, value: String) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(label)
                 .font(.system(size: 9, weight: .medium))
@@ -372,8 +373,8 @@ struct DeviceRow: View {
     private func formatSampleRate(_ rate: Double) -> String {
         let kHz = rate / 1000
         if kHz == Double(Int(kHz)) {
-            return "\(Int(kHz)) kHz"
+            return String(format: String(localized: "%lld kHz"), Int64(kHz))
         }
-        return String(format: "%.1f kHz", kHz)
+        return String(format: String(localized: "%.1f kHz"), kHz)
     }
 }

@@ -5,6 +5,7 @@ struct PopoverView: View {
     @ObservedObject var appVolumeController: AppVolumeController
     let menuBarController: MenuBarController
 
+    @AppStorage(AppPreferences.Keys.showDecibels) private var showDecibels = false
     @State private var hoveredPID: pid_t?
     @State private var hoveredDeviceID: UUID?
     @State private var isOutputExpanded = false
@@ -43,7 +44,7 @@ struct PopoverView: View {
                 Spacer()
                 let playing = sortedApps.filter(\.isPlayingAudio).count
                 if playing > 0 {
-                    Text("\(playing) playing")
+                    Text(String(format: String(localized: "%lld playing"), Int64(playing)))
                         .font(.system(size: 10, weight: .medium))
                         .foregroundStyle(.secondary)
                 }
@@ -173,7 +174,7 @@ struct PopoverView: View {
                     .font(.system(size: 10, weight: .medium))
                     .foregroundStyle(.secondary)
                 Spacer()
-                Text("\(Int(appVolumeController.systemVolume * 100))%")
+                Text(VolumeMath.volumeLabel(for: appVolumeController.systemVolume, showDecibels: showDecibels))
                     .font(.system(size: 10, weight: .medium, design: .monospaced))
                     .foregroundStyle(.secondary)
             }
@@ -237,6 +238,7 @@ struct PopoverAppVolumeRow: View {
     let onVolumeChange: (Double) -> Void
     let onMuteToggle: () -> Void
 
+    @AppStorage(AppPreferences.Keys.showDecibels) private var showDecibels = false
     @State private var localVolume: Double = 0
 
     var body: some View {
@@ -252,7 +254,7 @@ struct PopoverAppVolumeRow: View {
             Text(volumeLabel)
                 .font(.system(size: 9, weight: .medium, design: .monospaced))
                 .foregroundStyle(isActive || app.isPlayingAudio ? AMTheme.accent : .secondary)
-                .frame(width: 36, alignment: .trailing)
+                .frame(minWidth: showDecibels ? 72 : 36, alignment: .trailing)
 
             volumeSlider
 
@@ -305,36 +307,20 @@ struct PopoverAppVolumeRow: View {
     }
 
     private var volumeSlider: some View {
-        GeometryReader { geometry in
-            let fillRatio = VolumeMath.sliderFillRatio(localVolume)
-
-            ZStack(alignment: .leading) {
-                Capsule()
-                    .fill(Color.primary.opacity(0.08))
-                    .frame(height: 3)
-
-                Capsule()
-                    .fill(isMuted ? Color.secondary.opacity(0.3) : AMTheme.accent)
-                    .frame(width: max(0, geometry.size.width * fillRatio), height: 3)
-            }
-            .frame(maxHeight: .infinity, alignment: .center)
-            .contentShape(Rectangle())
-            .gesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged { value in
-                        let normalized = value.location.x / geometry.size.width
-                        let newVolume = VolumeMath.sliderValue(fromNormalizedPosition: normalized)
-                        localVolume = newVolume
-                        onVolumeChange(newVolume)
-                    }
-            )
-        }
+        VolumeSliderControl(
+            value: $localVolume,
+            isMuted: isMuted,
+            isHovered: isHovered,
+            trackHeight: 3,
+            trackOpacity: 0.08,
+            onValueChange: onVolumeChange
+        )
         .frame(width: 72, height: 20)
     }
 
     private var volumeLabel: String {
-        if isMuted { return "—" }
-        return "\(VolumeMath.displayPercent(localVolume))%"
+        if isMuted { return String(localized: "—") }
+        return VolumeMath.volumeLabel(for: localVolume, showDecibels: showDecibels)
     }
 }
 

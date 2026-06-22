@@ -1,11 +1,19 @@
 import SwiftUI
 
-enum SidebarTab: String, CaseIterable, Identifiable {
-    case devices = "Devices"
-    case apps = "Apps"
-    case preferences = "Preferences"
+enum SidebarTab: CaseIterable, Identifiable {
+    case devices
+    case apps
+    case preferences
 
-    var id: String { rawValue }
+    var id: Self { self }
+
+    var title: LocalizedStringKey {
+        switch self {
+        case .devices: "Devices"
+        case .apps: "Apps"
+        case .preferences: "Preferences"
+        }
+    }
 
     var icon: String {
         switch self {
@@ -42,7 +50,7 @@ struct MainWindowView: View {
             VStack(spacing: 2) {
                 ForEach(SidebarTab.allCases) { tab in
                     SidebarItem(
-                        title: tab.rawValue,
+                        title: tab.title,
                         icon: tab.icon,
                         isSelected: selectedTab == tab
                     )
@@ -113,7 +121,7 @@ struct MainWindowView: View {
 // MARK: - Sidebar Item
 
 struct SidebarItem: View {
-    let title: String
+    let title: LocalizedStringKey
     let icon: String
     let isSelected: Bool
 

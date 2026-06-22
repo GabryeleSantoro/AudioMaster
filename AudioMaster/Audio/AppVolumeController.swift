@@ -22,6 +22,7 @@ final class AppVolumeController: ObservableObject {
     @Published private(set) var apps: [AppVolumeEntry] = []
     @Published private(set) var errors: [pid_t: String] = [:]
     @Published private(set) var isProcessTapAvailable = false
+    @Published private(set) var lastModifiedPID: pid_t?
     @Published var systemVolume: Double = 0.75
 
     private var gains: [pid_t: Float] = [:]
@@ -98,6 +99,7 @@ final class AppVolumeController: ObservableObject {
 
     func setGain(pid: pid_t, gain: Float) {
         gains[pid] = VolumeMath.clampSliderValue(gain)
+        lastModifiedPID = pid
         saveGain(for: pid)
         if isPlayingAudio(pid: pid) {
             applyEffectiveGain(pid: pid)
@@ -110,9 +112,39 @@ final class AppVolumeController: ObservableObject {
         } else {
             muted.insert(pid)
         }
+        lastModifiedPID = pid
         if isPlayingAudio(pid: pid) {
             applyEffectiveGain(pid: pid)
         }
+    }
+
+    func increaseLastModifiedVolume() {
+        adjustLastModifiedVolume(by: VolumeMath.keyboardStep)
+    }
+
+    func decreaseLastModifiedVolume() {
+        adjustLastModifiedVolume(by: -VolumeMath.keyboardStep)
+    }
+
+    func lastModifiedAppName() -> String? {
+        guard let pid = targetPIDForKeyboardShortcuts() else { return nil }
+        return apps.first(where: { $0.pid == pid })?.displayName
+    }
+
+    func adjustLastModifiedVolume(by delta: Float) {
+        guard let pid = targetPIDForKeyboardShortcuts() else { return }
+        if muted.contains(pid) {
+            muted.remove(pid)
+        }
+        let current = gains[pid] ?? 1.0
+        setGain(pid: pid, gain: current + delta)
+    }
+
+    private func targetPIDForKeyboardShortcuts() -> pid_t? {
+        if let pid = lastModifiedPID, apps.contains(where: { $0.pid == pid }) {
+            return pid
+        }
+        return apps.first(where: \.isPlayingAudio)?.pid ?? apps.first?.pid
     }
 
     func setSystemVolume(_ value: Double) {
@@ -180,7 +212,7 @@ final class AppVolumeController: ObservableObject {
             return AppVolumeEntry(
                 pid: pid,
                 bundleID: app.bundleIdentifier,
-                name: app.localizedName ?? app.bundleIdentifier ?? "Unknown",
+                name: app.localizedName ?? app.bundleIdentifier ?? String(localized: "Unknown"),
                 icon: app.icon,
                 isPlayingAudio: audioStateByPID[pid] ?? false
             )
@@ -367,7 +399,7 @@ final class AppVolumeController: ObservableObject {
         if let tapError = error as? ProcessTapError {
             switch tapError.status {
             case 1852797029:
-                return "Grant Audio Capture in System Settings → Privacy & Security"
+                return String(localized: "Grant Audio Capture in System Settings → Privacy & Security")
             default:
                 return tapError.description
             }

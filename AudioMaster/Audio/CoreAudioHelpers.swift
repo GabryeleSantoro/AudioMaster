@@ -9,11 +9,11 @@ enum CoreAudioError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .propertyError(let status, let context):
-            return "Core Audio error \(status) in \(context)"
+            return String(format: String(localized: "Core Audio error %lld in %@"), status, context)
         case .invalidDevice:
-            return "Invalid audio device"
+            return String(localized: "Invalid audio device")
         case .noDevicesFound:
-            return "No audio devices found"
+            return String(localized: "No audio devices found")
         }
     }
 }
@@ -65,7 +65,7 @@ enum CoreAudioHelpers {
         var name: CFString = "" as CFString
         var dataSize = UInt32(MemoryLayout<CFString>.size)
         let status = AudioObjectGetPropertyData(id, &address, 0, nil, &dataSize, &name)
-        guard status == noErr else { return "Unknown Device" }
+        guard status == noErr else { return String(localized: "Unknown Device") }
         return name as String
     }
 

@@ -6,6 +6,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var appVolumeController: AppVolumeController?
     private var menuBarController: MenuBarController?
     private var mainWindow: MainWindow?
+    private var volumeShortcutMonitor: Any?
     private var isQuittingForReal = false
 
     static var hasCompletedOnboarding: Bool {
@@ -46,6 +47,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 appVolumeController: volumeController
             )
 
+            setupVolumeShortcutMonitor()
+
             if shouldShowWindow {
                 showMainWindow()
             }
@@ -77,9 +80,43 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
+        if let volumeShortcutMonitor {
+            NSEvent.removeMonitor(volumeShortcutMonitor)
+        }
         Task { @MainActor in
             deviceManager?.stopMonitoring()
             appVolumeController?.stopMonitoring()
+        }
+    }
+
+    @MainActor
+    var volumeController: AppVolumeController? {
+        appVolumeController
+    }
+
+    private func setupVolumeShortcutMonitor() {
+        volumeShortcutMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
+            guard AppPreferences.volumeShortcutsEnabled else { return event }
+            guard
+                event.modifierFlags.contains(.command),
+                event.modifierFlags.contains(.option)
+            else {
+                return event
+            }
+
+            let handled: Bool
+            switch event.keyCode {
+            case 126:
+                Task { @MainActor in self?.appVolumeController?.increaseLastModifiedVolume() }
+                handled = true
+            case 125:
+                Task { @MainActor in self?.appVolumeController?.decreaseLastModifiedVolume() }
+                handled = true
+            default:
+                handled = false
+            }
+
+            return handled ? nil : event
         }
     }
 
@@ -144,6 +181,23 @@ struct AudioMasterApp: App {
                     }
                 }
                 .keyboardShortcut("q", modifiers: .command)
+            }
+            CommandMenu("Volume") {
+                Button("Increase Volume of Last App") {
+                    Task { @MainActor in
+                        (NSApp.delegate as? AppDelegate)?.volumeController?.increaseLastModifiedVolume()
+                    }
+                }
+                .keyboardShortcut(.upArrow, modifiers: [.command, .option])
+                .disabled(!AppPreferences.volumeShortcutsEnabled)
+
+                Button("Decrease Volume of Last App") {
+                    Task { @MainActor in
+                        (NSApp.delegate as? AppDelegate)?.volumeController?.decreaseLastModifiedVolume()
+                    }
+                }
+                .keyboardShortcut(.downArrow, modifiers: [.command, .option])
+                .disabled(!AppPreferences.volumeShortcutsEnabled)
             }
         }
     }

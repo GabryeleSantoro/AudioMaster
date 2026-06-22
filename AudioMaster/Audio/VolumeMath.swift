@@ -5,6 +5,8 @@ enum VolumeMath {
     static let maxDecibels: Float = 0
     /// Slider position 1.0 = 100%. Values above 1.0 boost per-app volume via software gain.
     static let maxSliderValue: Float = 2.0
+    /// Volume change per arrow key press or keyboard shortcut step (5%).
+    static let keyboardStep: Float = 0.05
 
     static func clampSliderValue(_ value: Float) -> Float {
         max(0, min(maxSliderValue, value))
@@ -21,6 +23,18 @@ enum VolumeMath {
 
     static func displayPercent(_ sliderValue: Double) -> Int {
         Int((sliderValue * 100).rounded())
+    }
+
+    static func displayDecibels(_ sliderValue: Double) -> String {
+        String(format: String(localized: "%+.1f dB"), linearToDecibels(Float(sliderValue)))
+    }
+
+    static func volumeLabel(for sliderValue: Double, showDecibels: Bool) -> String {
+        let percent = displayPercent(sliderValue)
+        guard showDecibels else {
+            return String(format: String(localized: "%lld%%"), Int64(percent))
+        }
+        return String(format: String(localized: "%lld%% · %@"), Int64(percent), displayDecibels(sliderValue))
     }
 
     /// Maps linear slider value (0.0–1.0) to decibels.

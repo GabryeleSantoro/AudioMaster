@@ -29,6 +29,8 @@
 		B10000000000000000000014 /* AudioProcessList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000019 /* AudioProcessList.swift */; };
 		B10000000000000000000015 /* AppVolumeMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001A /* AppVolumeMixer.swift */; };
 		B10000000000000000000016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001B /* Assets.xcassets */; };
+		B10000000000000000000020 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000025 /* Localizable.xcstrings */; };
+		B10000000000000000000021 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000026 /* InfoPlist.xcstrings */; };
 		B10000000000000000000017 /* VolumeMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001C /* VolumeMathTests.swift */; };
 		B10000000000000000000018 /* CoreAudioHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001D /* CoreAudioHelpersTests.swift */; };
 		B10000000000000000000019 /* AudioDeviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001E /* AudioDeviceTests.swift */; };
@@ -36,6 +38,8 @@
 		B1000000000000000000001B /* PersistenceControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000020 /* PersistenceControllerTests.swift */; };
 		B1000000000000000000001C /* AppVolumeControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000021 /* AppVolumeControllerTests.swift */; };
 		B1000000000000000000001D /* ProcessTapHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000022 /* ProcessTapHelpersTests.swift */; };
+		B1000000000000000000001E /* VolumeSliderControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000023 /* VolumeSliderControl.swift */; };
+		B1000000000000000000001F /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000024 /* AppPreferences.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +86,10 @@
 		F10000000000000000000020 /* PersistenceControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceControllerTests.swift; sourceTree = "<group>"; };
 		F10000000000000000000021 /* AppVolumeControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVolumeControllerTests.swift; sourceTree = "<group>"; };
 		F10000000000000000000022 /* ProcessTapHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessTapHelpersTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000023 /* VolumeSliderControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeSliderControl.swift; sourceTree = "<group>"; };
+		F10000000000000000000024 /* AppPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
+		F10000000000000000000025 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		F10000000000000000000026 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				F10000000000000000000001 /* AudioMasterApp.swift */,
+				F10000000000000000000024 /* AppPreferences.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -183,6 +192,8 @@
 				F1000000000000000000000A /* Info.plist */,
 				F1000000000000000000000B /* AudioMaster.entitlements */,
 				F1000000000000000000001B /* Assets.xcassets */,
+				F10000000000000000000025 /* Localizable.xcstrings */,
+				F10000000000000000000026 /* InfoPlist.xcstrings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -207,6 +218,7 @@
 				F10000000000000000000014 /* AppsTabView.swift */,
 				F10000000000000000000015 /* PreferencesTabView.swift */,
 				F10000000000000000000016 /* Theme.swift */,
+				F10000000000000000000023 /* VolumeSliderControl.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -283,6 +295,10 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				fr,
+				de,
+				it,
+				es,
 				Base,
 			);
 			mainGroup = G10000000000000000000001;
@@ -302,6 +318,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B10000000000000000000016 /* Assets.xcassets in Resources */,
+				B10000000000000000000020 /* Localizable.xcstrings in Resources */,
+				B10000000000000000000021 /* InfoPlist.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,6 +350,8 @@
 				B10000000000000000000013 /* ProcessTapHelpers.swift in Sources */,
 				B10000000000000000000014 /* AudioProcessList.swift in Sources */,
 				B10000000000000000000015 /* AppVolumeMixer.swift in Sources */,
+				B1000000000000000000001E /* VolumeSliderControl.swift in Sources */,
+				B1000000000000000000001F /* AppPreferences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
