@@ -141,7 +141,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func hideToMenuBar() {
         menuBarController?.closePopover()
         mainWindow?.orderOut(nil)
-        NSApp.setActivationPolicy(.accessory)
+        if !AppDelegate.openWindowOnLaunch {
+            NSApp.setActivationPolicy(.accessory)
+        }
     }
 
     @MainActor

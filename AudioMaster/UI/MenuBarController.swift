@@ -34,8 +34,11 @@ final class MenuBarController: NSObject, ObservableObject {
             return NSImage(systemSymbolName: "waveform.circle.fill", accessibilityDescription: String(localized: "AudioMaster"))
         }
 
-        let icon = (source.copy() as? NSImage) ?? source
-        icon.size = NSSize(width: 18, height: 18)
+        let targetSize = NSSize(width: 18, height: 18)
+        let icon = NSImage(size: targetSize)
+        icon.lockFocus()
+        source.draw(in: NSRect(origin: .zero, size: targetSize))
+        icon.unlockFocus()
         icon.isTemplate = false
         return icon
     }
