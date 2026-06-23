@@ -13,6 +13,9 @@ final class BluetoothDeviceManager: ObservableObject {
     private var isMonitoring = false
     private var audioDeviceNames: [String] = []
     private var audioDeviceUIDs: [String: String] = [:]
+    private var latestBatteryEntries: [BluetoothBatteryReader.Entry] = []
+    private var refreshTask: Task<Void, Never>?
+    private var refreshDebounceTask: Task<Void, Never>?
 
     init(persistence: PersistenceController = .shared) {
         self.persistence = persistence
@@ -20,6 +23,8 @@ final class BluetoothDeviceManager: ObservableObject {
 
     deinit {
         refreshTimer?.invalidate()
+        refreshTask?.cancel()
+        refreshDebounceTask?.cancel()
     }
 
     func updateAudioDeviceContext(from audioDevices: [AudioDevice]) {
@@ -38,11 +43,11 @@ final class BluetoothDeviceManager: ObservableObject {
         guard !isMonitoring else { return }
         isMonitoring = true
 
-        refreshDevices()
+        performRefresh()
 
         refreshTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
             Task { @MainActor in
-                self?.refreshDevices()
+                self?.performRefresh()
             }
         }
     }
@@ -53,27 +58,53 @@ final class BluetoothDeviceManager: ObservableObject {
 
         refreshTimer?.invalidate()
         refreshTimer = nil
+        refreshTask?.cancel()
+        refreshDebounceTask?.cancel()
     }
 
     func refreshDevices() {
         guard !Self.isRunningUnderTest else { return }
 
-        Task.detached(priority: .utility) { [weak self] in
-            let batteryEntries = BluetoothBatteryReader.collectAllEntries()
-            let pairedDevices = Self.pairedBluetoothDevices()
+        refreshDebounceTask?.cancel()
+        refreshDebounceTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 250_000_000)
+            guard !Task.isCancelled else { return }
+            self?.performRefresh()
+        }
+    }
 
-            await MainActor.run {
-                self?.applySnapshot(pairedDevices: pairedDevices, batteryEntries: batteryEntries)
-            }
+    private func performRefresh() {
+        guard !Self.isRunningUnderTest else { return }
+
+        refreshTask?.cancel()
+        refreshTask = Task { [weak self] in
+            guard let self else { return }
+
+            let batteryEntries = await Task.detached(priority: .utility) {
+                BluetoothBatteryReader.collectAllEntries()
+            }.value
+
+            guard !Task.isCancelled else { return }
+
+            // IOBluetooth must run on the main thread; calling it from a background queue can hang in mach_msg.
+            let pairedDevices = Self.pairedBluetoothDevices()
+            applySnapshot(pairedDevices: pairedDevices, batteryEntries: batteryEntries)
         }
     }
 
     func battery(for audioDevice: AudioDevice) -> BluetoothBatteryReading? {
-        battery(matchingName: audioDevice.name)
+        guard audioDevice.type.supportsBatteryIndicator else { return nil }
+        return battery(matchingName: audioDevice.name)
     }
 
     func battery(matchingName name: String) -> BluetoothBatteryReading? {
-        devices.first(where: { BluetoothNameMatcher.namesMatch($0.name, name) })?.battery
+        if let deviceBattery = devices.first(where: {
+            ($0.isConnected || $0.isAudioDevice) && BluetoothNameMatcher.namesMatch($0.name, name)
+        })?.battery {
+            return deviceBattery
+        }
+
+        return batteryReading(matchingName: name, entries: latestBatteryEntries)
     }
 
     func connect(_ device: BluetoothDeviceInfo) {
@@ -83,7 +114,7 @@ final class BluetoothDeviceManager: ObservableObject {
             logger.error("Failed to connect \(device.name): \(result)")
         } else {
             logger.info("Connecting to \(device.name)")
-            refreshDevices()
+            performRefresh()
         }
     }
 
@@ -91,7 +122,7 @@ final class BluetoothDeviceManager: ObservableObject {
         guard let ioDevice = IOBluetoothDevice(addressString: device.address) else { return }
         ioDevice.closeConnection()
         logger.info("Disconnecting from \(device.name)")
-        refreshDevices()
+        performRefresh()
     }
 
     var connectedAudioDevices: [BluetoothDeviceInfo] {
@@ -140,8 +171,13 @@ final class BluetoothDeviceManager: ObservableObject {
     }
 
     private func applySnapshot(pairedDevices: [RawBluetoothDevice], batteryEntries: [BluetoothBatteryReader.Entry]) {
+        latestBatteryEntries = batteryEntries
+
         let mapped = pairedDevices.map { raw in
-            let battery = battery(for: raw, entries: batteryEntries)
+            let isActiveAudioRoute = audioDeviceNames.contains(where: { BluetoothNameMatcher.namesMatch($0, raw.name) })
+            let battery = (raw.isConnected || isActiveAudioRoute)
+                ? battery(for: raw, entries: batteryEntries)
+                : nil
             let matchedUID = audioDeviceUIDs.first { key, _ in
                 BluetoothNameMatcher.namesMatch(key, raw.name)
             }?.value
@@ -180,6 +216,13 @@ final class BluetoothDeviceManager: ObservableObject {
         }
 
         return nil
+    }
+
+    private func batteryReading(
+        matchingName name: String,
+        entries: [BluetoothBatteryReader.Entry]
+    ) -> BluetoothBatteryReading? {
+        entries.first(where: { BluetoothNameMatcher.namesMatch($0.name, name) })?.reading
     }
 
     private func persistDevices(_ devices: [BluetoothDeviceInfo]) {

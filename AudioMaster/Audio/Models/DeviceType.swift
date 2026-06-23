@@ -35,4 +35,11 @@ enum DeviceType: String, Codable, CaseIterable, Sendable {
         case .unknown: return "questionmark.circle"
         }
     }
+
+    var supportsBatteryIndicator: Bool {
+        switch self {
+        case .airpods, .headphones, .bluetooth: true
+        default: false
+        }
+    }
 }

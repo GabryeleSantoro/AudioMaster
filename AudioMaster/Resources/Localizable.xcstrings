@@ -693,6 +693,19 @@
         }
       }
     },
+    "AudioMaster %@ is available. You are currently running %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "AudioMaster %1$@ is available. You are currently running %2$@."
+          }
+        }
+      }
+    },
+    "AudioMaster %@ is the latest version." : {
+
+    },
     "Automatic updates" : {
       "localizations" : {
         "de" : {
@@ -838,6 +851,9 @@
         }
       }
     },
+    "Check for Updates…" : {
+
+    },
     "Connect" : {
 
     },
@@ -877,6 +893,9 @@
           }
         }
       }
+    },
+    "Could not check for updates. Please check your internet connection and try again." : {
+
     },
     "Debug logging" : {
       "localizations" : {
@@ -1152,6 +1171,9 @@
           }
         }
       }
+    },
+    "Download" : {
+
     },
     "Enable verbose logging for troubleshooting" : {
       "localizations" : {
@@ -1561,6 +1583,9 @@
         }
       }
     },
+    "Later" : {
+
+    },
     "Launch at login" : {
       "localizations" : {
         "de" : {
@@ -1835,6 +1860,9 @@
           }
         }
       }
+    },
+    "OK" : {
+
     },
     "Open an app to control its volume here." : {
       "localizations" : {
@@ -2556,6 +2584,12 @@
         }
       }
     },
+    "Update Available" : {
+
+    },
+    "Update Check Failed" : {
+
+    },
     "USB" : {
       "localizations" : {
         "de" : {
@@ -2623,6 +2657,9 @@
           }
         }
       }
+    },
+    "View Release" : {
+
     },
     "Volume" : {
       "localizations" : {
@@ -2759,6 +2796,9 @@
           }
         }
       }
+    },
+    "You're Up to Date" : {
+
     }
   },
   "version" : "1.0"

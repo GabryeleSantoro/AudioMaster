@@ -88,6 +88,14 @@ final class MenuBarController: NSObject, ObservableObject {
         openItem.target = self
         menu.addItem(openItem)
 
+        let updateItem = NSMenuItem(
+            title: String(localized: "Check for Updates…"),
+            action: #selector(checkForUpdatesFromMenu),
+            keyEquivalent: ""
+        )
+        updateItem.target = self
+        menu.addItem(updateItem)
+
         menu.addItem(.separator())
 
         let quitItem = NSMenuItem(
@@ -103,6 +111,10 @@ final class MenuBarController: NSObject, ObservableObject {
 
     @objc private func openMainWindowFromMenu() {
         openMainWindow()
+    }
+
+    @objc private func checkForUpdatesFromMenu() {
+        UpdateChecker.shared.checkForUpdates()
     }
 
     @objc private func quitFromMenu() {

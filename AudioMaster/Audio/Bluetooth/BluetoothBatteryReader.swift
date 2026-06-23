@@ -34,14 +34,26 @@ enum BluetoothBatteryReader {
             }
         }
 
-        for entry in parsePmsetOutput(readPmsetOutput()) {
+        for entry in readPmsetEntries() {
             let key = mergeKey(for: entry)
-            if merged[key] == nil {
+            if let existing = merged[key] {
+                merged[key] = preferRicherEntry(existing, entry)
+            } else {
                 merged[key] = entry
             }
         }
 
         return Array(merged.values)
+    }
+
+    static func readPmsetEntries() -> [Entry] {
+        var entries: [Entry] = []
+
+        // Accessory batteries (AirPods, keyboards, etc.) appear in accps on modern macOS.
+        entries.append(contentsOf: parsePmsetOutput(readPmsetOutput(arguments: ["-g", "accps"])))
+        entries.append(contentsOf: parsePmsetOutput(readPmsetOutput(arguments: ["-g", "batt"])))
+
+        return entries
     }
 
     static func readPowerSourceEntries() -> [Entry] {
@@ -80,8 +92,9 @@ enum BluetoothBatteryReader {
     }
 
     static func parsePmsetOutput(_ output: String) -> [Entry] {
+        // Supports both legacy (`-Device-0 (id=123)`) and modern (`-Device (id=123)`) pmset formats.
         guard let regex = try? NSRegularExpression(
-            pattern: #"^\s*-(.+?)-\d+ \(id=\d+\)\s+(\d+)%;"#,
+            pattern: #"^\s*-(.+?)(?:-\d+)? \(id=\d+\)\s+(\d+)%;"#,
             options: []
         ) else {
             return []
@@ -188,14 +201,14 @@ enum BluetoothBatteryReader {
 
     // MARK: - Private
 
-    private static func readPmsetOutput() -> String {
+    private static func readPmsetOutput(arguments: [String]) -> String {
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/pmset")
-        process.arguments = ["-g", "batt"]
+        process.arguments = arguments
 
         let pipe = Pipe()
         process.standardOutput = pipe
-        process.standardError = Pipe()
+        process.standardError = FileHandle.nullDevice
 
         do {
             try process.run()

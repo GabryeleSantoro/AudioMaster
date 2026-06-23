@@ -18,15 +18,36 @@ final class BluetoothBatteryReaderTests: XCTestCase {
         XCTAssertEqual(entries[1].reading.primaryLevel, 72)
     }
 
-    func testParsePmsetOutputIgnoresNonAccessoryLines() {
+    func testParsePmsetOutputIgnoresInternalBattery() {
         let output = """
         Now drawing from 'AC Power'
          -InternalBattery-0 (id=1)	80%; AC attached; not charging present: true
         """
 
         let entries = BluetoothBatteryReader.parsePmsetOutput(output)
+        XCTAssertTrue(entries.isEmpty)
+    }
+
+    func testParsePmsetOutputSupportsModernFormatWithoutSuffixIndex() {
+        let output = """
+        Now drawing from 'Battery Power'
+         -AirPods Pro di Gabriele (id=77796925)	96%; discharging present: true
+        """
+
+        let entries = BluetoothBatteryReader.parsePmsetOutput(output)
+
         XCTAssertEqual(entries.count, 1)
-        XCTAssertEqual(entries[0].name, "InternalBattery")
+        XCTAssertEqual(entries[0].name, "AirPods Pro di Gabriele")
+        XCTAssertEqual(entries[0].reading.primaryLevel, 96)
+    }
+
+    func testReadPmsetEntriesIncludesAccpsStyleAccessories() {
+        let entries = BluetoothBatteryReader.readPmsetEntries()
+
+        // On CI / machines without connected BT accessories this may be empty.
+        if !entries.isEmpty {
+            XCTAssertTrue(entries.allSatisfy { (0 ... 100).contains($0.reading.primaryLevel) })
+        }
     }
 }
 

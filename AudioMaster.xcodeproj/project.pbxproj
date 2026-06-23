@@ -47,6 +47,7 @@
 		B10000000000000000000026 /* BluetoothBatteryReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002B /* BluetoothBatteryReaderTests.swift */; };
 		B10000000000000000000027 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002C /* IOBluetooth.framework */; };
 		B10000000000000000000028 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002D /* IOKit.framework */; };
+		B10000000000000000000029 /* UpdateChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002E /* UpdateChecker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +105,7 @@
 		F1000000000000000000002B /* BluetoothBatteryReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothBatteryReaderTests.swift; sourceTree = "<group>"; };
 		F1000000000000000000002C /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = System/Library/Frameworks/IOBluetooth.framework; sourceTree = SDKROOT; };
 		F1000000000000000000002D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		F1000000000000000000002E /* UpdateChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateChecker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +179,7 @@
 			children = (
 				F10000000000000000000001 /* AudioMasterApp.swift */,
 				F10000000000000000000024 /* AppPreferences.swift */,
+				F1000000000000000000002E /* UpdateChecker.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -385,6 +388,7 @@
 				B10000000000000000000023 /* BluetoothBatteryReader.swift in Sources */,
 				B10000000000000000000024 /* BluetoothDeviceManager.swift in Sources */,
 				B10000000000000000000025 /* BatteryIndicatorView.swift in Sources */,
+				B10000000000000000000029 /* UpdateChecker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
