@@ -5,6 +5,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var deviceManager: AudioDeviceManager?
     private var bluetoothManager: BluetoothDeviceManager?
     private var appVolumeController: AppVolumeController?
+    private var activityCoordinator: ResourceActivityCoordinator?
     private var menuBarController: MenuBarController?
     private var mainWindow: MainWindow?
     private var volumeShortcutMonitor: Any?
@@ -25,6 +26,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        AppAppearance.current.applyToApplication()
+
         let needsOnboarding = !AppDelegate.hasCompletedOnboarding
         let shouldShowWindow = needsOnboarding || AppDelegate.openWindowOnLaunch
 
@@ -33,10 +36,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         Task { @MainActor in
             let manager = AudioDeviceManager()
             let bluetooth = BluetoothDeviceManager()
-            let volumeController = AppVolumeController()
+            let equalizerController = EqualizerController()
+            let volumeController = AppVolumeController(equalizerController: equalizerController)
+            let coordinator = ResourceActivityCoordinator()
+            volumeController.bind(activityCoordinator: coordinator)
             deviceManager = manager
             bluetoothManager = bluetooth
             appVolumeController = volumeController
+            activityCoordinator = coordinator
 
             manager.onDevicesUpdated = { [weak bluetooth] devices in
                 Task { @MainActor in
@@ -61,7 +68,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             menuBarController = MenuBarController(
                 deviceManager: manager,
                 bluetoothManager: bluetooth,
-                appVolumeController: volumeController
+                appVolumeController: volumeController,
+                activityCoordinator: coordinator
             )
 
             setupVolumeShortcutMonitor()

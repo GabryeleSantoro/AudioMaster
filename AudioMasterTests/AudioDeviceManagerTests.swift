@@ -70,4 +70,24 @@ final class AudioDeviceManagerTests: XCTestCase {
         manager.stopMonitoring()
         manager.stopMonitoring()
     }
+
+    func testInternalManagedDevicesAreExcludedFromEnumeration() {
+        XCTAssertTrue(CoreAudioHelpers.isInternalManagedDevice(name: "AudioMaster-1234"))
+        XCTAssertTrue(CoreAudioHelpers.isInternalManagedDevice(name: "AudioMaster-tap-5678"))
+        XCTAssertFalse(CoreAudioHelpers.isInternalManagedDevice(name: "MacBook Pro Speakers"))
+        XCTAssertFalse(CoreAudioHelpers.isInternalManagedDevice(name: "External USB Audio"))
+    }
+
+    @MainActor
+    func testEnumeratedDevicesExcludeAudioMasterInternals() async {
+        manager.refreshDevices()
+
+        for _ in 0..<20 {
+            try? await Task.sleep(nanoseconds: 100_000_000)
+            if !manager.outputDevices.isEmpty { break }
+        }
+
+        let allDevices = manager.outputDevices + manager.inputDevices
+        XCTAssertFalse(allDevices.contains { CoreAudioHelpers.isInternalManagedDevice(name: $0.name) })
+    }
 }

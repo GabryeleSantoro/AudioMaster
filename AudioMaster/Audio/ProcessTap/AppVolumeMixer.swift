@@ -8,21 +8,33 @@ import os.lock
 final class AppVolumeMixer {
     private let targetPID: pid_t
     private let gainLock = OSAllocatedUnfairLock<Float>(initialState: 1.0)
+    private let equalizer = EqualizerProcessor()
 
     private var tapID: AudioObjectID = 0
     private var aggregateID: AudioObjectID = 0
     private var ioProcID: AudioDeviceIOProcID?
     private var started = false
     private var smoothedGain: Float = 1.0
+    private var appliesEqualizer = false
 
-    init(targetPID: pid_t, gain: Float) {
+    init(targetPID: pid_t, gain: Float, eqSettings: EQBandSettings? = nil) {
         self.targetPID = targetPID
         gainLock.withLock { $0 = gain }
         smoothedGain = gain
+        updateEqualizer(eqSettings)
     }
 
     func setGain(_ gain: Float) {
         gainLock.withLock { $0 = max(0, gain) }
+    }
+
+    func updateEqualizer(_ settings: EQBandSettings?) {
+        if let settings, !settings.isFlat {
+            equalizer.update(settings: settings)
+            appliesEqualizer = true
+        } else {
+            appliesEqualizer = false
+        }
     }
 
     func start() throws {
@@ -32,7 +44,7 @@ final class AppVolumeMixer {
 
         let description = CATapDescription(stereoMixdownOfProcesses: [processObject])
         description.uuid = UUID()
-        description.name = "AudioMaster-tap-\(targetPID)"
+        description.name = "\(AudioMasterDeviceNaming.tapPrefix)\(targetPID)"
         description.isPrivate = true
         description.muteBehavior = .muted
 
@@ -48,7 +60,7 @@ final class AppVolumeMixer {
         let tapUID = try processTapGetString(tap, kAudioTapPropertyUID)
 
         let aggregateDescription: [String: Any] = [
-            kAudioAggregateDeviceNameKey as String: "AudioMaster-\(targetPID)",
+            kAudioAggregateDeviceNameKey as String: "\(AudioMasterDeviceNaming.aggregatePrefix)\(targetPID)",
             kAudioAggregateDeviceUIDKey as String: UUID().uuidString,
             kAudioAggregateDeviceMainSubDeviceKey as String: outputUID,
             kAudioAggregateDeviceIsPrivateKey as String: true,
@@ -120,13 +132,18 @@ final class AppVolumeMixer {
 
             let bytes = min(inputBuffer.mDataByteSize, outputBuffer.mDataByteSize)
             let samples = Int(bytes) / MemoryLayout<Float>.size
-            if start == 1.0 && target == 1.0 {
+            let passthrough = start == 1.0 && target == 1.0 && !appliesEqualizer
+            if passthrough {
                 memcpy(outputPointer, inputPointer, Int(bytes))
             } else {
                 let step = samples > 0 ? (target - start) / Float(samples) : 0
                 var gain = start
                 for sample in 0..<samples {
-                    outputPointer[sample] = inputPointer[sample] * gain
+                    var value = inputPointer[sample] * gain
+                    if appliesEqualizer {
+                        value = equalizer.process(sample: value)
+                    }
+                    outputPointer[sample] = value
                     gain += step
                 }
             }

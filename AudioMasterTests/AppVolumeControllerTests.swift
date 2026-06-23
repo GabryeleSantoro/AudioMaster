@@ -7,7 +7,7 @@ final class AppVolumeControllerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        controller = AppVolumeController()
+        controller = AppVolumeController(equalizerController: EqualizerController())
     }
 
     override func tearDown() {

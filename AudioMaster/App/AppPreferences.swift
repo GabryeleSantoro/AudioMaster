@@ -5,6 +5,7 @@ enum AppPreferences {
         static let showDecibels = "showDecibels"
         static let volumeShortcutsEnabled = "volumeShortcutsEnabled"
         static let automaticUpdatesEnabled = "automaticUpdatesEnabled"
+        static let appearance = "appearance"
     }
 
     static var showDecibels: Bool {
@@ -32,9 +33,21 @@ enum AppPreferences {
         set { UserDefaults.standard.set(newValue, forKey: Keys.automaticUpdatesEnabled) }
     }
 
+    static var appearance: AppAppearance {
+        get {
+            guard let raw = UserDefaults.standard.string(forKey: Keys.appearance),
+                  let value = AppAppearance(rawValue: raw) else {
+                return .system
+            }
+            return value
+        }
+        set { UserDefaults.standard.set(newValue.rawValue, forKey: Keys.appearance) }
+    }
+
     static func resetToDefaults() {
         showDecibels = false
         volumeShortcutsEnabled = true
         automaticUpdatesEnabled = true
+        appearance = .system
     }
 }

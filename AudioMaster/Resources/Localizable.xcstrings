@@ -41,6 +41,9 @@
     "·" : {
 
     },
+    "(%lld)" : {
+
+    },
     "%.1f kHz" : {
       "localizations" : {
         "de" : {
@@ -71,6 +74,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%.1f kHz"
+          }
+        }
+      }
+    },
+    "%@ · %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@"
           }
         }
       }
@@ -109,10 +122,8 @@
         }
       }
     },
-    "%lld" : {
-
-    },
     "%lld apps open" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -146,7 +157,11 @@
         }
       }
     },
+    "%lld bands" : {
+
+    },
     "%lld devices connected" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -214,6 +229,9 @@
         }
       }
     },
+    "%lld open" : {
+
+    },
     "%lld playing" : {
       "localizations" : {
         "de" : {
@@ -249,6 +267,7 @@
       }
     },
     "%lld playing · %lld apps open" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -278,6 +297,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld in riproduzione · %lld app aperte"
+          }
+        }
+      }
+    },
+    "%lld playing · %lld open" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld playing · %2$lld open"
           }
         }
       }
@@ -418,6 +447,9 @@
         }
       }
     },
+    "Acoustic" : {
+
+    },
     "Adjust the last modified app volume from anywhere" : {
       "localizations" : {
         "de" : {
@@ -554,7 +586,11 @@
         }
       }
     },
+    "Allow custom EQ settings for individual apps" : {
+
+    },
     "App Volumes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -587,6 +623,12 @@
           }
         }
       }
+    },
+    "Appearance" : {
+
+    },
+    "Apply EQ to all audio output" : {
+
     },
     "Apps" : {
       "localizations" : {
@@ -622,10 +664,8 @@
         }
       }
     },
-    "Audio" : {
-
-    },
     "Audio Devices" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -704,7 +744,14 @@
       }
     },
     "AudioMaster %@ is the latest version." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "AudioMaster %1$@ is the latest version."
+          }
+        }
+      }
     },
     "Automatic updates" : {
       "localizations" : {
@@ -739,6 +786,12 @@
           }
         }
       }
+    },
+    "Bands" : {
+
+    },
+    "Bass Boost" : {
+
     },
     "Battery" : {
 
@@ -778,6 +831,9 @@
       }
     },
     "Bluetooth Device" : {
+
+    },
+    "Bright" : {
 
     },
     "Case" : {
@@ -854,10 +910,10 @@
     "Check for Updates…" : {
 
     },
-    "Connect" : {
+    "Classical" : {
 
     },
-    "Connected" : {
+    "Configure per-app EQ from the Apps tab." : {
 
     },
     "Core Audio error %lld in %@" : {
@@ -895,6 +951,18 @@
       }
     },
     "Could not check for updates. Please check your internet connection and try again." : {
+
+    },
+    "Curve" : {
+
+    },
+    "Custom EQ" : {
+
+    },
+    "Custom equalizer" : {
+
+    },
+    "Dark" : {
 
     },
     "Debug logging" : {
@@ -1000,6 +1068,7 @@
       }
     },
     "Default" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1033,7 +1102,11 @@
         }
       }
     },
+    "Default volume" : {
+
+    },
     "Default volume for new apps" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1100,9 +1173,6 @@
           }
         }
       }
-    },
-    "Disconnect" : {
-
     },
     "Display dB values alongside percentages" : {
       "localizations" : {
@@ -1175,6 +1245,12 @@
     "Download" : {
 
     },
+    "Electronic" : {
+
+    },
+    "Enable global equalizer" : {
+
+    },
     "Enable verbose logging for troubleshooting" : {
       "localizations" : {
         "de" : {
@@ -1209,7 +1285,14 @@
         }
       }
     },
+    "Equalizer" : {
+
+    },
+    "Extended" : {
+
+    },
     "Filter apps..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1242,6 +1325,15 @@
           }
         }
       }
+    },
+    "Filter…" : {
+
+    },
+    "Fine" : {
+
+    },
+    "Flat" : {
+
     },
     "General" : {
       "localizations" : {
@@ -1413,6 +1505,9 @@
         }
       }
     },
+    "Hip-Hop" : {
+
+    },
     "Increase volume of last app" : {
       "localizations" : {
         "de" : {
@@ -1549,6 +1644,9 @@
         }
       }
     },
+    "Jazz" : {
+
+    },
     "Keyboard Shortcuts" : {
       "localizations" : {
         "de" : {
@@ -1623,6 +1721,9 @@
     "Left" : {
 
     },
+    "Light" : {
+
+    },
     "Linear" : {
       "localizations" : {
         "de" : {
@@ -1690,6 +1791,9 @@
           }
         }
       }
+    },
+    "Loudness" : {
+
     },
     "Master" : {
       "localizations" : {
@@ -1828,6 +1932,7 @@
       }
     },
     "Now playing through" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1865,6 +1970,7 @@
 
     },
     "Open an app to control its volume here." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2000,7 +2106,7 @@
         }
       }
     },
-    "Paired" : {
+    "Per-app equalizer" : {
 
     },
     "Per-app volume requires macOS 14.2 or later." : {
@@ -2071,6 +2177,12 @@
         }
       }
     },
+    "Podcast" : {
+
+    },
+    "Pop" : {
+
+    },
     "Preferences" : {
       "localizations" : {
         "de" : {
@@ -2104,6 +2216,12 @@
           }
         }
       }
+    },
+    "Preset" : {
+
+    },
+    "Pro" : {
+
     },
     "Quit AudioMaster" : {
       "localizations" : {
@@ -2207,6 +2325,12 @@
         }
       }
     },
+    "Reset" : {
+
+    },
+    "Reset EQ" : {
+
+    },
     "Reset to Defaults" : {
       "localizations" : {
         "de" : {
@@ -2242,6 +2366,9 @@
       }
     },
     "Right" : {
+
+    },
+    "Rock" : {
 
     },
     "Sample Rate" : {
@@ -2381,6 +2508,7 @@
       }
     },
     "Sound control" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2448,6 +2576,9 @@
         }
       }
     },
+    "Standard" : {
+
+    },
     "Start AudioMaster when you log in" : {
       "localizations" : {
         "de" : {
@@ -2481,6 +2612,12 @@
           }
         }
       }
+    },
+    "System" : {
+
+    },
+    "Treble Boost" : {
+
     },
     "UID" : {
       "localizations" : {
@@ -2661,6 +2798,9 @@
     "View Release" : {
 
     },
+    "Vocal" : {
+
+    },
     "Volume" : {
       "localizations" : {
         "de" : {
@@ -2696,6 +2836,7 @@
       }
     },
     "Volume Control" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2730,6 +2871,7 @@
       }
     },
     "Volume curve" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2796,6 +2938,9 @@
           }
         }
       }
+    },
+    "Warm" : {
+
     },
     "You're Up to Date" : {
 

@@ -166,6 +166,8 @@ final class AudioDeviceManager: ObservableObject {
                 defaultOutputID: defaultOutputID
             ) else { continue }
 
+            guard !CoreAudioHelpers.isInternalManagedDevice(name: device.name) else { continue }
+
             if device.isOutput {
                 outputs.append(device)
                 if device.coreAudioID == defaultOutputID {

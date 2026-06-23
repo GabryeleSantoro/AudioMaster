@@ -9,15 +9,18 @@ final class MenuBarController: NSObject, ObservableObject {
     private let deviceManager: AudioDeviceManager
     private let bluetoothManager: BluetoothDeviceManager
     private let appVolumeController: AppVolumeController
+    private let activityCoordinator: ResourceActivityCoordinator
 
     init(
         deviceManager: AudioDeviceManager,
         bluetoothManager: BluetoothDeviceManager,
-        appVolumeController: AppVolumeController
+        appVolumeController: AppVolumeController,
+        activityCoordinator: ResourceActivityCoordinator
     ) {
         self.deviceManager = deviceManager
         self.bluetoothManager = bluetoothManager
         self.appVolumeController = appVolumeController
+        self.activityCoordinator = activityCoordinator
         super.init()
         setupStatusItem()
         setupPopover()
@@ -51,7 +54,7 @@ final class MenuBarController: NSObject, ObservableObject {
 
     private func setupPopover() {
         let popover = NSPopover()
-        popover.contentSize = NSSize(width: 340, height: 480)
+        popover.contentSize = NSSize(width: 320, height: 440)
         popover.behavior = .transient
         popover.animates = true
 
@@ -127,14 +130,18 @@ final class MenuBarController: NSObject, ObservableObject {
 
         if popover.isShown {
             popover.performClose(nil)
+            activityCoordinator.setUIVisibility(.hidden)
+            removeEventMonitor()
         } else {
             popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+            activityCoordinator.setUIVisibility(.popoverVisible)
             setupEventMonitor()
         }
     }
 
     func closePopover() {
         popover?.performClose(nil)
+        activityCoordinator.setUIVisibility(.hidden)
         removeEventMonitor()
     }
 

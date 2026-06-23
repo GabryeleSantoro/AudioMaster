@@ -30,8 +30,19 @@ enum AudioDeviceScope {
     }
 }
 
+enum AudioMasterDeviceNaming {
+    static let prefix = "AudioMaster"
+    static let aggregatePrefix = "AudioMaster-"
+    static let tapPrefix = "AudioMaster-tap-"
+}
+
 enum CoreAudioHelpers {
     private static let systemObjectID = AudioObjectID(kAudioObjectSystemObject)
+
+    /// Internal aggregate devices and process taps used for per-app volume — not user-selectable outputs.
+    static func isInternalManagedDevice(name: String) -> Bool {
+        name.hasPrefix(AudioMasterDeviceNaming.prefix)
+    }
 
     // MARK: - Device Enumeration
 

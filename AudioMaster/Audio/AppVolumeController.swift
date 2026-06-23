@@ -4,19 +4,6 @@ import CoreAudio
 import Foundation
 import os.log
 
-struct AppVolumeEntry: Identifiable, Equatable {
-    var id: pid_t { pid }
-
-    let pid: pid_t
-    let bundleID: String?
-    let name: String
-    let icon: NSImage?
-    /// Whether Core Audio reports this process is currently producing output.
-    let isPlayingAudio: Bool
-
-    var displayName: String { name }
-}
-
 @MainActor
 final class AppVolumeController: ObservableObject {
     @Published private(set) var apps: [AppVolumeEntry] = []
@@ -25,26 +12,38 @@ final class AppVolumeController: ObservableObject {
     @Published private(set) var lastModifiedPID: pid_t?
     @Published var systemVolume: Double = 0.75
 
+    let equalizerController: EqualizerController
+
     private var gains: [pid_t: Float] = [:]
     private var muted: Set<pid_t> = []
     private var mixers: [pid_t: AppVolumeMixer] = [:]
     private var refreshTimer: Timer?
+    private var refreshInterval: TimeInterval = 2.0
     private var workspaceObservers: [NSObjectProtocol] = []
     private var defaultOutputListener: AudioObjectPropertyListenerBlock?
+    private var equalizerCancellable: AnyCancellable?
+    private var activityCancellable: AnyCancellable?
+    private var activityCoordinator: ResourceActivityCoordinator?
+    private var eqRefreshTask: Task<Void, Never>?
+    private var cachedAudioPIDs: Set<pid_t> = []
+    private var lastFullProcessScan: Date = .distantPast
     private let ownPID = ProcessInfo.processInfo.processIdentifier
     private let logger = Logger(subsystem: "com.audiomaster.app", category: "AppVolumeController")
     private let gainsDefaultsKey = "com.audiomaster.appVolumeGains"
 
-    init() {
+    init(equalizerController: EqualizerController) {
+        self.equalizerController = equalizerController
         if #available(macOS 14.2, *) {
             isProcessTapAvailable = true
         }
         loadSavedGains()
         refreshSystemVolume()
+        observeEqualizerChanges()
     }
 
     deinit {
         refreshTimer?.invalidate()
+        eqRefreshTask?.cancel()
         for observer in workspaceObservers {
             NSWorkspace.shared.notificationCenter.removeObserver(observer)
         }
@@ -54,12 +53,10 @@ final class AppVolumeController: ObservableObject {
 
     func startMonitoring() {
         refresh()
-        refreshTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
-            Task { @MainActor in
-                self?.refresh()
-            }
+        rescheduleRefreshTimer()
+        if workspaceObservers.isEmpty {
+            observeWorkspaceChanges()
         }
-        observeWorkspaceChanges()
         if #available(macOS 14.2, *) {
             startListeningForDefaultOutputChanges()
         }
@@ -76,6 +73,23 @@ final class AppVolumeController: ObservableObject {
             stopListeningForDefaultOutputChanges()
         }
         releaseAllMixers()
+    }
+
+    func bind(activityCoordinator: ResourceActivityCoordinator) {
+        self.activityCoordinator = activityCoordinator
+        activityCancellable = activityCoordinator.$snapshot
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                Task { @MainActor in
+                    self?.rescheduleRefreshTimer()
+                }
+            }
+        rescheduleRefreshTimer()
+        notifyMixersChanged()
+    }
+
+    func notifyMixersChanged() {
+        activityCoordinator?.setActiveMixerCount(mixers.count)
     }
 
     // MARK: - Public API
@@ -175,32 +189,44 @@ final class AppVolumeController: ObservableObject {
         let entries = buildAppList()
         applySavedGains(to: entries)
 
-        apps = entries.sorted { lhs, rhs in
-            let lhsMixing = mixers[lhs.pid] != nil
-            let rhsMixing = mixers[rhs.pid] != nil
-            if lhsMixing != rhsMixing { return lhsMixing }
-            if lhs.isPlayingAudio != rhs.isPlayingAudio { return lhs.isPlayingAudio }
-            return lhs.name.localizedCaseInsensitiveCompare(rhs.name) == .orderedAscending
+        let sorted = sortEntries(entries)
+        if sorted != apps {
+            apps = sorted
         }
 
-        // Start mixers for apps that began playing with a non-default saved level.
-        for entry in apps where entry.isPlayingAudio {
-            if gains[entry.pid] != nil || muted.contains(entry.pid) {
+        // Start mixers for apps that began playing with a non-default saved level or active EQ.
+        for entry in sorted where entry.isPlayingAudio {
+            if needsMixer(for: entry) {
                 applyEffectiveGain(pid: entry.pid)
             }
         }
+        notifyMixersChanged()
     }
 
     // MARK: - Private
 
-    private func buildAppList() -> [AppVolumeEntry] {
-        var audioStateByPID: [pid_t: Bool] = [:]
+    private func rescheduleRefreshTimer() {
+        refreshTimer?.invalidate()
+        refreshTimer = nil
 
-        if isProcessTapAvailable, let audioProcesses = try? AudioProcessList.all() {
-            for process in audioProcesses where process.pid != ownPID {
-                audioStateByPID[process.pid] = process.isRunning
+        let snapshot = activityCoordinator?.snapshot ?? ResourceActivitySnapshot(
+            uiVisibility: .hidden,
+            activeMixerCount: mixers.count,
+            hasConnectedBluetoothAudio: false,
+            isSystemSleeping: false
+        )
+        refreshInterval = ResourceActivityPolicy.appVolumeRefreshInterval(for: snapshot)
+        guard refreshInterval > 0 else { return }
+
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                self?.refresh()
             }
         }
+    }
+
+    private func buildAppList() -> [AppVolumeEntry] {
+        let playingPIDs = audioPlayingPIDs()
 
         let runningApps = NSWorkspace.shared.runningApplications.filter { app in
             app.activationPolicy == .regular &&
@@ -215,14 +241,75 @@ final class AppVolumeController: ObservableObject {
                 pid: pid,
                 bundleID: app.bundleIdentifier,
                 name: app.localizedName ?? app.bundleIdentifier ?? String(localized: "Unknown"),
-                icon: app.icon,
-                isPlayingAudio: audioStateByPID[pid] ?? false
+                isPlayingAudio: playingPIDs.contains(pid)
             )
         }
     }
 
+    private func audioPlayingPIDs() -> Set<pid_t> {
+        let now = Date()
+        let needsFullScan = now.timeIntervalSince(lastFullProcessScan) > 10 || cachedAudioPIDs.isEmpty
+        guard needsFullScan,
+              isProcessTapAvailable,
+              let audioProcesses = try? AudioProcessList.all() else {
+            return cachedAudioPIDs
+        }
+
+        lastFullProcessScan = now
+        cachedAudioPIDs = Set(
+            audioProcesses
+                .filter { $0.pid != ownPID && $0.isRunning }
+                .map(\.pid)
+        )
+        return cachedAudioPIDs
+    }
+
+    private func sortEntries(_ entries: [AppVolumeEntry]) -> [AppVolumeEntry] {
+        entries.sorted { lhs, rhs in
+            let lhsMixing = mixers[lhs.pid] != nil
+            let rhsMixing = mixers[rhs.pid] != nil
+            if lhsMixing != rhsMixing { return lhsMixing }
+            if lhs.isPlayingAudio != rhs.isPlayingAudio { return lhs.isPlayingAudio }
+            return lhs.name.localizedCaseInsensitiveCompare(rhs.name) == .orderedAscending
+        }
+    }
+
+    private func observeEqualizerChanges() {
+        equalizerCancellable = equalizerController.objectWillChange.sink { [weak self] _ in
+            self?.eqRefreshTask?.cancel()
+            self?.eqRefreshTask = Task { @MainActor [weak self] in
+                try? await Task.sleep(nanoseconds: 120_000_000)
+                guard !Task.isCancelled else { return }
+                self?.refreshEqualizerOnActiveMixers()
+            }
+        }
+    }
+
+    private func refreshEqualizerOnActiveMixers() {
+        guard #available(macOS 14.2, *) else { return }
+        for (pid, mixer) in mixers {
+            let bundleID = apps.first(where: { $0.pid == pid })?.bundleID
+            mixer.updateEqualizer(equalizerController.effectiveSettings(for: bundleID))
+        }
+    }
+
+    private func needsMixer(for entry: AppVolumeEntry) -> Bool {
+        if gains[entry.pid] != nil || muted.contains(entry.pid) {
+            return true
+        }
+        return equalizerController.needsProcessing(for: entry.bundleID)
+    }
+
+    private func bundleID(for pid: pid_t) -> String? {
+        apps.first(where: { $0.pid == pid })?.bundleID
+    }
+
     private func isPlayingAudio(pid: pid_t) -> Bool {
         apps.first(where: { $0.pid == pid })?.isPlayingAudio ?? false
+    }
+
+    private func eqSettings(for pid: pid_t) -> EQBandSettings? {
+        equalizerController.effectiveSettings(for: bundleID(for: pid))
     }
 
     private func observeWorkspaceChanges() {
@@ -252,17 +339,34 @@ final class AppVolumeController: ObservableObject {
     private func applyEffectiveGain(pid: pid_t) {
         guard #available(macOS 14.2, *) else { return }
 
+        let mixerCountBefore = mixers.count
+        defer {
+            if mixers.count != mixerCountBefore {
+                notifyMixersChanged()
+            }
+        }
+
         errors[pid] = nil
         let effective = effectiveGain(pid: pid)
 
         if let mixer = mixers[pid] {
+            if !needsProcessing(pid: pid) || !isPlayingAudio(pid: pid) {
+                mixer.stop()
+                mixers.removeValue(forKey: pid)
+                return
+            }
             mixer.setGain(effective)
+            mixer.updateEqualizer(eqSettings(for: pid))
             return
         }
 
-        guard effective != 1.0, isPlayingAudio(pid: pid) else { return }
+        guard needsProcessing(pid: pid), isPlayingAudio(pid: pid) else { return }
 
-        let mixer = AppVolumeMixer(targetPID: pid, gain: effective)
+        let mixer = AppVolumeMixer(
+            targetPID: pid,
+            gain: effective,
+            eqSettings: eqSettings(for: pid)
+        )
         do {
             try mixer.start()
             mixers[pid] = mixer
@@ -272,6 +376,10 @@ final class AppVolumeController: ObservableObject {
             muted.remove(pid)
             logger.error("Failed to start mixer for pid \(pid): \(error.localizedDescription)")
         }
+    }
+
+    private func needsProcessing(pid: pid_t) -> Bool {
+        effectiveGain(pid: pid) != 1.0 || eqSettings(for: pid) != nil
     }
 
     private func effectiveGain(pid: pid_t) -> Float {
@@ -298,6 +406,7 @@ final class AppVolumeController: ObservableObject {
             muted.remove(pid)
             errors.removeValue(forKey: pid)
         }
+        notifyMixersChanged()
     }
 
     private func isProcessAlive(_ pid: pid_t) -> Bool {
@@ -310,6 +419,7 @@ final class AppVolumeController: ObservableObject {
             mixer.stop()
         }
         mixers.removeAll()
+        notifyMixersChanged()
     }
 
     private func rebuildActiveMixers() {
@@ -321,7 +431,11 @@ final class AppVolumeController: ObservableObject {
         for pid in activePIDs {
             mixers[pid]?.stop()
             mixers.removeValue(forKey: pid)
-            let mixer = AppVolumeMixer(targetPID: pid, gain: effectiveGain(pid: pid))
+            let mixer = AppVolumeMixer(
+                targetPID: pid,
+                gain: effectiveGain(pid: pid),
+                eqSettings: eqSettings(for: pid)
+            )
             do {
                 try mixer.start()
                 mixers[pid] = mixer
@@ -409,6 +523,16 @@ final class AppVolumeController: ObservableObject {
         return error.localizedDescription
     }
 }
+
+#if DEBUG
+extension AppVolumeController {
+    var currentRefreshIntervalForTesting: TimeInterval { refreshInterval }
+
+    func applyRefreshPolicyForTesting() {
+        rescheduleRefreshTimer()
+    }
+}
+#endif
 
 // Backward compatibility for views still referencing `processes`.
 extension AppVolumeController {
