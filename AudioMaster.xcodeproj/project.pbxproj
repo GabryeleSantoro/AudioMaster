@@ -48,6 +48,9 @@
 		B10000000000000000000027 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002C /* IOBluetooth.framework */; };
 		B10000000000000000000028 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002D /* IOKit.framework */; };
 		B10000000000000000000029 /* UpdateChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002E /* UpdateChecker.swift */; };
+		B1000000000000000000002A /* ResourceActivityPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002F /* ResourceActivityPolicy.swift */; };
+		B1000000000000000000002B /* ResourceActivityCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000030 /* ResourceActivityCoordinator.swift */; };
+		B1000000000000000000002C /* ResourceActivityPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000031 /* ResourceActivityPolicyTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +109,9 @@
 		F1000000000000000000002C /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = System/Library/Frameworks/IOBluetooth.framework; sourceTree = SDKROOT; };
 		F1000000000000000000002D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		F1000000000000000000002E /* UpdateChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateChecker.swift; sourceTree = "<group>"; };
+		F1000000000000000000002F /* ResourceActivityPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActivityPolicy.swift; sourceTree = "<group>"; };
+		F10000000000000000000030 /* ResourceActivityCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActivityCoordinator.swift; sourceTree = "<group>"; };
+		F10000000000000000000031 /* ResourceActivityPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActivityPolicyTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +167,7 @@
 				F10000000000000000000022 /* ProcessTapHelpersTests.swift */,
 				F1000000000000000000001C /* VolumeMathTests.swift */,
 				F1000000000000000000002B /* BluetoothBatteryReaderTests.swift */,
+				F10000000000000000000031 /* ResourceActivityPolicyTests.swift */,
 			);
 			path = AudioMasterTests;
 			sourceTree = "<group>";
@@ -179,6 +186,8 @@
 			children = (
 				F10000000000000000000001 /* AudioMasterApp.swift */,
 				F10000000000000000000024 /* AppPreferences.swift */,
+				F1000000000000000000002F /* ResourceActivityPolicy.swift */,
+				F10000000000000000000030 /* ResourceActivityCoordinator.swift */,
 				F1000000000000000000002E /* UpdateChecker.swift */,
 			);
 			path = App;
@@ -389,6 +398,8 @@
 				B10000000000000000000024 /* BluetoothDeviceManager.swift in Sources */,
 				B10000000000000000000025 /* BatteryIndicatorView.swift in Sources */,
 				B10000000000000000000029 /* UpdateChecker.swift in Sources */,
+				B1000000000000000000002A /* ResourceActivityPolicy.swift in Sources */,
+				B1000000000000000000002B /* ResourceActivityCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +416,7 @@
 				B1000000000000000000001D /* ProcessTapHelpersTests.swift in Sources */,
 				B10000000000000000000017 /* VolumeMathTests.swift in Sources */,
 				B10000000000000000000026 /* BluetoothBatteryReaderTests.swift in Sources */,
+				B1000000000000000000002C /* ResourceActivityPolicyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
