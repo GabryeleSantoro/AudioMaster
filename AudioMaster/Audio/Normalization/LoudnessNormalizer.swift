@@ -1,7 +1,7 @@
 import Foundation
 
 final class LoudnessNormalizer {
-    static let maxGainDecibels: Float = 24
+    static let maxGainDecibels: Float = 12  // ✅ FIXED: was 24, corrected to 12
 
     private(set) var currentGain: Float = 1
     private let sampleRate: Double
@@ -27,6 +27,7 @@ final class LoudnessNormalizer {
     private let shelfA1: Float
 
     private var isEnabled = false
+    private var strength: Float = 1.0  // ✅ ADDED: Track strength parameter
 
     init(sampleRate: Double = 48_000) {
         self.sampleRate = sampleRate
@@ -54,6 +55,7 @@ final class LoudnessNormalizer {
 
     func update(settings: NormalizationSettings) {
         isEnabled = settings.isEnabled
+        strength = Float(settings.strength)  // ✅ FIXED: Store strength parameter
     }
 
     func process(_ sample: Float) -> Float {
@@ -78,12 +80,12 @@ final class LoudnessNormalizer {
         // Apply 100Hz high-pass filter
         let highPassed = highPassB0 * sample + highPassB1 * highPassZ1 - highPassA1 * highPassZ2
         highPassZ2 = highPassZ1
-        highPassZ1 = sample
+        highPassZ1 = highPassed  // ✅ FIXED: Store OUTPUT, not input
 
         // Apply 2kHz shelf filter
         let shelved = shelfB0 * highPassed + shelfB1 * shelfZ1 - shelfA1 * shelfZ2
         shelfZ2 = shelfZ1
-        shelfZ1 = highPassed
+        shelfZ1 = shelved  // ✅ FIXED: Store OUTPUT, not input
 
         return shelved
     }
@@ -104,7 +106,7 @@ final class LoudnessNormalizer {
             return 1.0
         }
 
-        let gainDb = targetLoudness - measuredLoudness
+        let gainDb = (targetLoudness - measuredLoudness) * strength  // ✅ FIXED: Apply strength multiplier
         let gainDbClamped = max(-Self.maxGainDecibels, min(Self.maxGainDecibels, gainDb))
         return pow(10, gainDbClamped / 20)  // Convert dB to linear gain
     }
