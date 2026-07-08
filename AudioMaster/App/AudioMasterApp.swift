@@ -5,6 +5,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var deviceManager: AudioDeviceManager?
     private var bluetoothManager: BluetoothDeviceManager?
     private var appVolumeController: AppVolumeController?
+    private var routingPresetController: RoutingPresetController?
     private var activityCoordinator: ResourceActivityCoordinator?
     private var menuBarController: MenuBarController?
     private var mainWindow: MainWindow?
@@ -40,9 +41,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             let volumeController = AppVolumeController(equalizerController: equalizerController)
             let coordinator = ResourceActivityCoordinator()
             volumeController.bind(activityCoordinator: coordinator)
+            let routingPort = LiveRoutingStatePort(
+                deviceManager: manager,
+                appVolumeController: volumeController,
+                equalizerController: equalizerController
+            )
             deviceManager = manager
             bluetoothManager = bluetooth
             appVolumeController = volumeController
+            routingPresetController = RoutingPresetController(port: routingPort)
             activityCoordinator = coordinator
 
             manager.onDevicesUpdated = { [weak bluetooth] devices in
@@ -148,7 +155,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @MainActor
     func showMainWindow() {
-        guard let deviceManager, let bluetoothManager, let appVolumeController else { return }
+        guard let deviceManager, let bluetoothManager, let appVolumeController, let routingPresetController else { return }
         NSApp.setActivationPolicy(.regular)
         NSApp.activate(ignoringOtherApps: true)
         if let window = mainWindow {
@@ -157,7 +164,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             let window = MainWindow(
                 deviceManager: deviceManager,
                 bluetoothManager: bluetoothManager,
-                appVolumeController: appVolumeController
+                appVolumeController: appVolumeController,
+                routingPresetController: routingPresetController
             )
             mainWindow = window
             window.makeKeyAndOrderFront(nil)

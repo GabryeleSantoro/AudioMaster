@@ -3,6 +3,7 @@ import SwiftUI
 enum SidebarTab: CaseIterable, Identifiable {
     case devices
     case apps
+    case presets
     case preferences
 
     var id: Self { self }
@@ -11,6 +12,7 @@ enum SidebarTab: CaseIterable, Identifiable {
         switch self {
         case .devices: "Devices"
         case .apps: "Apps"
+        case .presets: "Presets"
         case .preferences: "Preferences"
         }
     }
@@ -19,6 +21,7 @@ enum SidebarTab: CaseIterable, Identifiable {
         switch self {
         case .devices: return "hifispeaker.2.fill"
         case .apps: return "square.grid.2x2.fill"
+        case .presets: return "slider.horizontal.3"
         case .preferences: return "gearshape.fill"
         }
     }
@@ -28,6 +31,7 @@ struct MainWindowView: View {
     @ObservedObject var deviceManager: AudioDeviceManager
     @ObservedObject var bluetoothManager: BluetoothDeviceManager
     @ObservedObject var appVolumeController: AppVolumeController
+    @ObservedObject var routingPresetController: RoutingPresetController
     @State private var selectedTab: SidebarTab = .devices
 
     var body: some View {
@@ -104,6 +108,8 @@ struct MainWindowView: View {
                     deviceManager: deviceManager,
                     appVolumeController: appVolumeController
                 )
+            case .presets:
+                PresetsTabView(routingPresetController: routingPresetController)
             case .preferences:
                 PreferencesTabView(equalizerController: appVolumeController.equalizerController)
             }

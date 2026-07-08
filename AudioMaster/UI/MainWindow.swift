@@ -2,11 +2,17 @@ import AppKit
 import SwiftUI
 
 final class MainWindow: NSWindow {
-    init(deviceManager: AudioDeviceManager, bluetoothManager: BluetoothDeviceManager, appVolumeController: AppVolumeController) {
+    init(
+        deviceManager: AudioDeviceManager,
+        bluetoothManager: BluetoothDeviceManager,
+        appVolumeController: AppVolumeController,
+        routingPresetController: RoutingPresetController
+    ) {
         let contentView = MainWindowView(
             deviceManager: deviceManager,
             bluetoothManager: bluetoothManager,
-            appVolumeController: appVolumeController
+            appVolumeController: appVolumeController,
+            routingPresetController: routingPresetController
         )
         let hostingController = NSHostingController(rootView: contentView)
 
