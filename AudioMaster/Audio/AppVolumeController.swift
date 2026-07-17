@@ -321,7 +321,9 @@ final class AppVolumeController: ObservableObject {
                 object: nil,
                 queue: .main
             ) { [weak self] _ in
-                self?.refresh()
+                Task { @MainActor in
+                    self?.refresh()
+                }
             }
         )
 
@@ -331,7 +333,9 @@ final class AppVolumeController: ObservableObject {
                 object: nil,
                 queue: .main
             ) { [weak self] _ in
-                self?.refresh()
+                Task { @MainActor in
+                    self?.refresh()
+                }
             }
         )
     }
