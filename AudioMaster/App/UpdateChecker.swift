@@ -19,14 +19,12 @@ final class UpdateChecker {
     private var lastCompletedURL: URL?
     private var lastFailureMessage: String?
 
-    private var downloadContext: DownloadContext = .manual
-
     private var currentVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0.0"
     }
 
     func checkForUpdates(silent: Bool = false) {
-        downloadContext = silent ? .silent : .manual
+        let context: DownloadContext = silent ? .silent : .manual
         Task {
             do {
                 let release = try await fetchLatestRelease()
@@ -37,7 +35,8 @@ final class UpdateChecker {
                         version: latest,
                         url: release.htmlURL,
                         dmgURL: release.dmgURL,
-                        dmgFileName: release.dmgFileName
+                        dmgFileName: release.dmgFileName,
+                        context: context
                     )
                 } else if !silent {
                     showUpToDate()
@@ -95,7 +94,7 @@ final class UpdateChecker {
 
     // MARK: - Alerts
 
-    private func showUpdateAvailable(version: String, url: URL?, dmgURL: URL?, dmgFileName: String?) {
+    private func showUpdateAvailable(version: String, url: URL?, dmgURL: URL?, dmgFileName: String?, context: DownloadContext) {
         let alert = NSAlert()
         alert.messageText = String(localized: "Update Available")
         alert.informativeText = String(
@@ -115,7 +114,7 @@ final class UpdateChecker {
 
         if dmgURL != nil, response == .alertFirstButtonReturn {
             let fileName = dmgFileName ?? "AudioMaster.dmg"
-            startDownload(url: dmgURL!, fileName: fileName)
+            startDownload(url: dmgURL!, fileName: fileName, context: context)
         } else if url != nil {
             let viewIndex: NSApplication.ModalResponse = dmgURL != nil ? .alertSecondButtonReturn : .alertFirstButtonReturn
             if response == viewIndex {
@@ -131,10 +130,10 @@ final class UpdateChecker {
     /// executed inside that loop. When a terminal state arrives,
     /// `handleDownloadState` calls `NSApp.stopModal()` to break out of `runModal`.
     /// A flag prevents misidentifying the programmatic stop as a user Cancel tap.
-    private func startDownload(url: URL, fileName: String) {
+    private func startDownload(url: URL, fileName: String, context: DownloadContext) {
         let alert = NSAlert()
         alert.messageText = String(localized: "Downloading Update")
-        alert.informativeText = "Downloading \(fileName)…"
+        alert.informativeText = String(localized: "Downloading \(fileName)…")
 
         let indicator = NSProgressIndicator(frame: NSRect(x: 0, y: 0, width: 260, height: 16))
         indicator.isIndeterminate = false
@@ -174,7 +173,7 @@ final class UpdateChecker {
         progressIndicator = nil
 
         if let localURL = completedURL {
-            if UpdateScheduler.shouldOpenDMGImmediately(context: downloadContext) {
+            if UpdateScheduler.shouldOpenDMGImmediately(context: context) {
                 NSWorkspace.shared.open(localURL)
             } else {
                 showUpdateReady(dmgURL: localURL)

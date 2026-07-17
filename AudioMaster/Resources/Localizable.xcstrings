@@ -1283,6 +1283,16 @@
     "Download Failed" : {
 
     },
+    "Downloading %@\u2026" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Downloading %1$@\u2026"
+          }
+        }
+      }
+    },
     "Downloading Update" : {
 
     },
