@@ -2,10 +2,17 @@ import AppKit
 import SwiftUI
 
 final class MainWindow: NSWindow {
-    init(deviceManager: AudioDeviceManager, appVolumeController: AppVolumeController) {
+    init(
+        deviceManager: AudioDeviceManager,
+        bluetoothManager: BluetoothDeviceManager,
+        appVolumeController: AppVolumeController,
+        routingPresetController: RoutingPresetController
+    ) {
         let contentView = MainWindowView(
             deviceManager: deviceManager,
-            appVolumeController: appVolumeController
+            bluetoothManager: bluetoothManager,
+            appVolumeController: appVolumeController,
+            routingPresetController: routingPresetController
         )
         let hostingController = NSHostingController(rootView: contentView)
 
@@ -30,10 +37,11 @@ final class MainWindow: NSWindow {
 }
 
 extension MainWindow: NSWindowDelegate {
-    func windowWillClose(_ notification: Notification) {
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
         Task { @MainActor in
             guard let appDelegate = NSApp.delegate as? AppDelegate else { return }
             appDelegate.hideMainWindow()
         }
+        return false
     }
 }

@@ -1,10 +1,50 @@
+import AppKit
 import SwiftUI
 
+enum AppAppearance: String, CaseIterable, Identifiable {
+    case system
+    case light
+    case dark
+
+    var id: String { rawValue }
+
+    var title: LocalizedStringKey {
+        switch self {
+        case .system: "System"
+        case .light: "Light"
+        case .dark: "Dark"
+        }
+    }
+
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .system: nil
+        case .light: .light
+        case .dark: .dark
+        }
+    }
+
+    static var current: AppAppearance {
+        AppPreferences.appearance
+    }
+
+    func applyToApplication() {
+        switch self {
+        case .system:
+            NSApp.appearance = nil
+        case .light:
+            NSApp.appearance = NSAppearance(named: .aqua)
+        case .dark:
+            NSApp.appearance = NSAppearance(named: .darkAqua)
+        }
+    }
+}
+
 enum AMTheme {
-    static let accent = Color.blue
+    static let accent = Color.accentColor
     static let surface = Color(nsColor: .windowBackgroundColor)
     static let surfaceElevated = Color(nsColor: .controlBackgroundColor)
-    static let surfaceBorder = Color.primary.opacity(0.08)
+    static let surfaceBorder = Color.primary.opacity(0.06)
     static let textPrimary = Color.primary
     static let textSecondary = Color.secondary
 
@@ -30,13 +70,13 @@ struct AMBackground: View {
 }
 
 struct AMGlassCard: ViewModifier {
-    var cornerRadius: CGFloat = 10
+    var cornerRadius: CGFloat = 8
 
     func body(content: Content) -> some View {
         content
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(AMTheme.surfaceElevated)
+                    .fill(Color.primary.opacity(0.025))
             )
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
@@ -49,40 +89,28 @@ extension View {
     func amGlassCard(cornerRadius: CGFloat = 10) -> some View {
         modifier(AMGlassCard(cornerRadius: cornerRadius))
     }
-}
 
-struct WaveformView: View {
-    @State private var phase: CGFloat = 0
-    let barCount: Int
-    let isAnimating: Bool
-
-    init(barCount: Int = 5, isAnimating: Bool = true) {
-        self.barCount = barCount
-        self.isAnimating = isAnimating
-    }
-
-    var body: some View {
-        HStack(spacing: 2) {
-            ForEach(0..<barCount, id: \.self) { index in
-                RoundedRectangle(cornerRadius: 1.5)
-                    .fill(AMTheme.accent.opacity(0.7))
-                    .frame(width: 3, height: barHeight(for: index))
-            }
-        }
-        .frame(height: 18)
-        .onAppear {
-            guard isAnimating else { return }
-            withAnimation(.easeInOut(duration: 0.55).repeatForever(autoreverses: true)) {
-                phase = 1
-            }
-        }
-    }
-
-    private func barHeight(for index: Int) -> CGFloat {
-        let base: [CGFloat] = [8, 14, 18, 12, 10, 16, 11]
-        let value = base[index % base.count]
-        guard isAnimating else { return value * 0.6 }
-        let offset = sin((CGFloat(index) * 0.9) + phase * .pi * 2) * 4
-        return max(4, value + offset)
+    func appAppearanceAware() -> some View {
+        modifier(AppAppearanceModifier())
     }
 }
+
+struct AppAppearanceModifier: ViewModifier {
+    @AppStorage(AppPreferences.Keys.appearance) private var appearanceRaw = AppAppearance.system.rawValue
+
+    private var appearance: AppAppearance {
+        AppAppearance(rawValue: appearanceRaw) ?? .system
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .preferredColorScheme(appearance.colorScheme)
+            .onAppear {
+                appearance.applyToApplication()
+            }
+            .onChange(of: appearanceRaw) { _ in
+                appearance.applyToApplication()
+            }
+    }
+}
+

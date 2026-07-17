@@ -123,8 +123,8 @@ final class CoreAudioHelpersTests: XCTestCase {
         let propertyError = CoreAudioError.propertyError(-50, "testContext")
         XCTAssertTrue(propertyError.errorDescription?.contains("testContext") ?? false)
 
-        XCTAssertEqual(CoreAudioError.invalidDevice.errorDescription, "Invalid audio device")
-        XCTAssertEqual(CoreAudioError.noDevicesFound.errorDescription, "No audio devices found")
+        XCTAssertEqual(CoreAudioError.invalidDevice.errorDescription, String(localized: "Invalid audio device"))
+        XCTAssertEqual(CoreAudioError.noDevicesFound.errorDescription, String(localized: "No audio devices found"))
     }
 
     func testAudioDeviceScopeMapsToCoreAudioScopes() {

@@ -83,6 +83,37 @@ final class PersistenceController {
         entity.isSystemDefault = true
         try save()
     }
+
+    // MARK: - BluetoothDeviceEntity
+
+    func upsertBluetoothDevice(_ device: BluetoothDeviceInfo) throws {
+        let context = viewContext
+        let request = BluetoothDeviceEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "address == %@", device.address)
+
+        let entity: BluetoothDeviceEntity
+        if let existing = try context.fetch(request).first {
+            entity = existing
+        } else {
+            entity = BluetoothDeviceEntity(context: context)
+            entity.address = device.address
+            entity.uuid = device.id
+            entity.createdAt = Date()
+        }
+
+        entity.name = device.name
+        entity.paired = device.isPaired
+        entity.connected = device.isConnected
+        if device.isConnected {
+            entity.lastConnected = Date()
+        }
+        if let battery = device.battery {
+            entity.lastBatteryLevel = Int16(battery.primaryLevel)
+            entity.lastBatteryUpdate = Date()
+        }
+
+        try save()
+    }
 }
 
 private extension AudioDeviceEntity {

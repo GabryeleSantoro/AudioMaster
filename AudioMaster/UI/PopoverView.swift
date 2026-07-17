@@ -2,9 +2,11 @@ import SwiftUI
 
 struct PopoverView: View {
     @ObservedObject var deviceManager: AudioDeviceManager
+    @ObservedObject var bluetoothManager: BluetoothDeviceManager
     @ObservedObject var appVolumeController: AppVolumeController
     let menuBarController: MenuBarController
 
+    @AppStorage(AppPreferences.Keys.showDecibels) private var showDecibels = false
     @State private var hoveredPID: pid_t?
     @State private var hoveredDeviceID: UUID?
     @State private var isOutputExpanded = false
@@ -25,8 +27,9 @@ struct PopoverView: View {
 
             openAppButton
         }
-        .frame(width: 340)
+        .frame(width: 320)
         .background(AMTheme.surface)
+        .appAppearanceAware()
         .onAppear {
             appVolumeController.refresh()
             appVolumeController.refreshSystemVolume()
@@ -38,34 +41,34 @@ struct PopoverView: View {
     private var appVolumesSection: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("App Volumes")
+                Text("Apps")
                     .font(.system(size: 12, weight: .semibold))
                 Spacer()
                 let playing = sortedApps.filter(\.isPlayingAudio).count
                 if playing > 0 {
-                    Text("\(playing) playing")
-                        .font(.system(size: 10, weight: .medium))
-                        .foregroundStyle(.secondary)
+                    Text(String(format: String(localized: "%lld playing"), Int64(playing)))
+                        .font(.system(size: 11))
+                        .foregroundStyle(.tertiary)
                 }
             }
-            .padding(.horizontal, 14)
-            .padding(.top, 12)
-            .padding(.bottom, 8)
+            .padding(.horizontal, 12)
+            .padding(.top, 10)
+            .padding(.bottom, 6)
 
             if sortedApps.isEmpty {
-                VStack(spacing: 6) {
+                VStack(spacing: 4) {
                     Image(systemName: "app.dashed")
-                        .font(.system(size: 22))
+                        .font(.system(size: 18))
                         .foregroundStyle(.tertiary)
                     Text("No apps running")
-                        .font(.system(size: 11))
+                        .font(.system(size: 12))
                         .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 24)
+                .padding(.vertical, 20)
             } else {
                 ScrollView(.vertical, showsIndicators: false) {
-                    LazyVStack(spacing: 1) {
+                    LazyVStack(spacing: 0) {
                         ForEach(sortedApps) { app in
                             PopoverAppVolumeRow(
                                 app: app,
@@ -87,10 +90,10 @@ struct PopoverView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, 8)
-                    .padding(.bottom, 8)
+                    .padding(.horizontal, 6)
+                    .padding(.bottom, 6)
                 }
-                .frame(maxHeight: 280)
+                .frame(maxHeight: 260)
             }
         }
     }
@@ -104,15 +107,11 @@ struct PopoverView: View {
                     isOutputExpanded.toggle()
                 }
             }) {
-                HStack(spacing: 8) {
+                HStack(spacing: 6) {
                     Image(systemName: isOutputExpanded ? "chevron.down" : "chevron.right")
-                        .font(.system(size: 10, weight: .semibold))
-                        .foregroundStyle(.secondary)
-                        .frame(width: 12)
-
-                    Image(systemName: "hifispeaker.2.fill")
-                        .font(.system(size: 11))
-                        .foregroundStyle(AMTheme.accent)
+                        .font(.system(size: 9, weight: .medium))
+                        .foregroundStyle(.tertiary)
+                        .frame(width: 10)
 
                     Text("Output")
                         .font(.system(size: 12, weight: .medium))
@@ -120,14 +119,19 @@ struct PopoverView: View {
                     Spacer()
 
                     if let current = deviceManager.defaultOutputDevice {
-                        Text(current.name)
-                            .font(.system(size: 11))
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1)
+                        HStack(spacing: 5) {
+                            Text(current.name)
+                                .font(.system(size: 11.5))
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                            if let battery = bluetoothManager.battery(for: current) {
+                                BatteryIndicatorView(level: battery.primaryLevel, compact: true)
+                            }
+                        }
                     }
                 }
-                .padding(.horizontal, 14)
-                .padding(.vertical, 10)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
@@ -135,16 +139,17 @@ struct PopoverView: View {
             if isOutputExpanded {
                 VStack(spacing: 0) {
                     masterVolumeRow
-                        .padding(.horizontal, 14)
-                        .padding(.bottom, 8)
+                        .padding(.horizontal, 12)
+                        .padding(.bottom, 6)
 
                     ScrollView(.vertical, showsIndicators: false) {
-                        LazyVStack(spacing: 1) {
+                        LazyVStack(spacing: 0) {
                             ForEach(deviceManager.outputDevices) { device in
                                 DeviceRowCompact(
                                     device: device,
                                     isSelected: device.id == deviceManager.defaultOutputDevice?.id,
-                                    isHovered: hoveredDeviceID == device.id
+                                    isHovered: hoveredDeviceID == device.id,
+                                    battery: bluetoothManager.battery(for: device)
                                 )
                                 .onHover { hovered in
                                     withAnimation(.easeInOut(duration: 0.1)) {
@@ -156,37 +161,37 @@ struct PopoverView: View {
                                 }
                             }
                         }
-                        .padding(.horizontal, 8)
+                        .padding(.horizontal, 6)
                     }
-                    .frame(maxHeight: 160)
+                    .frame(maxHeight: 150)
                 }
-                .padding(.bottom, 8)
+                .padding(.bottom, 6)
                 .transition(.opacity.combined(with: .move(edge: .top)))
             }
         }
     }
 
     private var masterVolumeRow: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 4) {
             HStack {
                 Text("Master")
-                    .font(.system(size: 10, weight: .medium))
+                    .font(.system(size: 11, weight: .medium))
                     .foregroundStyle(.secondary)
                 Spacer()
-                Text("\(Int(appVolumeController.systemVolume * 100))%")
-                    .font(.system(size: 10, weight: .medium, design: .monospaced))
-                    .foregroundStyle(.secondary)
+                Text(VolumeMath.volumeLabel(for: appVolumeController.systemVolume, showDecibels: showDecibels))
+                    .font(.system(size: 11, weight: .medium, design: .monospaced))
+                    .foregroundStyle(.tertiary)
             }
 
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     Capsule()
-                        .fill(Color.primary.opacity(0.08))
-                        .frame(height: 4)
+                        .fill(Color.primary.opacity(0.06))
+                        .frame(height: 3)
 
                     Capsule()
                         .fill(AMTheme.accent)
-                        .frame(width: geometry.size.width * appVolumeController.systemVolume, height: 4)
+                        .frame(width: geometry.size.width * appVolumeController.systemVolume, height: 3)
                 }
                 .frame(maxHeight: .infinity, alignment: .center)
                 .contentShape(Rectangle())
@@ -198,7 +203,7 @@ struct PopoverView: View {
                         }
                 )
             }
-            .frame(height: 18)
+            .frame(height: 16)
         }
     }
 
@@ -210,9 +215,9 @@ struct PopoverView: View {
                 .font(.system(size: 12, weight: .medium))
                 .frame(maxWidth: .infinity)
         }
-        .buttonStyle(PopoverButtonStyle(isPrimary: true))
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
+        .buttonStyle(PopoverButtonStyle(isPrimary: false))
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
     }
 
     // MARK: - Actions
@@ -237,37 +242,38 @@ struct PopoverAppVolumeRow: View {
     let onVolumeChange: (Double) -> Void
     let onMuteToggle: () -> Void
 
+    @AppStorage(AppPreferences.Keys.showDecibels) private var showDecibels = false
     @State private var localVolume: Double = 0
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 6) {
             appIcon
 
             Text(app.displayName)
-                .font(.system(size: 12, weight: app.isPlayingAudio ? .semibold : .regular))
+                .font(.system(size: 12, weight: app.isPlayingAudio ? .medium : .regular))
                 .lineLimit(1)
 
             Spacer(minLength: 4)
 
             Text(volumeLabel)
-                .font(.system(size: 9, weight: .medium, design: .monospaced))
-                .foregroundStyle(isActive || app.isPlayingAudio ? AMTheme.accent : .secondary)
-                .frame(width: 28, alignment: .trailing)
+                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                .foregroundStyle(isActive || app.isPlayingAudio ? AMTheme.accent : Color.secondary)
+                .frame(minWidth: showDecibels ? 62 : 30, alignment: .trailing)
 
             volumeSlider
 
             Button(action: onMuteToggle) {
                 Image(systemName: isMuted ? "speaker.slash.fill" : "speaker.wave.2.fill")
                     .font(.system(size: 10))
-                    .foregroundStyle(isMuted ? .primary : .tertiary)
+                    .foregroundStyle(isMuted ? .primary : .quaternary)
                     .frame(width: 20, height: 20)
             }
             .buttonStyle(.plain)
         }
         .padding(.horizontal, 6)
-        .padding(.vertical, 5)
+        .padding(.vertical, 4)
         .background(
-            RoundedRectangle(cornerRadius: 6)
+            RoundedRectangle(cornerRadius: 5)
                 .fill(rowBackground)
         )
         .onAppear { localVolume = volume }
@@ -275,29 +281,26 @@ struct PopoverAppVolumeRow: View {
     }
 
     private var rowBackground: Color {
-        if app.isPlayingAudio {
-            return AMTheme.accent.opacity(isHovered ? 0.12 : 0.06)
-        }
         if isHovered {
-            return Color.primary.opacity(0.04)
+            return Color.primary.opacity(0.03)
         }
         return .clear
     }
 
     private var appIcon: some View {
         Group {
-            if let icon = app.icon {
+            if let icon = AppVolumeEntry.icon(for: app.pid) {
                 Image(nsImage: icon)
                     .resizable()
-                    .frame(width: 20, height: 20)
-                    .clipShape(RoundedRectangle(cornerRadius: 4))
+                    .frame(width: 18, height: 18)
+                    .clipShape(RoundedRectangle(cornerRadius: 3))
             } else {
-                RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.primary.opacity(0.06))
-                    .frame(width: 20, height: 20)
+                RoundedRectangle(cornerRadius: 3)
+                    .fill(Color.primary.opacity(0.04))
+                    .frame(width: 18, height: 18)
                     .overlay(
                         Image(systemName: "app.fill")
-                            .font(.system(size: 10))
+                            .font(.system(size: 9))
                             .foregroundStyle(.tertiary)
                     )
             }
@@ -305,33 +308,20 @@ struct PopoverAppVolumeRow: View {
     }
 
     private var volumeSlider: some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .leading) {
-                Capsule()
-                    .fill(Color.primary.opacity(0.08))
-                    .frame(height: 3)
-
-                Capsule()
-                    .fill(isMuted ? Color.secondary.opacity(0.3) : AMTheme.accent)
-                    .frame(width: max(0, geometry.size.width * localVolume), height: 3)
-            }
-            .frame(maxHeight: .infinity, alignment: .center)
-            .contentShape(Rectangle())
-            .gesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged { value in
-                        let newVolume = max(0, min(1, value.location.x / geometry.size.width))
-                        localVolume = newVolume
-                        onVolumeChange(newVolume)
-                    }
-            )
-        }
-        .frame(width: 72, height: 20)
+        VolumeSliderControl(
+            value: $localVolume,
+            isMuted: isMuted,
+            isHovered: isHovered,
+            trackHeight: 2.5,
+            trackOpacity: 0.06,
+            onValueChange: onVolumeChange
+        )
+        .frame(width: 66, height: 18)
     }
 
     private var volumeLabel: String {
-        if isMuted { return "—" }
-        return "\(Int(localVolume * 100))"
+        if isMuted { return String(localized: "—") }
+        return VolumeMath.volumeLabel(for: localVolume, showDecibels: showDecibels)
     }
 }
 
@@ -341,12 +331,13 @@ struct DeviceRowCompact: View {
     let device: AudioDevice
     let isSelected: Bool
     let isHovered: Bool
+    var battery: BluetoothBatteryReading?
 
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 8) {
             Image(systemName: device.type.sfSymbol)
                 .font(.system(size: 12))
-                .foregroundStyle(isSelected ? AMTheme.deviceAccent(for: device.type) : .secondary)
+                .foregroundStyle(isSelected ? AMTheme.deviceAccent(for: device.type) : Color.secondary)
                 .frame(width: 20)
 
             Text(device.name)
@@ -355,27 +346,28 @@ struct DeviceRowCompact: View {
 
             Spacer()
 
+            if let battery {
+                BatteryIndicatorView(level: battery.primaryLevel, compact: true)
+            }
+
             if isSelected {
                 Image(systemName: "checkmark")
-                    .font(.system(size: 11, weight: .semibold))
+                    .font(.system(size: 11, weight: .medium))
                     .foregroundStyle(AMTheme.accent)
             }
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 7)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 5)
         .background(
-            RoundedRectangle(cornerRadius: 6)
+            RoundedRectangle(cornerRadius: 5)
                 .fill(backgroundFill)
         )
         .contentShape(Rectangle())
     }
 
     private var backgroundFill: Color {
-        if isSelected {
-            return AMTheme.accent.opacity(0.1)
-        }
         if isHovered {
-            return Color.primary.opacity(0.04)
+            return Color.primary.opacity(0.03)
         }
         return .clear
     }
@@ -386,12 +378,13 @@ struct DeviceRowCompact: View {
 struct SubtleButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
+            .font(.system(size: 12, weight: .medium))
             .foregroundStyle(.secondary)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
+            .padding(.horizontal, 7)
+            .padding(.vertical, 3)
             .background(
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color.primary.opacity(configuration.isPressed ? 0.08 : 0.04))
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(Color.primary.opacity(configuration.isPressed ? 0.06 : 0.03))
             )
     }
 }
@@ -402,14 +395,14 @@ struct PopoverButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundStyle(isPrimary ? .white : .secondary)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 8)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
             .background(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 6)
                     .fill(
                         isPrimary
                             ? AnyShapeStyle(AMTheme.accent.opacity(configuration.isPressed ? 0.85 : 1))
-                            : AnyShapeStyle(Color.primary.opacity(configuration.isPressed ? 0.1 : 0.05))
+                            : AnyShapeStyle(Color.primary.opacity(configuration.isPressed ? 0.06 : 0.03))
                     )
             )
     }

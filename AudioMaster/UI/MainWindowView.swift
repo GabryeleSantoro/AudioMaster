@@ -1,16 +1,27 @@
 import SwiftUI
 
-enum SidebarTab: String, CaseIterable, Identifiable {
-    case devices = "Devices"
-    case apps = "Apps"
-    case preferences = "Preferences"
+enum SidebarTab: CaseIterable, Identifiable {
+    case devices
+    case apps
+    case presets
+    case preferences
 
-    var id: String { rawValue }
+    var id: Self { self }
+
+    var title: LocalizedStringKey {
+        switch self {
+        case .devices: "Devices"
+        case .apps: "Apps"
+        case .presets: "Presets"
+        case .preferences: "Preferences"
+        }
+    }
 
     var icon: String {
         switch self {
         case .devices: return "hifispeaker.2.fill"
         case .apps: return "square.grid.2x2.fill"
+        case .presets: return "slider.horizontal.3"
         case .preferences: return "gearshape.fill"
         }
     }
@@ -18,7 +29,9 @@ enum SidebarTab: String, CaseIterable, Identifiable {
 
 struct MainWindowView: View {
     @ObservedObject var deviceManager: AudioDeviceManager
+    @ObservedObject var bluetoothManager: BluetoothDeviceManager
     @ObservedObject var appVolumeController: AppVolumeController
+    @ObservedObject var routingPresetController: RoutingPresetController
     @State private var selectedTab: SidebarTab = .devices
 
     var body: some View {
@@ -28,6 +41,7 @@ struct MainWindowView: View {
         }
         .frame(minWidth: 720, minHeight: 480)
         .background(AMBackground())
+        .appAppearanceAware()
     }
 
     // MARK: - Sidebar
@@ -35,14 +49,14 @@ struct MainWindowView: View {
     private var sidebar: some View {
         VStack(spacing: 0) {
             brandHeader
-                .padding(.horizontal, 20)
-                .padding(.top, 28)
-                .padding(.bottom, 24)
+                .padding(.horizontal, 16)
+                .padding(.top, 20)
+                .padding(.bottom, 18)
 
-            VStack(spacing: 2) {
+            VStack(spacing: 1) {
                 ForEach(SidebarTab.allCases) { tab in
                     SidebarItem(
-                        title: tab.rawValue,
+                        title: tab.title,
                         icon: tab.icon,
                         isSelected: selectedTab == tab
                     )
@@ -53,11 +67,11 @@ struct MainWindowView: View {
                     }
                 }
             }
-            .padding(.horizontal, 14)
+            .padding(.horizontal, 10)
 
             Spacer()
         }
-        .frame(width: 210)
+        .frame(width: 190)
         .background(AMTheme.surfaceElevated)
         .overlay(
             Rectangle()
@@ -68,22 +82,13 @@ struct MainWindowView: View {
     }
 
     private var brandHeader: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 8) {
             Image(systemName: "waveform.circle.fill")
-                .font(.system(size: 22))
+                .font(.system(size: 18))
                 .foregroundStyle(AMTheme.accent)
 
-            VStack(alignment: .leading, spacing: 1) {
-                Text("AudioMaster")
-                    .font(.system(size: 14, weight: .semibold))
-                Text("Sound control")
-                    .font(.system(size: 10, weight: .medium))
-                    .foregroundStyle(.secondary)
-            }
-
-            Spacer()
-
-            WaveformView(barCount: 4)
+            Text("AudioMaster")
+                .font(.system(size: 14, weight: .semibold))
         }
     }
 
@@ -94,14 +99,19 @@ struct MainWindowView: View {
         Group {
             switch selectedTab {
             case .devices:
-                DevicesTabView(deviceManager: deviceManager)
+                DevicesTabView(
+                    deviceManager: deviceManager,
+                    bluetoothManager: bluetoothManager
+                )
             case .apps:
                 AppsTabView(
                     deviceManager: deviceManager,
                     appVolumeController: appVolumeController
                 )
+            case .presets:
+                PresetsTabView(routingPresetController: routingPresetController)
             case .preferences:
-                PreferencesTabView()
+                PreferencesTabView(equalizerController: appVolumeController.equalizerController)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -113,18 +123,18 @@ struct MainWindowView: View {
 // MARK: - Sidebar Item
 
 struct SidebarItem: View {
-    let title: String
+    let title: LocalizedStringKey
     let icon: String
     let isSelected: Bool
 
     @State private var isHovered = false
 
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 8) {
             Image(systemName: icon)
                 .font(.system(size: 13))
                 .foregroundStyle(isSelected ? AMTheme.accent : .secondary)
-                .frame(width: 22)
+                .frame(width: 20)
 
             Text(title)
                 .font(.system(size: 13, weight: isSelected ? .medium : .regular))
@@ -132,10 +142,10 @@ struct SidebarItem: View {
 
             Spacer()
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
         .background(
-            RoundedRectangle(cornerRadius: 6)
+            RoundedRectangle(cornerRadius: 5)
                 .fill(backgroundColor)
         )
         .onHover { hovering in
@@ -148,9 +158,9 @@ struct SidebarItem: View {
 
     private var backgroundColor: Color {
         if isSelected {
-            return AMTheme.accent.opacity(0.1)
+            return AMTheme.accent.opacity(0.08)
         } else if isHovered {
-            return Color.primary.opacity(0.04)
+            return Color.primary.opacity(0.03)
         }
         return .clear
     }

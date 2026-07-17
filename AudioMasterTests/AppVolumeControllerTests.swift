@@ -7,7 +7,7 @@ final class AppVolumeControllerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        controller = AppVolumeController()
+        controller = AppVolumeController(equalizerController: EqualizerController())
     }
 
     override func tearDown() {
@@ -30,7 +30,13 @@ final class AppVolumeControllerTests: XCTestCase {
     }
 
     func testSetGainClampsHighValues() {
-        controller.setGain(pid: 42_001, gain: 2.0)
+        controller.setGain(pid: 42_001, gain: 3.0)
+        XCTAssertEqual(controller.sliderValue(for: 42_001), Double(VolumeMath.maxSliderValue), accuracy: 0.001)
+        XCTAssertEqual(controller.gain(for: 42_001), VolumeMath.maxSliderValue, accuracy: 0.001)
+    }
+
+    func testSetGainAllowsBoostAboveUnity() {
+        controller.setGain(pid: 42_001, gain: 1.5)
         XCTAssertEqual(controller.sliderValue(for: 42_001), 1.5, accuracy: 0.001)
         XCTAssertEqual(controller.gain(for: 42_001), 1.5, accuracy: 0.001)
     }
@@ -67,5 +73,42 @@ final class AppVolumeControllerTests: XCTestCase {
         controller.startMonitoring()
         controller.stopMonitoring()
         controller.stopMonitoring()
+    }
+
+    func testIncreaseLastModifiedVolume() throws {
+        controller.refresh()
+        guard let app = controller.apps.first else {
+            throw XCTSkip("No running apps available for volume shortcut test")
+        }
+
+        controller.setGain(pid: app.pid, gain: 0.5)
+        controller.increaseLastModifiedVolume()
+
+        XCTAssertEqual(controller.sliderValue(for: app.pid), 0.55, accuracy: 0.001)
+        XCTAssertEqual(controller.lastModifiedPID, app.pid)
+    }
+
+    func testDecreaseLastModifiedVolumeUnmutes() throws {
+        controller.refresh()
+        guard let app = controller.apps.first else {
+            throw XCTSkip("No running apps available for volume shortcut test")
+        }
+
+        controller.setGain(pid: app.pid, gain: 0.5)
+        controller.toggleMute(pid: app.pid)
+        controller.decreaseLastModifiedVolume()
+
+        XCTAssertFalse(controller.isMuted(pid: app.pid))
+        XCTAssertEqual(controller.sliderValue(for: app.pid), 0.45, accuracy: 0.001)
+    }
+
+    func testLastModifiedVolumeFallsBackToPlayingApp() throws {
+        controller.refresh()
+        guard let app = controller.apps.first(where: \.isPlayingAudio) ?? controller.apps.first else {
+            throw XCTSkip("No running apps available for volume shortcut test")
+        }
+
+        controller.increaseLastModifiedVolume()
+        XCTAssertEqual(controller.lastModifiedPID, app.pid)
     }
 }

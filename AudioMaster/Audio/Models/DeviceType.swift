@@ -12,14 +12,14 @@ enum DeviceType: String, Codable, CaseIterable, Sendable {
 
     var displayName: String {
         switch self {
-        case .speaker: return "Speaker"
-        case .headphones: return "Headphones"
-        case .airpods: return "AirPods"
-        case .usb: return "USB"
-        case .hdmi: return "HDMI"
-        case .bluetooth: return "Bluetooth"
-        case .aggregate: return "Aggregate"
-        case .unknown: return "Unknown"
+        case .speaker: return String(localized: "Speaker")
+        case .headphones: return String(localized: "Headphones")
+        case .airpods: return String(localized: "AirPods")
+        case .usb: return String(localized: "USB")
+        case .hdmi: return String(localized: "HDMI")
+        case .bluetooth: return String(localized: "Bluetooth")
+        case .aggregate: return String(localized: "Aggregate")
+        case .unknown: return String(localized: "Unknown")
         }
     }
 
@@ -33,6 +33,13 @@ enum DeviceType: String, Codable, CaseIterable, Sendable {
         case .bluetooth: return "wave.3.right"
         case .aggregate: return "square.stack.3d.up"
         case .unknown: return "questionmark.circle"
+        }
+    }
+
+    var supportsBatteryIndicator: Bool {
+        switch self {
+        case .airpods, .headphones, .bluetooth: true
+        default: false
         }
     }
 }

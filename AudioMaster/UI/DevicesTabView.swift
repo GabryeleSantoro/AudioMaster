@@ -2,6 +2,7 @@ import SwiftUI
 
 struct DevicesTabView: View {
     @ObservedObject var deviceManager: AudioDeviceManager
+    @ObservedObject var bluetoothManager: BluetoothDeviceManager
     @State private var hoveredDeviceID: UUID?
     @State private var selectedDeviceID: UUID?
     @State private var isOutputExpanded = true
@@ -9,89 +10,57 @@ struct DevicesTabView: View {
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 24) {
-                Spacer().frame(height: 32)
+            VStack(alignment: .leading, spacing: 20) {
+                Spacer().frame(height: 24)
 
-                heroCard
-                    .padding(.horizontal, 28)
+                headerSection
+                    .padding(.horizontal, 24)
 
                 outputSection
-                    .padding(.horizontal, 28)
+                    .padding(.horizontal, 24)
 
                 if !deviceManager.inputDevices.isEmpty {
                     inputSection
-                        .padding(.horizontal, 28)
+                        .padding(.horizontal, 24)
                 }
 
-                Spacer(minLength: 24)
+                Spacer(minLength: 20)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
-    // MARK: - Hero
+    // MARK: - Header
 
-    private var heroCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Audio Devices")
-                        .font(.system(size: 24, weight: .bold))
-
-                    Text("\(deviceManager.outputDevices.count + deviceManager.inputDevices.count) devices connected")
-                        .font(.system(size: 13))
-                        .foregroundStyle(.secondary)
-                }
-
-                Spacer()
-
-                WaveformView(barCount: 5)
-            }
+    private var headerSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Devices")
+                .font(.system(size: 18, weight: .semibold))
 
             if let device = deviceManager.defaultOutputDevice {
-                HStack(spacing: 12) {
+                HStack(spacing: 10) {
                     Image(systemName: device.type.sfSymbol)
-                        .font(.system(size: 18))
+                        .font(.system(size: 13))
                         .foregroundStyle(AMTheme.deviceAccent(for: device.type))
-                        .frame(width: 40, height: 40)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(AMTheme.deviceAccent(for: device.type).opacity(0.1))
-                        )
 
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Now playing through")
-                            .font(.system(size: 10, weight: .medium))
-                            .foregroundStyle(.tertiary)
-                            .textCase(.uppercase)
+                    Text(device.name)
+                        .font(.system(size: 13, weight: .medium))
+                        .lineLimit(1)
 
-                        Text(device.name)
-                            .font(.system(size: 15, weight: .semibold))
-                            .lineLimit(1)
+                    Text("·")
+                        .foregroundStyle(.quaternary)
 
-                        Text(device.type.displayName)
-                            .font(.system(size: 11))
-                            .foregroundStyle(.secondary)
-                    }
-
-                    Spacer()
-
-                    Text("Default")
-                        .font(.system(size: 11, weight: .medium))
+                    Text(device.type.displayName)
+                        .font(.system(size: 12))
                         .foregroundStyle(.secondary)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
-                        .background(
-                            Capsule()
-                                .fill(Color.primary.opacity(0.06))
-                        )
+
+                    if let battery = bluetoothManager.battery(for: device) {
+                        BatteryIndicatorView(level: battery.primaryLevel, compact: true)
+                    }
                 }
-                .padding(12)
-                .amGlassCard(cornerRadius: 8)
+                .foregroundStyle(.secondary)
             }
         }
-        .padding(20)
-        .amGlassCard(cornerRadius: 12)
     }
 
     // MARK: - Output Section
@@ -100,19 +69,19 @@ struct DevicesTabView: View {
         VStack(alignment: .leading, spacing: 0) {
             sectionHeader(
                 title: "Output",
-                icon: "speaker.wave.2.fill",
                 count: deviceManager.outputDevices.count,
                 isExpanded: $isOutputExpanded
             )
 
             if isOutputExpanded {
-                VStack(spacing: 1) {
+                VStack(spacing: 0) {
                     ForEach(deviceManager.outputDevices) { device in
                         DeviceRow(
                             device: device,
                             isDefault: device.id == deviceManager.defaultOutputDevice?.id,
                             isHovered: hoveredDeviceID == device.id,
                             isExpanded: selectedDeviceID == device.id,
+                            battery: bluetoothManager.battery(for: device),
                             onSelect: { selectDevice(device) }
                         )
                         .onHover { hovered in
@@ -127,9 +96,7 @@ struct DevicesTabView: View {
                         }
                     }
                 }
-                .padding(4)
-                .amGlassCard(cornerRadius: 10)
-                .padding(.top, 10)
+                .padding(.top, 6)
                 .transition(.opacity.combined(with: .move(edge: .top)))
             }
         }
@@ -141,19 +108,19 @@ struct DevicesTabView: View {
         VStack(alignment: .leading, spacing: 0) {
             sectionHeader(
                 title: "Input",
-                icon: "mic.fill",
                 count: deviceManager.inputDevices.count,
                 isExpanded: $isInputExpanded
             )
 
             if isInputExpanded {
-                VStack(spacing: 1) {
+                VStack(spacing: 0) {
                     ForEach(deviceManager.inputDevices) { device in
                         DeviceRow(
                             device: device,
                             isDefault: device.id == deviceManager.defaultInputDevice?.id,
                             isHovered: hoveredDeviceID == device.id,
                             isExpanded: selectedDeviceID == device.id,
+                            battery: bluetoothManager.battery(for: device),
                             onSelect: { selectInputDevice(device) }
                         )
                         .onHover { hovered in
@@ -168,9 +135,7 @@ struct DevicesTabView: View {
                         }
                     }
                 }
-                .padding(4)
-                .amGlassCard(cornerRadius: 10)
-                .padding(.top, 10)
+                .padding(.top, 6)
                 .transition(.opacity.combined(with: .move(edge: .top)))
             }
         }
@@ -178,31 +143,27 @@ struct DevicesTabView: View {
 
     // MARK: - Section Header
 
-    private func sectionHeader(title: String, icon: String, count: Int, isExpanded: Binding<Bool>) -> some View {
+    private func sectionHeader(title: LocalizedStringKey, count: Int, isExpanded: Binding<Bool>) -> some View {
         Button(action: {
             withAnimation(.easeInOut(duration: 0.2)) {
                 isExpanded.wrappedValue.toggle()
             }
         }) {
-            HStack(spacing: 6) {
+            HStack(spacing: 5) {
                 Image(systemName: isExpanded.wrappedValue ? "chevron.down" : "chevron.right")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(.system(size: 9, weight: .medium))
                     .foregroundStyle(.tertiary)
                     .frame(width: 12)
 
-                Image(systemName: icon)
-                    .font(.system(size: 11))
-                    .foregroundStyle(.tertiary)
-
-                Text(title.uppercased())
-                    .font(.system(size: 11, weight: .semibold))
+                Text(title)
+                    .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(.secondary)
 
-                Spacer()
-
-                Text("\(count)")
-                    .font(.system(size: 11, weight: .medium, design: .monospaced))
+                Text("(\(count))")
+                    .font(.system(size: 12))
                     .foregroundStyle(.tertiary)
+
+                Spacer()
             }
             .contentShape(Rectangle())
         }
@@ -235,36 +196,36 @@ struct DeviceRow: View {
     let isDefault: Bool
     let isHovered: Bool
     let isExpanded: Bool
+    var battery: BluetoothBatteryReading?
     var onSelect: (() -> Void)?
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 12) {
+            HStack(spacing: 10) {
                 deviceIcon
                 deviceInfo
                 Spacer()
-                statusBadge
+                if let battery {
+                    BatteryIndicatorView(level: battery.primaryLevel, compact: true)
+                }
 
-                if !isDefault, let onSelect {
+                if isDefault {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(AMTheme.accent)
+                } else if isHovered, let onSelect {
                     Button(action: onSelect) {
                         Text("Use")
-                            .font(.system(size: 11, weight: .medium))
+                            .font(.system(size: 12, weight: .medium))
                             .foregroundStyle(AMTheme.accent)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 4)
-                            .background(
-                                Capsule()
-                                    .fill(AMTheme.accent.opacity(0.1))
-                            )
                     }
                     .buttonStyle(.plain)
-                    .opacity(isHovered ? 1 : 0.5)
                 }
             }
             .padding(.horizontal, 10)
-            .padding(.vertical, 8)
+            .padding(.vertical, 7)
             .background(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 6)
                     .fill(rowBackground)
             )
 
@@ -276,9 +237,6 @@ struct DeviceRow: View {
     }
 
     private var rowBackground: Color {
-        if isDefault {
-            return AMTheme.accent.opacity(0.06)
-        }
         if isHovered {
             return Color.primary.opacity(0.03)
         }
@@ -287,31 +245,27 @@ struct DeviceRow: View {
 
     private var deviceIcon: some View {
         Image(systemName: device.type.sfSymbol)
-            .font(.system(size: 14))
-            .foregroundStyle(AMTheme.deviceAccent(for: device.type))
-            .frame(width: 32, height: 32)
-            .background(
-                RoundedRectangle(cornerRadius: 7)
-                    .fill(AMTheme.deviceAccent(for: device.type).opacity(0.1))
-            )
+            .font(.system(size: 13))
+            .foregroundStyle(isDefault ? AMTheme.deviceAccent(for: device.type) : .secondary)
+            .frame(width: 24)
     }
 
     private var deviceInfo: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(alignment: .leading, spacing: 1) {
             Text(device.name)
                 .font(.system(size: 13, weight: isDefault ? .medium : .regular))
                 .lineLimit(1)
 
-            HStack(spacing: 6) {
+            HStack(spacing: 4) {
                 Text(device.type.displayName)
-                    .font(.system(size: 11))
+                    .font(.system(size: 11.5))
                     .foregroundStyle(.tertiary)
 
                 if let manufacturer = device.manufacturer {
                     Text("·")
                         .foregroundStyle(.quaternary)
                     Text(manufacturer)
-                        .font(.system(size: 11))
+                        .font(.system(size: 11.5))
                         .foregroundStyle(.tertiary)
                         .lineLimit(1)
                 }
@@ -319,49 +273,27 @@ struct DeviceRow: View {
         }
     }
 
-    private var statusBadge: some View {
-        Group {
-            if isDefault {
-                HStack(spacing: 4) {
-                    Circle()
-                        .fill(Color.green)
-                        .frame(width: 5, height: 5)
-                    Text("Default")
-                        .font(.system(size: 10, weight: .medium))
-                        .foregroundStyle(.secondary)
-                }
-                .padding(.horizontal, 8)
-                .padding(.vertical, 3)
-                .background(
-                    Capsule()
-                        .fill(Color.green.opacity(0.1))
-                )
-            }
-        }
-    }
-
     private var expandedDetails: some View {
-        VStack(spacing: 0) {
-            Divider().opacity(0.15).padding(.horizontal, 10)
-
-            HStack(spacing: 24) {
-                detailItem(label: "Channels", value: "\(device.channels)")
-                detailItem(label: "Sample Rate", value: formatSampleRate(device.sampleRate))
-                if let uid = device.deviceUID {
-                    detailItem(label: "UID", value: String(uid.prefix(12)) + "...")
-                }
-                Spacer()
+        HStack(spacing: 20) {
+            detailItem(label: "Channels", value: "\(device.channels)")
+            detailItem(label: "Sample Rate", value: formatSampleRate(device.sampleRate))
+            if let battery {
+                detailItem(label: "Battery", value: String(format: String(localized: "%lld%%"), Int64(battery.primaryLevel)))
             }
-            .padding(.horizontal, 54)
-            .padding(.vertical, 10)
+            if let uid = device.deviceUID {
+                detailItem(label: "UID", value: String(uid.prefix(12)) + "…")
+            }
+            Spacer()
         }
+        .padding(.leading, 44)
+        .padding(.vertical, 8)
         .transition(.opacity.combined(with: .move(edge: .top)))
     }
 
-    private func detailItem(label: String, value: String) -> some View {
+    private func detailItem(label: LocalizedStringKey, value: String) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(label)
-                .font(.system(size: 9, weight: .medium))
+                .font(.system(size: 10, weight: .medium))
                 .foregroundStyle(.quaternary)
             Text(value)
                 .font(.system(size: 11, weight: .medium, design: .monospaced))
@@ -372,8 +304,8 @@ struct DeviceRow: View {
     private func formatSampleRate(_ rate: Double) -> String {
         let kHz = rate / 1000
         if kHz == Double(Int(kHz)) {
-            return "\(Int(kHz)) kHz"
+            return String(format: String(localized: "%lld kHz"), Int64(kHz))
         }
-        return String(format: "%.1f kHz", kHz)
+        return String(format: String(localized: "%.1f kHz"), kHz)
     }
 }

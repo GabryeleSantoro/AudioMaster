@@ -50,4 +50,23 @@ final class VolumeMathTests: XCTestCase {
     func testSliderToGainAtFullScaleIsUnity() {
         XCTAssertEqual(VolumeMath.sliderToGain(1.0), 1.0, accuracy: 0.001)
     }
+
+    func testClampSliderValue() {
+        XCTAssertEqual(VolumeMath.clampSliderValue(2.5), VolumeMath.maxSliderValue)
+        XCTAssertEqual(VolumeMath.clampSliderValue(-1), 0)
+        XCTAssertEqual(VolumeMath.clampSliderValue(1.5), 1.5)
+    }
+
+    func testSliderFillRatio() {
+        XCTAssertEqual(VolumeMath.sliderFillRatio(1.0), 0.5, accuracy: 0.001)
+        XCTAssertEqual(VolumeMath.sliderFillRatio(2.0), 1.0, accuracy: 0.001)
+    }
+
+    func testVolumeLabelWithoutDecibels() {
+        XCTAssertEqual(VolumeMath.volumeLabel(for: 0.5, showDecibels: false), "50%")
+    }
+
+    func testVolumeLabelWithDecibels() {
+        XCTAssertEqual(VolumeMath.volumeLabel(for: 1.0, showDecibels: true), "100% · +0.0 dB")
+    }
 }

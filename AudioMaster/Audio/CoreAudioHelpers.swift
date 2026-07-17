@@ -9,11 +9,11 @@ enum CoreAudioError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .propertyError(let status, let context):
-            return "Core Audio error \(status) in \(context)"
+            return String(format: String(localized: "Core Audio error %lld in %@"), status, context)
         case .invalidDevice:
-            return "Invalid audio device"
+            return String(localized: "Invalid audio device")
         case .noDevicesFound:
-            return "No audio devices found"
+            return String(localized: "No audio devices found")
         }
     }
 }
@@ -30,8 +30,19 @@ enum AudioDeviceScope {
     }
 }
 
+enum AudioMasterDeviceNaming {
+    static let prefix = "AudioMaster"
+    static let aggregatePrefix = "AudioMaster-"
+    static let tapPrefix = "AudioMaster-tap-"
+}
+
 enum CoreAudioHelpers {
     private static let systemObjectID = AudioObjectID(kAudioObjectSystemObject)
+
+    /// Internal aggregate devices and process taps used for per-app volume — not user-selectable outputs.
+    static func isInternalManagedDevice(name: String) -> Bool {
+        name.hasPrefix(AudioMasterDeviceNaming.prefix)
+    }
 
     // MARK: - Device Enumeration
 
@@ -65,7 +76,7 @@ enum CoreAudioHelpers {
         var name: CFString = "" as CFString
         var dataSize = UInt32(MemoryLayout<CFString>.size)
         let status = AudioObjectGetPropertyData(id, &address, 0, nil, &dataSize, &name)
-        guard status == noErr else { return "Unknown Device" }
+        guard status == noErr else { return String(localized: "Unknown Device") }
         return name as String
     }
 

@@ -29,6 +29,8 @@
 		B10000000000000000000014 /* AudioProcessList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000019 /* AudioProcessList.swift */; };
 		B10000000000000000000015 /* AppVolumeMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001A /* AppVolumeMixer.swift */; };
 		B10000000000000000000016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001B /* Assets.xcassets */; };
+		B10000000000000000000020 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000025 /* Localizable.xcstrings */; };
+		B10000000000000000000021 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000026 /* InfoPlist.xcstrings */; };
 		B10000000000000000000017 /* VolumeMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001C /* VolumeMathTests.swift */; };
 		B10000000000000000000018 /* CoreAudioHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001D /* CoreAudioHelpersTests.swift */; };
 		B10000000000000000000019 /* AudioDeviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000001E /* AudioDeviceTests.swift */; };
@@ -36,6 +38,38 @@
 		B1000000000000000000001B /* PersistenceControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000020 /* PersistenceControllerTests.swift */; };
 		B1000000000000000000001C /* AppVolumeControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000021 /* AppVolumeControllerTests.swift */; };
 		B1000000000000000000001D /* ProcessTapHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000022 /* ProcessTapHelpersTests.swift */; };
+		B1000000000000000000001E /* VolumeSliderControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000023 /* VolumeSliderControl.swift */; };
+		B1000000000000000000001F /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000024 /* AppPreferences.swift */; };
+		B10000000000000000000022 /* BluetoothDeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000027 /* BluetoothDeviceInfo.swift */; };
+		B10000000000000000000023 /* BluetoothBatteryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000028 /* BluetoothBatteryReader.swift */; };
+		B10000000000000000000024 /* BluetoothDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000029 /* BluetoothDeviceManager.swift */; };
+		B10000000000000000000025 /* BatteryIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002A /* BatteryIndicatorView.swift */; };
+		B10000000000000000000026 /* BluetoothBatteryReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002B /* BluetoothBatteryReaderTests.swift */; };
+		B10000000000000000000027 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002C /* IOBluetooth.framework */; };
+		B10000000000000000000028 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002D /* IOKit.framework */; };
+		B10000000000000000000029 /* UpdateChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002E /* UpdateChecker.swift */; };
+		B1000000000000000000002A /* EqualizerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002F /* EqualizerSettings.swift */; };
+		B1000000000000000000002B /* BiquadFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000030 /* BiquadFilter.swift */; };
+		B1000000000000000000002C /* EqualizerProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000031 /* EqualizerProcessor.swift */; };
+		B1000000000000000000002D /* EqualizerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000032 /* EqualizerController.swift */; };
+		B1000000000000000000002E /* EqualizerBandControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000033 /* EqualizerBandControl.swift */; };
+		B1000000000000000000002F /* EqualizerSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000034 /* EqualizerSettingsTests.swift */; };
+		B10000000000000000000030 /* ResourceActivityPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000035 /* ResourceActivityPolicy.swift */; };
+		B10000000000000000000031 /* ResourceActivityCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000036 /* ResourceActivityCoordinator.swift */; };
+		B10000000000000000000032 /* ResourceActivityPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000037 /* ResourceActivityPolicyTests.swift */; };
+		B10000000000000000000033 /* AppVolumeRefreshPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000038 /* AppVolumeRefreshPolicyTests.swift */; };
+		B10000000000000000000034 /* AppVolumeEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000039 /* AppVolumeEntry.swift */; };
+		B10000000000000000000035 /* RoutingPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000003A /* RoutingPreset.swift */; };
+		B10000000000000000000036 /* RoutingPresetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000003B /* RoutingPresetController.swift */; };
+		B10000000000000000000037 /* LiveRoutingStatePort.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000003C /* LiveRoutingStatePort.swift */; };
+		B10000000000000000000038 /* PresetsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000003D /* PresetsTabView.swift */; };
+		B10000000000000000000039 /* RoutingPresetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000003E /* RoutingPresetTests.swift */; };
+		B1000000000000000000003A /* RoutingPresetControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000003F /* RoutingPresetControllerTests.swift */; };
+		B1000000000000000000003B /* NormalizationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000040 /* NormalizationSettings.swift */; };
+		B1000000000000000000003C /* LoudnessNormalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000041 /* LoudnessNormalizer.swift */; };
+		B1000000000000000000003D /* NormalizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000042 /* NormalizationController.swift */; };
+		B1000000000000000000003E /* LoudnessNormalizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000043 /* LoudnessNormalizerTests.swift */; };
+		B1000000000000000000003F /* NormalizationControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000044 /* NormalizationControllerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +116,40 @@
 		F10000000000000000000020 /* PersistenceControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceControllerTests.swift; sourceTree = "<group>"; };
 		F10000000000000000000021 /* AppVolumeControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVolumeControllerTests.swift; sourceTree = "<group>"; };
 		F10000000000000000000022 /* ProcessTapHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessTapHelpersTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000023 /* VolumeSliderControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeSliderControl.swift; sourceTree = "<group>"; };
+		F10000000000000000000024 /* AppPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
+		F10000000000000000000025 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		F10000000000000000000026 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		F10000000000000000000027 /* BluetoothDeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDeviceInfo.swift; sourceTree = "<group>"; };
+		F10000000000000000000028 /* BluetoothBatteryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothBatteryReader.swift; sourceTree = "<group>"; };
+		F10000000000000000000029 /* BluetoothDeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDeviceManager.swift; sourceTree = "<group>"; };
+		F1000000000000000000002A /* BatteryIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryIndicatorView.swift; sourceTree = "<group>"; };
+		F1000000000000000000002B /* BluetoothBatteryReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothBatteryReaderTests.swift; sourceTree = "<group>"; };
+		F1000000000000000000002C /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = System/Library/Frameworks/IOBluetooth.framework; sourceTree = SDKROOT; };
+		F1000000000000000000002D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		F1000000000000000000002E /* UpdateChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateChecker.swift; sourceTree = "<group>"; };
+		F1000000000000000000002F /* EqualizerSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualizerSettings.swift; sourceTree = "<group>"; };
+		F10000000000000000000030 /* BiquadFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiquadFilter.swift; sourceTree = "<group>"; };
+		F10000000000000000000031 /* EqualizerProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualizerProcessor.swift; sourceTree = "<group>"; };
+		F10000000000000000000032 /* EqualizerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualizerController.swift; sourceTree = "<group>"; };
+		F10000000000000000000033 /* EqualizerBandControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualizerBandControl.swift; sourceTree = "<group>"; };
+		F10000000000000000000034 /* EqualizerSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualizerSettingsTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000035 /* ResourceActivityPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActivityPolicy.swift; sourceTree = "<group>"; };
+		F10000000000000000000036 /* ResourceActivityCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActivityCoordinator.swift; sourceTree = "<group>"; };
+		F10000000000000000000037 /* ResourceActivityPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActivityPolicyTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000038 /* AppVolumeRefreshPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVolumeRefreshPolicyTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000039 /* AppVolumeEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVolumeEntry.swift; sourceTree = "<group>"; };
+		F1000000000000000000003A /* RoutingPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingPreset.swift; sourceTree = "<group>"; };
+		F1000000000000000000003B /* RoutingPresetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingPresetController.swift; sourceTree = "<group>"; };
+		F1000000000000000000003C /* LiveRoutingStatePort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveRoutingStatePort.swift; sourceTree = "<group>"; };
+		F1000000000000000000003D /* PresetsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetsTabView.swift; sourceTree = "<group>"; };
+		F1000000000000000000003E /* RoutingPresetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingPresetTests.swift; sourceTree = "<group>"; };
+		F1000000000000000000003F /* RoutingPresetControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingPresetControllerTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000040 /* NormalizationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizationSettings.swift; sourceTree = "<group>"; };
+		F10000000000000000000041 /* LoudnessNormalizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoudnessNormalizer.swift; sourceTree = "<group>"; };
+		F10000000000000000000042 /* NormalizationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizationController.swift; sourceTree = "<group>"; };
+		F10000000000000000000043 /* LoudnessNormalizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoudnessNormalizerTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000044 /* NormalizationControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizationControllerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +157,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B10000000000000000000027 /* IOBluetooth.framework in Frameworks */,
+				B10000000000000000000028 /* IOKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +204,14 @@
 				F10000000000000000000020 /* PersistenceControllerTests.swift */,
 				F10000000000000000000022 /* ProcessTapHelpersTests.swift */,
 				F1000000000000000000001C /* VolumeMathTests.swift */,
+				F1000000000000000000002B /* BluetoothBatteryReaderTests.swift */,
+				F10000000000000000000034 /* EqualizerSettingsTests.swift */,
+				F10000000000000000000037 /* ResourceActivityPolicyTests.swift */,
+				F10000000000000000000038 /* AppVolumeRefreshPolicyTests.swift */,
+				F1000000000000000000003E /* RoutingPresetTests.swift */,
+				F1000000000000000000003F /* RoutingPresetControllerTests.swift */,
+				F10000000000000000000043 /* LoudnessNormalizerTests.swift */,
+				F10000000000000000000044 /* NormalizationControllerTests.swift */,
 			);
 			path = AudioMasterTests;
 			sourceTree = "<group>";
@@ -151,6 +229,10 @@
 			isa = PBXGroup;
 			children = (
 				F10000000000000000000001 /* AudioMasterApp.swift */,
+				F10000000000000000000024 /* AppPreferences.swift */,
+				F10000000000000000000035 /* ResourceActivityPolicy.swift */,
+				F10000000000000000000036 /* ResourceActivityCoordinator.swift */,
+				F1000000000000000000002E /* UpdateChecker.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -160,12 +242,27 @@
 			children = (
 				F10000000000000000000005 /* CoreAudioHelpers.swift */,
 				F10000000000000000000006 /* AudioDeviceManager.swift */,
+				F10000000000000000000039 /* AppVolumeEntry.swift */,
 				F10000000000000000000017 /* AppVolumeController.swift */,
+				F1000000000000000000003B /* RoutingPresetController.swift */,
+				F1000000000000000000003C /* LiveRoutingStatePort.swift */,
 				F10000000000000000000004 /* VolumeMath.swift */,
+				G1000000000000000000000C /* Bluetooth */,
+				G1000000000000000000000D /* Equalizer */,
+				G1000000000000000000000E /* Normalization */,
 				G1000000000000000000000B /* ProcessTap */,
 				G10000000000000000000009 /* Models */,
 			);
 			path = Audio;
+			sourceTree = "<group>";
+		};
+		G1000000000000000000000C /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000028 /* BluetoothBatteryReader.swift */,
+				F10000000000000000000029 /* BluetoothDeviceManager.swift */,
+			);
+			path = Bluetooth;
 			sourceTree = "<group>";
 		};
 		G10000000000000000000007 /* Persistence */ = {
@@ -183,6 +280,8 @@
 				F1000000000000000000000A /* Info.plist */,
 				F1000000000000000000000B /* AudioMaster.entitlements */,
 				F1000000000000000000001B /* Assets.xcassets */,
+				F10000000000000000000025 /* Localizable.xcstrings */,
+				F10000000000000000000026 /* InfoPlist.xcstrings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -192,6 +291,10 @@
 			children = (
 				F10000000000000000000002 /* DeviceType.swift */,
 				F10000000000000000000003 /* AudioDevice.swift */,
+				F10000000000000000000027 /* BluetoothDeviceInfo.swift */,
+				F1000000000000000000002F /* EqualizerSettings.swift */,
+				F1000000000000000000003A /* RoutingPreset.swift */,
+				F10000000000000000000040 /* NormalizationSettings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -207,8 +310,31 @@
 				F10000000000000000000014 /* AppsTabView.swift */,
 				F10000000000000000000015 /* PreferencesTabView.swift */,
 				F10000000000000000000016 /* Theme.swift */,
+				F10000000000000000000023 /* VolumeSliderControl.swift */,
+				F1000000000000000000002A /* BatteryIndicatorView.swift */,
+				F10000000000000000000033 /* EqualizerBandControl.swift */,
+				F1000000000000000000003D /* PresetsTabView.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		G1000000000000000000000D /* Equalizer */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000030 /* BiquadFilter.swift */,
+				F10000000000000000000031 /* EqualizerProcessor.swift */,
+				F10000000000000000000032 /* EqualizerController.swift */,
+			);
+			path = Equalizer;
+			sourceTree = "<group>";
+		};
+		G1000000000000000000000E /* Normalization */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000041 /* LoudnessNormalizer.swift */,
+				F10000000000000000000042 /* NormalizationController.swift */,
+			);
+			path = Normalization;
 			sourceTree = "<group>";
 		};
 		G1000000000000000000000B /* ProcessTap */ = {
@@ -283,6 +409,10 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				fr,
+				de,
+				it,
+				es,
 				Base,
 			);
 			mainGroup = G10000000000000000000001;
@@ -302,6 +432,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B10000000000000000000016 /* Assets.xcassets in Resources */,
+				B10000000000000000000020 /* Localizable.xcstrings in Resources */,
+				B10000000000000000000021 /* InfoPlist.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,10 +460,32 @@
 				B1000000000000000000000F /* AppsTabView.swift in Sources */,
 				B10000000000000000000010 /* PreferencesTabView.swift in Sources */,
 				B10000000000000000000011 /* Theme.swift in Sources */,
+				B10000000000000000000034 /* AppVolumeEntry.swift in Sources */,
 				B10000000000000000000012 /* AppVolumeController.swift in Sources */,
 				B10000000000000000000013 /* ProcessTapHelpers.swift in Sources */,
 				B10000000000000000000014 /* AudioProcessList.swift in Sources */,
 				B10000000000000000000015 /* AppVolumeMixer.swift in Sources */,
+				B1000000000000000000001E /* VolumeSliderControl.swift in Sources */,
+				B1000000000000000000001F /* AppPreferences.swift in Sources */,
+				B10000000000000000000022 /* BluetoothDeviceInfo.swift in Sources */,
+				B10000000000000000000023 /* BluetoothBatteryReader.swift in Sources */,
+				B10000000000000000000024 /* BluetoothDeviceManager.swift in Sources */,
+				B10000000000000000000025 /* BatteryIndicatorView.swift in Sources */,
+				B10000000000000000000029 /* UpdateChecker.swift in Sources */,
+				B1000000000000000000002A /* EqualizerSettings.swift in Sources */,
+				B1000000000000000000002B /* BiquadFilter.swift in Sources */,
+				B1000000000000000000002C /* EqualizerProcessor.swift in Sources */,
+				B1000000000000000000002D /* EqualizerController.swift in Sources */,
+				B1000000000000000000002E /* EqualizerBandControl.swift in Sources */,
+				B10000000000000000000030 /* ResourceActivityPolicy.swift in Sources */,
+				B10000000000000000000031 /* ResourceActivityCoordinator.swift in Sources */,
+				B10000000000000000000035 /* RoutingPreset.swift in Sources */,
+				B10000000000000000000036 /* RoutingPresetController.swift in Sources */,
+				B10000000000000000000037 /* LiveRoutingStatePort.swift in Sources */,
+				B10000000000000000000038 /* PresetsTabView.swift in Sources */,
+				B1000000000000000000003B /* NormalizationSettings.swift in Sources */,
+				B1000000000000000000003C /* LoudnessNormalizer.swift in Sources */,
+				B1000000000000000000003D /* NormalizationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,6 +501,14 @@
 				B1000000000000000000001B /* PersistenceControllerTests.swift in Sources */,
 				B1000000000000000000001D /* ProcessTapHelpersTests.swift in Sources */,
 				B10000000000000000000017 /* VolumeMathTests.swift in Sources */,
+				B10000000000000000000026 /* BluetoothBatteryReaderTests.swift in Sources */,
+				B1000000000000000000002F /* EqualizerSettingsTests.swift in Sources */,
+				B10000000000000000000032 /* ResourceActivityPolicyTests.swift in Sources */,
+				B10000000000000000000033 /* AppVolumeRefreshPolicyTests.swift in Sources */,
+				B10000000000000000000039 /* RoutingPresetTests.swift in Sources */,
+				B1000000000000000000003A /* RoutingPresetControllerTests.swift in Sources */,
+				B1000000000000000000003E /* LoudnessNormalizerTests.swift in Sources */,
+				B1000000000000000000003F /* NormalizationControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
