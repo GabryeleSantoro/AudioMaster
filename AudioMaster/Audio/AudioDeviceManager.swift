@@ -32,15 +32,14 @@ final class AudioDeviceManager: ObservableObject {
 
     func refreshDevices() {
         refreshQueue.async { [weak self] in
-            guard let self else { return }
             do {
-                let snapshot = try self.enumerateDevices()
+                let snapshot = try Self.enumerateDevicesSnapshot()
                 Task { @MainActor in
-                    self.applySnapshot(snapshot)
+                    self?.applySnapshot(snapshot)
                 }
             } catch {
                 Task { @MainActor in
-                    self.logger.error("Device refresh failed: \(error.localizedDescription)")
+                    self?.logger.error("Device refresh failed: \(error.localizedDescription)")
                 }
             }
         }
@@ -142,14 +141,14 @@ final class AudioDeviceManager: ObservableObject {
 
     // MARK: - Private
 
-    private struct DeviceSnapshot {
+    private struct DeviceSnapshot: Sendable {
         let outputs: [AudioDevice]
         let inputs: [AudioDevice]
         let defaultOutput: AudioDevice?
         let defaultInput: AudioDevice?
     }
 
-    private func enumerateDevices() throws -> DeviceSnapshot {
+    nonisolated private static func enumerateDevicesSnapshot() throws -> DeviceSnapshot {
         let deviceIDs = try CoreAudioHelpers.getAllDeviceIDs()
         let defaultInputID = try? CoreAudioHelpers.getDefaultDevice(scope: .input)
         let defaultOutputID = try? CoreAudioHelpers.getDefaultDevice(scope: .output)
