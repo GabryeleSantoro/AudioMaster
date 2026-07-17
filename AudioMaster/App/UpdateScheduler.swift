@@ -49,6 +49,6 @@ final class UpdateScheduler {
         ) else { return }
 
         AppPreferences.lastAutomaticUpdateCheckAt = now
-        // Task 4: UpdateChecker.shared.checkForUpdates(silent: true)
+        UpdateChecker.shared.checkForUpdates(silent: true)
     }
 }

@@ -874,6 +874,7 @@
       }
     },
     "Check for and install updates automatically" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -903,6 +904,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cerca e installa aggiornamenti automaticamente"
+          }
+        }
+      }
+    },
+    "Check for updates automatically and download when you choose" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check for updates automatically and download when you choose"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check for updates automatically and download when you choose"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check for updates automatically and download when you choose"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check for updates automatically and download when you choose"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check for updates automatically and download when you choose"
           }
         }
       }
@@ -1243,6 +1278,12 @@
       }
     },
     "Download" : {
+
+    },
+    "Download Failed" : {
+
+    },
+    "Downloading Update" : {
 
     },
     "Electronic" : {
@@ -1969,6 +2010,9 @@
     "OK" : {
 
     },
+    "Open DMG" : {
+
+    },
     "Open an app to control its volume here." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2616,6 +2660,9 @@
     "System" : {
 
     },
+    "The update has been downloaded. Open the disk image to install." : {
+
+    },
     "Treble Boost" : {
 
     },
@@ -2725,6 +2772,9 @@
 
     },
     "Update Check Failed" : {
+
+    },
+    "Update Ready" : {
 
     },
     "USB" : {

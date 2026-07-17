@@ -54,7 +54,7 @@ struct PreferencesTabView: View {
             PreferenceToggle(title: "Remember app volumes", subtitle: "Persist volume levels across restarts", isOn: $rememberAppVolumes)
             PreferenceToggle(
                 title: "Automatic updates",
-                subtitle: "Check for and install updates automatically",
+                subtitle: "Check for updates automatically and download when you choose",
                 isOn: $automaticUpdatesEnabled
             )
         }

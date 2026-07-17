@@ -2,6 +2,8 @@ import AppKit
 import SwiftUI
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    static private(set) weak var shared: AppDelegate?
+
     private var deviceManager: AudioDeviceManager?
     private var bluetoothManager: BluetoothDeviceManager?
     private var appVolumeController: AppVolumeController?
@@ -27,6 +29,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        AppDelegate.shared = self
         AppAppearance.current.applyToApplication()
 
         let needsOnboarding = !AppDelegate.hasCompletedOnboarding
@@ -83,6 +86,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
             if shouldShowWindow {
                 showMainWindow()
+            }
+
+            if !Self.isRunningTests {
+                UpdateScheduler.shared.start()
             }
         }
     }
@@ -170,15 +177,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             mainWindow = window
             window.makeKeyAndOrderFront(nil)
         }
+        activityCoordinator?.setUIVisibility(.mainWindowVisible)
     }
 
     @MainActor
     func hideToMenuBar() {
         menuBarController?.closePopover()
         mainWindow?.orderOut(nil)
-        if !AppDelegate.openWindowOnLaunch {
+        if ResourceActivityPolicy.shouldUseAccessoryActivationPolicyAfterHidingMainWindow(
+            openWindowOnLaunch: AppDelegate.openWindowOnLaunch
+        ) {
             NSApp.setActivationPolicy(.accessory)
         }
+        activityCoordinator?.setUIVisibility(.hidden)
     }
 
     @MainActor
@@ -193,6 +204,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         deviceManager?.stopMonitoring()
         bluetoothManager?.stopMonitoring()
         appVolumeController?.stopMonitoring()
+        UpdateScheduler.shared.stop()
         NSApp.terminate(nil)
     }
 
