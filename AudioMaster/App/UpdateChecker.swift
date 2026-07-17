@@ -19,7 +19,7 @@ final class UpdateChecker {
                 let release = try await fetchLatestRelease()
                 let latest = release.version
 
-                if isNewer(latest, than: currentVersion) {
+                if UpdateVersion.isNewer(latest, than: currentVersion) {
                     showUpdateAvailable(version: latest, url: release.htmlURL, dmgURL: release.dmgURL)
                 } else if !silent {
                     showUpToDate()
@@ -69,26 +69,6 @@ final class UpdateChecker {
         }
 
         return try JSONDecoder().decode(GitHubRelease.self, from: data)
-    }
-
-    // MARK: - Version comparison
-
-    private func isNewer(_ remote: String, than local: String) -> Bool {
-        let r = parseVersion(remote)
-        let l = parseVersion(local)
-
-        for i in 0..<max(r.count, l.count) {
-            let rv = i < r.count ? r[i] : 0
-            let lv = i < l.count ? l[i] : 0
-            if rv != lv { return rv > lv }
-        }
-        return false
-    }
-
-    private func parseVersion(_ string: String) -> [Int] {
-        let cleaned = string.trimmingCharacters(in: .whitespaces)
-        let base = cleaned.split(separator: "-").first ?? Substring(cleaned)
-        return base.split(separator: ".").compactMap { Int($0) }
     }
 
     // MARK: - Alerts

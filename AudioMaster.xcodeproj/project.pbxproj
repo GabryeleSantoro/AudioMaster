@@ -70,6 +70,8 @@
 		B1000000000000000000003D /* NormalizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000042 /* NormalizationController.swift */; };
 		B1000000000000000000003E /* LoudnessNormalizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000043 /* LoudnessNormalizerTests.swift */; };
 		B1000000000000000000003F /* NormalizationControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000044 /* NormalizationControllerTests.swift */; };
+		B10000000000000000000040 /* UpdateVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000045 /* UpdateVersion.swift */; };
+		B10000000000000000000041 /* UpdateVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000046 /* UpdateVersionTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -150,6 +152,8 @@
 		F10000000000000000000042 /* NormalizationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizationController.swift; sourceTree = "<group>"; };
 		F10000000000000000000043 /* LoudnessNormalizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoudnessNormalizerTests.swift; sourceTree = "<group>"; };
 		F10000000000000000000044 /* NormalizationControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizationControllerTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000045 /* UpdateVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateVersion.swift; sourceTree = "<group>"; };
+		F10000000000000000000046 /* UpdateVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateVersionTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +216,7 @@
 				F1000000000000000000003F /* RoutingPresetControllerTests.swift */,
 				F10000000000000000000043 /* LoudnessNormalizerTests.swift */,
 				F10000000000000000000044 /* NormalizationControllerTests.swift */,
+				F10000000000000000000046 /* UpdateVersionTests.swift */,
 			);
 			path = AudioMasterTests;
 			sourceTree = "<group>";
@@ -233,6 +238,7 @@
 				F10000000000000000000035 /* ResourceActivityPolicy.swift */,
 				F10000000000000000000036 /* ResourceActivityCoordinator.swift */,
 				F1000000000000000000002E /* UpdateChecker.swift */,
+				F10000000000000000000045 /* UpdateVersion.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -486,6 +492,7 @@
 				B1000000000000000000003B /* NormalizationSettings.swift in Sources */,
 				B1000000000000000000003C /* LoudnessNormalizer.swift in Sources */,
 				B1000000000000000000003D /* NormalizationController.swift in Sources */,
+				B10000000000000000000040 /* UpdateVersion.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,6 +516,7 @@
 				B1000000000000000000003A /* RoutingPresetControllerTests.swift in Sources */,
 				B1000000000000000000003E /* LoudnessNormalizerTests.swift in Sources */,
 				B1000000000000000000003F /* NormalizationControllerTests.swift in Sources */,
+				B10000000000000000000041 /* UpdateVersionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
