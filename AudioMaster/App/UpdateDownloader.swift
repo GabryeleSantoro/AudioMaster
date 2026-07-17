@@ -14,17 +14,11 @@ final class UpdateDownloader: NSObject, URLSessionDownloadDelegate {
 
     private var session: URLSession?
     private var downloadTask: URLSessionDownloadTask?
-    private var suggestedFileName: String = ""
 
     // Written on MainActor in start() before task.resume(); read on the delegate queue.
     // Single-download lifecycle (start sets it before resume, delegate reads after resume)
     // makes this safe without a lock.
     private nonisolated(unsafe) var cachedSuggestedFileName: String = ""
-
-    // Written on the delegate queue before the file move; read/cleared on MainActor.
-    // Best-effort: allows tearDownActiveDownload to delete the in-progress file even
-    // when cancel races with the completion delegate.
-    private nonisolated(unsafe) var partialDestinationURL: URL?
 
     nonisolated static func uniqueDestinationURL(
         in directory: URL,
@@ -51,7 +45,6 @@ final class UpdateDownloader: NSObject, URLSessionDownloadDelegate {
 
     func start(url: URL, suggestedFileName: String) {
         tearDownActiveDownload(publishCancelled: false)
-        self.suggestedFileName = suggestedFileName
         // Sync nonisolated copy before task.resume() so the delegate can read it safely.
         self.cachedSuggestedFileName = suggestedFileName
 
@@ -72,7 +65,6 @@ final class UpdateDownloader: NSObject, URLSessionDownloadDelegate {
         session?.invalidateAndCancel()
         downloadTask = nil
         session = nil
-        deletePartialDestinationIfNeeded()
         if publishCancelled {
             publish(.cancelled)
         }
@@ -80,12 +72,6 @@ final class UpdateDownloader: NSObject, URLSessionDownloadDelegate {
 
     private func publish(_ state: State) {
         onStateChange?(state)
-    }
-
-    private func deletePartialDestinationIfNeeded() {
-        guard let url = partialDestinationURL else { return }
-        try? FileManager.default.removeItem(at: url)
-        partialDestinationURL = nil
     }
 
     /// Finalises the session only if `downloadSession` is still the active session.
@@ -128,15 +114,12 @@ final class UpdateDownloader: NSObject, URLSessionDownloadDelegate {
             preferredName: cachedSuggestedFileName
         )
 
-        // Record the destination before moving so cancel() can clean up even if it
-        // races with the MainActor Task below.
-        partialDestinationURL = destination
-
         let moveResult: Result<URL, Error>
         do {
             try FileManager.default.moveItem(at: location, to: destination)
             moveResult = .success(destination)
         } catch {
+            // Move failed; destination was never created so there is nothing to clean up.
             moveResult = .failure(error)
         }
 
@@ -148,7 +131,6 @@ final class UpdateDownloader: NSObject, URLSessionDownloadDelegate {
             switch moveResult {
             case .success(let dest):
                 if isActiveSession {
-                    self.partialDestinationURL = nil
                     self.publish(.completed(dest))
                     self.cleanupAfterDownload(ownedBy: capturedSession)
                 } else {
@@ -156,15 +138,11 @@ final class UpdateDownloader: NSObject, URLSessionDownloadDelegate {
                     // in progress. The file reached the destination but we should not
                     // surface it; clean it up instead.
                     try? FileManager.default.removeItem(at: dest)
-                    self.partialDestinationURL = nil
                 }
             case .failure(let error):
                 if isActiveSession {
-                    self.deletePartialDestinationIfNeeded()
                     self.publish(.failed(error.localizedDescription))
                     self.cleanupAfterDownload(ownedBy: capturedSession)
-                } else {
-                    self.partialDestinationURL = nil
                 }
             }
         }
@@ -180,7 +158,6 @@ final class UpdateDownloader: NSObject, URLSessionDownloadDelegate {
         Task { @MainActor in
             guard (error as NSError).code != NSURLErrorCancelled else { return }
             guard self.session === capturedSession else { return }
-            self.deletePartialDestinationIfNeeded()
             self.publish(.failed(error.localizedDescription))
             self.cleanupAfterDownload(ownedBy: capturedSession)
         }

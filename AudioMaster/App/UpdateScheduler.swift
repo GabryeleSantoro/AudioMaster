@@ -25,7 +25,6 @@ final class UpdateScheduler {
     }
 
     func start() {
-        // Full wiring in Task 4 — for now evaluate once and start timer no-op body
         evaluateEligibilityAndCheck()
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: Self.eligibilityPollInterval, repeats: true) { [weak self] _ in
