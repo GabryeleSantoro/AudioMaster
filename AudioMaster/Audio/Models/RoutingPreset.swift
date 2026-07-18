@@ -23,19 +23,22 @@ struct RoutingSnapshot: Codable, Equatable {
     var masterVolume: Double?
     var appVolumes: [String: AppAudioState]
     var equalizer: EQSnapshot?
+    var normalizationEnabled: Bool?
 
     init(
         outputDeviceUID: String? = nil,
         outputDeviceName: String? = nil,
         masterVolume: Double? = nil,
         appVolumes: [String: AppAudioState] = [:],
-        equalizer: EQSnapshot? = nil
+        equalizer: EQSnapshot? = nil,
+        normalizationEnabled: Bool? = nil
     ) {
         self.outputDeviceUID = outputDeviceUID
         self.outputDeviceName = outputDeviceName
         self.masterVolume = masterVolume
         self.appVolumes = appVolumes
         self.equalizer = equalizer
+        self.normalizationEnabled = normalizationEnabled
     }
 
     init(from decoder: Decoder) throws {
@@ -45,6 +48,7 @@ struct RoutingSnapshot: Codable, Equatable {
         masterVolume = try container.decodeIfPresent(Double.self, forKey: .masterVolume)
         appVolumes = try container.decodeIfPresent([String: AppAudioState].self, forKey: .appVolumes) ?? [:]
         equalizer = try container.decodeIfPresent(EQSnapshot.self, forKey: .equalizer)
+        normalizationEnabled = try container.decodeIfPresent(Bool.self, forKey: .normalizationEnabled)
     }
 }
 

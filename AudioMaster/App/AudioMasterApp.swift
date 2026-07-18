@@ -7,6 +7,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var deviceManager: AudioDeviceManager?
     private var bluetoothManager: BluetoothDeviceManager?
     private var appVolumeController: AppVolumeController?
+    private var normalizationController: NormalizationController?
     private var routingPresetController: RoutingPresetController?
     private var activityCoordinator: ResourceActivityCoordinator?
     private var menuBarController: MenuBarController?
@@ -41,17 +42,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             let manager = AudioDeviceManager()
             let bluetooth = BluetoothDeviceManager()
             let equalizerController = EqualizerController()
-            let volumeController = AppVolumeController(equalizerController: equalizerController)
+            let normalization = NormalizationController()
+            let volumeController = AppVolumeController(
+                equalizerController: equalizerController,
+                normalizationController: normalization
+            )
             let coordinator = ResourceActivityCoordinator()
             volumeController.bind(activityCoordinator: coordinator)
             let routingPort = LiveRoutingStatePort(
                 deviceManager: manager,
                 appVolumeController: volumeController,
-                equalizerController: equalizerController
+                equalizerController: equalizerController,
+                normalizationController: normalization
             )
             deviceManager = manager
             bluetoothManager = bluetooth
             appVolumeController = volumeController
+            normalizationController = normalization
             routingPresetController = RoutingPresetController(port: routingPort)
             activityCoordinator = coordinator
 
@@ -162,7 +169,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @MainActor
     func showMainWindow() {
-        guard let deviceManager, let bluetoothManager, let appVolumeController, let routingPresetController else { return }
+        guard
+            let deviceManager,
+            let bluetoothManager,
+            let appVolumeController,
+            let normalizationController,
+            let routingPresetController
+        else { return }
         NSApp.setActivationPolicy(.regular)
         NSApp.activate(ignoringOtherApps: true)
         if let window = mainWindow {
@@ -172,6 +185,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 deviceManager: deviceManager,
                 bluetoothManager: bluetoothManager,
                 appVolumeController: appVolumeController,
+                normalizationController: normalizationController,
                 routingPresetController: routingPresetController
             )
             mainWindow = window

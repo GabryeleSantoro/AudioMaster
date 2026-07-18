@@ -7,9 +7,11 @@ final class EqualizerProcessor {
     private var settings = EQBandSettings.flat
     private var outputTrim: Float = 1
     private let sampleRate: Double
+    private let normalizer: LoudnessNormalizer
 
     init(sampleRate: Double = 48_000) {
         self.sampleRate = sampleRate
+        self.normalizer = LoudnessNormalizer(sampleRate: sampleRate)
         resizeFilters(to: settings.bandCount)
         reconfigureFilters()
     }
@@ -24,13 +26,20 @@ final class EqualizerProcessor {
         }
     }
 
+    func updateNormalization(settings: NormalizationSettings) {
+        lock.withLock {
+            normalizer.update(settings: settings)
+        }
+    }
+
     func process(sample: Float) -> Float {
         lock.withLock {
             var value = sample
             for index in filters.indices where abs(settings.gains[index]) >= 0.05 {
                 value = filters[index].process(value)
             }
-            return value * outputTrim
+            value *= outputTrim
+            return normalizer.process(value)
         }
     }
 

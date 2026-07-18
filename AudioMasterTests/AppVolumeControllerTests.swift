@@ -3,11 +3,20 @@ import XCTest
 
 @MainActor
 final class AppVolumeControllerTests: XCTestCase {
+    private static let needsMixerTestBundleID = "com.audiomaster.tests.appvolume.needsMixer"
+
     private var controller: AppVolumeController!
 
     override func setUp() {
         super.setUp()
-        controller = AppVolumeController(equalizerController: EqualizerController())
+        let equalizerController = EqualizerController()
+        equalizerController.resetToDefaults()
+        controller = AppVolumeController(
+            equalizerController: equalizerController,
+            normalizationController: NormalizationController(
+                defaults: UserDefaults(suiteName: "test.appVolume.\(UUID().uuidString)")!
+            )
+        )
     }
 
     override func tearDown() {
@@ -110,5 +119,42 @@ final class AppVolumeControllerTests: XCTestCase {
 
         controller.increaseLastModifiedVolume()
         XCTAssertEqual(controller.lastModifiedPID, app.pid)
+    }
+
+    func testNeedsMixerIsFalseByDefaultForPlainEntry() {
+        let entry = AppVolumeEntry(
+            pid: 42_002,
+            bundleID: Self.needsMixerTestBundleID,
+            name: "Example",
+            isPlayingAudio: true
+        )
+        XCTAssertFalse(controller.equalizerController.needsProcessing(for: entry.bundleID))
+        XCTAssertFalse(controller.needsMixerForTesting(for: entry))
+    }
+
+    func testNeedsMixerIsTrueWhenNormalizationEnabled() {
+        controller.normalizationController.isEnabled = true
+
+        let entry = AppVolumeEntry(
+            pid: 42_003,
+            bundleID: Self.needsMixerTestBundleID,
+            name: "Example",
+            isPlayingAudio: true
+        )
+        XCTAssertTrue(controller.needsMixerForTesting(for: entry))
+    }
+
+    func testNeedsMixerReturnsToFalseWhenNormalizationDisabledAgain() {
+        controller.normalizationController.isEnabled = true
+        controller.normalizationController.isEnabled = false
+
+        let entry = AppVolumeEntry(
+            pid: 42_004,
+            bundleID: Self.needsMixerTestBundleID,
+            name: "Example",
+            isPlayingAudio: true
+        )
+        XCTAssertFalse(controller.equalizerController.needsProcessing(for: entry.bundleID))
+        XCTAssertFalse(controller.needsMixerForTesting(for: entry))
     }
 }

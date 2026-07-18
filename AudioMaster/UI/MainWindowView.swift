@@ -31,6 +31,7 @@ struct MainWindowView: View {
     @ObservedObject var deviceManager: AudioDeviceManager
     @ObservedObject var bluetoothManager: BluetoothDeviceManager
     @ObservedObject var appVolumeController: AppVolumeController
+    @ObservedObject var normalizationController: NormalizationController
     @ObservedObject var routingPresetController: RoutingPresetController
     @State private var selectedTab: SidebarTab = .devices
 
@@ -116,7 +117,10 @@ struct MainWindowView: View {
             case .presets:
                 PresetsTabView(routingPresetController: routingPresetController)
             case .preferences:
-                PreferencesTabView(equalizerController: appVolumeController.equalizerController)
+                PreferencesTabView(
+                    equalizerController: appVolumeController.equalizerController,
+                    normalizationController: normalizationController
+                )
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

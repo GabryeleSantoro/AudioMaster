@@ -76,6 +76,7 @@
 		B10000000000000000000043 /* UpdateSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000048 /* UpdateSchedulerTests.swift */; };
 		B10000000000000000000044 /* UpdateDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000049 /* UpdateDownloader.swift */; };
 		B10000000000000000000045 /* UpdateDownloaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000004A /* UpdateDownloaderTests.swift */; };
+		B10000000000000000000046 /* EqualizerProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000004B /* EqualizerProcessorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -162,6 +163,7 @@
 		F10000000000000000000048 /* UpdateSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSchedulerTests.swift; sourceTree = "<group>"; };
 		F10000000000000000000049 /* UpdateDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDownloader.swift; sourceTree = "<group>"; };
 		F1000000000000000000004A /* UpdateDownloaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDownloaderTests.swift; sourceTree = "<group>"; };
+		F1000000000000000000004B /* EqualizerProcessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualizerProcessorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +229,7 @@
 				F10000000000000000000046 /* UpdateVersionTests.swift */,
 				F10000000000000000000048 /* UpdateSchedulerTests.swift */,
 				F1000000000000000000004A /* UpdateDownloaderTests.swift */,
+				F1000000000000000000004B /* EqualizerProcessorTests.swift */,
 			);
 			path = AudioMasterTests;
 			sourceTree = "<group>";
@@ -533,6 +536,7 @@
 				B10000000000000000000041 /* UpdateVersionTests.swift in Sources */,
 				B10000000000000000000043 /* UpdateSchedulerTests.swift in Sources */,
 				B10000000000000000000045 /* UpdateDownloaderTests.swift in Sources */,
+				B10000000000000000000046 /* EqualizerProcessorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
