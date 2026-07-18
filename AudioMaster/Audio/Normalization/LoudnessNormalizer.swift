@@ -1,61 +1,120 @@
 import Foundation
 
 final class LoudnessNormalizer {
-    static let maxGainDecibels: Float = 12  // ✅ FIXED: was 24, corrected to 12
+    static let maxGainDecibels: Float = 12
 
     private(set) var currentGain: Float = 1
     private let sampleRate: Double
 
-    // Frequency weighting filter state
-    private var highPassZ1: Float = 0  // 100Hz high-pass filter history
-    private var highPassZ2: Float = 0
-    private var shelfZ1: Float = 0     // 2kHz shelf filter history
-    private var shelfZ2: Float = 0
+    /// Direct Form I biquad section: `y[n] = b0*x[n] + b1*x[n-1] + b2*x[n-2]
+    /// - a1*y[n-1] - a2*y[n-2]`. Input and output history are tracked in
+    /// separate state variables (`x1`/`x2` vs `y1`/`y2`) — mixing them, or
+    /// feeding numerator coefficients output history, is what made the
+    /// previous implementation diverge to `±inf` within ~100 samples.
+    private struct Biquad {
+        var b0: Float
+        var b1: Float
+        var b2: Float
+        var a1: Float
+        var a2: Float
 
-    // LUFS measurement state
-    private var measurementBuffer: [Float] = []
+        private var x1: Float = 0
+        private var x2: Float = 0
+        private var y1: Float = 0
+        private var y2: Float = 0
+
+        init(b0: Float, b1: Float, b2: Float, a1: Float, a2: Float) {
+            self.b0 = b0
+            self.b1 = b1
+            self.b2 = b2
+            self.a1 = a1
+            self.a2 = a2
+        }
+
+        mutating func process(_ x0: Float) -> Float {
+            let y0 = b0 * x0 + b1 * x1 + b2 * x2 - a1 * y1 - a2 * y2
+            x2 = x1
+            x1 = x0
+            y2 = y1
+            y1 = y0
+            return y0
+        }
+    }
+
+    // Frequency weighting filters (100Hz high-pass + 2kHz high-shelf boost),
+    // a simplified stand-in for full ITU-R BS.1770-4 K-weighting.
+    private var highPassFilter: Biquad
+    private var shelfFilter: Biquad
+
+    // LUFS measurement state: 400ms sliding-window mean-square, maintained via
+    // a running sum so each `process(_:)` call is O(1) rather than re-summing
+    // the whole window (this runs per-sample on the real-time audio path).
+    private var measurementBuffer: [Float]
     private let measurementWindowSamples: Int
     private var bufferIndex = 0
-
-    // Filter coefficients (computed once at init)
-    private let highPassB0: Float
-    private let highPassB1: Float
-    private let highPassA1: Float
-
-    private let shelfB0: Float
-    private let shelfB1: Float
-    private let shelfA1: Float
+    private var runningSumSquares: Float = 0
 
     private var isEnabled = false
-    private var strength: Float = 1.0  // ✅ ADDED: Track strength parameter
+    private var strength: Float = 1.0
 
     init(sampleRate: Double = 48_000) {
         self.sampleRate = sampleRate
-        self.measurementWindowSamples = Int(0.4 * sampleRate)  // 400ms window
+        self.measurementWindowSamples = max(1, Int(0.4 * sampleRate))  // 400ms window
         self.measurementBuffer = Array(repeating: 0, count: measurementWindowSamples)
 
-        // Calculate high-pass filter coefficients (100Hz, Q=0.707)
-        let freq100Hz = Float(100 / sampleRate)
-        let sqrt2Over2 = Float(0.707)
-        let alpha = sin(.pi * freq100Hz) / (2 * sqrt2Over2)
-        self.highPassB0 = (1 + cos(.pi * freq100Hz)) / 2
-        self.highPassB1 = -(1 + cos(.pi * freq100Hz))
-        self.highPassA1 = -2 * cos(.pi * freq100Hz) / (1 + alpha)
+        // 100Hz high-pass, Q=0.707 (RBJ Audio Cookbook "High Pass Filter").
+        self.highPassFilter = Self.makeHighPass(frequency: 100, q: 0.707, sampleRate: sampleRate)
+        // 2kHz high-shelf, +4dB boost, Q=0.6 (RBJ Audio Cookbook "High Shelf").
+        self.shelfFilter = Self.makeHighShelf(frequency: 2_000, gainDecibels: 4, q: 0.6, sampleRate: sampleRate)
+    }
 
-        // Calculate 2kHz shelf filter coefficients (boost +4dB, Q=0.6)
-        let freq2kHz = Float(2000 / sampleRate)
-        let shelfQ = Float(0.6)
-        let shelfGain = Float(4)  // +4dB boost
-        let A = pow(10, shelfGain / 40)
-        let alpha2k = sin(.pi * freq2kHz) / (2 * shelfQ)
-        self.shelfB0 = A * ((A + 1) - (A - 1) * cos(.pi * freq2kHz) + 2 * sqrt(A) * alpha2k)
-        self.shelfB1 = 2 * A * ((A - 1) - (A + 1) * cos(.pi * freq2kHz))
-        self.shelfA1 = -2 * sqrt(A) * alpha2k / ((A + 1) + (A - 1) * cos(.pi * freq2kHz) + 2 * sqrt(A) * alpha2k)
+    private static func makeHighPass(frequency: Double, q: Double, sampleRate: Double) -> Biquad {
+        let w0 = 2 * Double.pi * frequency / sampleRate
+        let cosW0 = cos(w0)
+        let alpha = sin(w0) / (2 * q)
+
+        let b0 = (1 + cosW0) / 2
+        let b1 = -(1 + cosW0)
+        let b2 = (1 + cosW0) / 2
+        let a0 = 1 + alpha
+        let a1 = -2 * cosW0
+        let a2 = 1 - alpha
+
+        return Biquad(
+            b0: Float(b0 / a0),
+            b1: Float(b1 / a0),
+            b2: Float(b2 / a0),
+            a1: Float(a1 / a0),
+            a2: Float(a2 / a0)
+        )
+    }
+
+    private static func makeHighShelf(frequency: Double, gainDecibels: Double, q: Double, sampleRate: Double) -> Biquad {
+        let w0 = 2 * Double.pi * frequency / sampleRate
+        let cosW0 = cos(w0)
+        let alpha = sin(w0) / (2 * q)
+        let A = pow(10, gainDecibels / 40)
+        let sqrtA = sqrt(A)
+
+        let b0 = A * ((A + 1) + (A - 1) * cosW0 + 2 * sqrtA * alpha)
+        let b1 = -2 * A * ((A - 1) + (A + 1) * cosW0)
+        let b2 = A * ((A + 1) + (A - 1) * cosW0 - 2 * sqrtA * alpha)
+        let a0 = (A + 1) - (A - 1) * cosW0 + 2 * sqrtA * alpha
+        let a1 = 2 * ((A - 1) - (A + 1) * cosW0)
+        let a2 = (A + 1) - (A - 1) * cosW0 - 2 * sqrtA * alpha
+
+        return Biquad(
+            b0: Float(b0 / a0),
+            b1: Float(b1 / a0),
+            b2: Float(b2 / a0),
+            a1: Float(a1 / a0),
+            a2: Float(a2 / a0)
+        )
     }
 
     func update(settings: NormalizationSettings) {
         isEnabled = settings.isEnabled
-        strength = Float(settings.strength)  // ✅ FIXED: Store strength parameter
+        strength = Float(settings.strength)
     }
 
     func process(_ sample: Float) -> Float {
@@ -64,8 +123,11 @@ final class LoudnessNormalizer {
         // Apply frequency weighting filters
         let filtered = applyFrequencyWeighting(sample)
 
-        // Add to measurement buffer
-        measurementBuffer[bufferIndex] = filtered * filtered  // Store squared for RMS
+        // Update the running mean-square sum for the 400ms sliding window.
+        let squared = filtered * filtered
+        runningSumSquares += squared - measurementBuffer[bufferIndex]
+        runningSumSquares = max(0, runningSumSquares)  // guard against float drift
+        measurementBuffer[bufferIndex] = squared
         bufferIndex = (bufferIndex + 1) % measurementWindowSamples
 
         // Calculate current gain based on measured loudness
@@ -77,21 +139,12 @@ final class LoudnessNormalizer {
     }
 
     private func applyFrequencyWeighting(_ sample: Float) -> Float {
-        // Apply 100Hz high-pass filter
-        let highPassed = highPassB0 * sample + highPassB1 * highPassZ1 - highPassA1 * highPassZ2
-        highPassZ2 = highPassZ1
-        highPassZ1 = highPassed  // ✅ FIXED: Store OUTPUT, not input
-
-        // Apply 2kHz shelf filter
-        let shelved = shelfB0 * highPassed + shelfB1 * shelfZ1 - shelfA1 * shelfZ2
-        shelfZ2 = shelfZ1
-        shelfZ1 = shelved  // ✅ FIXED: Store OUTPUT, not input
-
-        return shelved
+        let highPassed = highPassFilter.process(sample)
+        return shelfFilter.process(highPassed)
     }
 
     private func calculateLoudness() -> Float {
-        let meanSquare = measurementBuffer.reduce(0, +) / Float(measurementWindowSamples)
+        let meanSquare = runningSumSquares / Float(measurementWindowSamples)
         let rms = sqrt(max(0, meanSquare))
         let loudnessLUFS = 20 * log10(max(rms, 1e-7))  // Avoid log(0)
         return loudnessLUFS
@@ -106,7 +159,7 @@ final class LoudnessNormalizer {
             return 1.0
         }
 
-        let gainDb = (targetLoudness - measuredLoudness) * strength  // ✅ FIXED: Apply strength multiplier
+        let gainDb = (targetLoudness - measuredLoudness) * strength  // Apply strength multiplier
         let gainDbClamped = max(-Self.maxGainDecibels, min(Self.maxGainDecibels, gainDb))
         return pow(10, gainDbClamped / 20)  // Convert dB to linear gain
     }

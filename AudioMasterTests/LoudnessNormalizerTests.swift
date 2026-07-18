@@ -50,6 +50,27 @@ final class LoudnessNormalizerTests: XCTestCase {
         XCTAssertTrue(gain.isFinite && gain > 0)
     }
 
+    // Test 2b: Quiet input should be boosted (gain > 1). This fails under the
+    // old broken filter recursion, which diverges to non-finite values within
+    // ~100 samples and always clamps to -12dB (currentGain ≈ 0.2512).
+    func testQuietToneIsBoostedAboveUnityGain() {
+        let normalizer = makeNormalizer(strength: 1.0)
+        let gain = drive(normalizer, amplitude: 0.02, seconds: 1.5, frequency: 1_000)
+        XCTAssertTrue(gain.isFinite)
+        XCTAssertGreaterThan(gain, 1.0, "quiet signal should be boosted toward target loudness")
+    }
+
+    // Test 2c: Loud input should be attenuated (gain < 1) — the opposite
+    // direction from the quiet case, confirming the sign of the gain
+    // calculation (not just that it settles to some clamped constant).
+    func testLoudToneIsAttenuatedBelowUnityGain() {
+        let normalizer = makeNormalizer(strength: 1.0)
+        let gain = drive(normalizer, amplitude: 0.5, seconds: 1.5, frequency: 1_000)
+        XCTAssertTrue(gain.isFinite)
+        XCTAssertLessThan(gain, 1.0, "loud signal should be attenuated toward target loudness")
+        XCTAssertGreaterThan(gain, 0.0)
+    }
+
     // Test 3: Silence gating
     func testGatingBelowThreshold() {
         let normalizer = makeNormalizer()
@@ -59,13 +80,43 @@ final class LoudnessNormalizerTests: XCTestCase {
         XCTAssertEqual(gain, 1.0, accuracy: 0.05)
     }
 
-    // Test 4: Gain clamping
+    // Test 4: Gain clamping (upper bound)
     func testGainClamping() {
         let normalizer = makeNormalizer()
         // Very quiet signal that would need extreme gain but should be clamped
         let gain = drive(normalizer, amplitude: 0.0015, seconds: 4)
-        // Gain should be clamped at +12 dB
-        let maxGainLinear = pow(10, Float(12 / 20))  // ≈ 3.98
+        // Gain should be clamped at +12 dB. NOTE: `12 / 20` must not be
+        // computed as an Int (it previously truncated to 0, silently
+        // widening this assertion to `gain <= 1.1`); this only went
+        // unnoticed because the old broken filter always clamped to -12dB
+        // regardless of input, so the assertion passed vacuously.
+        let maxGainLinear = pow(10, Float(12) / 20)  // ≈ 3.98
         XCTAssertLessThanOrEqual(gain, maxGainLinear + 0.1)
+    }
+
+    // Test 5: Gain clamping (lower bound) — mirrors testGainClamping but for
+    // a very loud signal that would otherwise need more than -12dB of cut.
+    func testGainClampingLowerBound() {
+        let normalizer = makeNormalizer()
+        let gain = drive(normalizer, amplitude: 0.98, seconds: 4)
+        let minGainLinear = pow(10, Float(-12) / 20)  // ≈ 0.2512
+        XCTAssertGreaterThanOrEqual(gain, minGainLinear - 0.05)
+        XCTAssertLessThan(gain, 1.0)
+    }
+
+    // Test 6: Filters stay finite under sustained noise-like input, not just
+    // pure tones — guards against instability that only shows up with a
+    // broader spectral content than a single sine.
+    func testFiltersRemainStableUnderNoise() {
+        let normalizer = makeNormalizer()
+        var generator = SystemRandomNumberGenerator()
+        let total = Int(2.0 * sampleRate)
+        for _ in 0..<total {
+            let sample = Float.random(in: -0.3...0.3, using: &generator)
+            let output = normalizer.process(sample)
+            XCTAssertTrue(output.isFinite, "output must stay finite for noise input")
+        }
+        XCTAssertTrue(normalizer.currentGain.isFinite)
+        XCTAssertGreaterThan(normalizer.currentGain, 0)
     }
 }
