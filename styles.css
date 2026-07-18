@@ -146,7 +146,7 @@ body {
 .hero__note {
   margin: 0;
   font-size: 0.8125rem;
-  color: #8a96a8;
+  color: var(--text-muted);
 }
 
 .footer {
@@ -158,7 +158,7 @@ body {
   padding: 1rem 1.5rem 1.35rem;
   border-top: 1px solid var(--hairline);
   font-size: 0.8125rem;
-  color: #7a8799;
+  color: var(--text-muted);
 }
 
 .footer a {
@@ -178,7 +178,7 @@ body {
 }
 
 .footer__credit {
-  color: #7a8799;
+  color: var(--text-muted);
 }
 
 @media (max-width: 420px) {
