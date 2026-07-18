@@ -28,7 +28,8 @@ final class RoutingPresetControllerTests: XCTestCase {
             outputDeviceName: "Speakers",
             masterVolume: 0.5,
             appVolumes: ["com.foo": AppAudioState(gain: 0.3, muted: false)],
-            equalizer: EQSnapshot(enabled: true, bands: .flat)
+            equalizer: EQSnapshot(enabled: true, bands: .flat),
+            normalizationEnabled: true
         )
     }
 
@@ -55,6 +56,17 @@ final class RoutingPresetControllerTests: XCTestCase {
         controller.apply(controller.presets[0])
 
         XCTAssertEqual(port.appliedSnapshots, [Self.sampleSnapshot])
+    }
+
+    func testNormalizationEnabledRoundTripsThroughSaveAndApply() {
+        let controller = makeController()
+        let preset = controller.saveCurrent(name: "Gaming")
+
+        XCTAssertEqual(preset.snapshot.normalizationEnabled, true)
+
+        controller.apply(preset)
+
+        XCTAssertEqual(port.appliedSnapshots.last?.normalizationEnabled, true)
     }
 
     func testRenameUpdatesName() {

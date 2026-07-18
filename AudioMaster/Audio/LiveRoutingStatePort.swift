@@ -9,16 +9,19 @@ final class LiveRoutingStatePort: RoutingStatePort {
     private let deviceManager: AudioDeviceManager
     private let appVolumeController: AppVolumeController
     private let equalizerController: EqualizerController
+    private let normalizationController: NormalizationController
     private let logger = Logger(subsystem: "com.audiomaster.app", category: "RoutingPresets")
 
     init(
         deviceManager: AudioDeviceManager,
         appVolumeController: AppVolumeController,
-        equalizerController: EqualizerController
+        equalizerController: EqualizerController,
+        normalizationController: NormalizationController
     ) {
         self.deviceManager = deviceManager
         self.appVolumeController = appVolumeController
         self.equalizerController = equalizerController
+        self.normalizationController = normalizationController
     }
 
     func captureSnapshot() -> RoutingSnapshot {
@@ -43,7 +46,8 @@ final class LiveRoutingStatePort: RoutingStatePort {
             equalizer: EQSnapshot(
                 enabled: equalizerController.globalEnabled,
                 bands: equalizerController.globalBands
-            )
+            ),
+            normalizationEnabled: normalizationController.isEnabled
         )
     }
 
@@ -60,6 +64,10 @@ final class LiveRoutingStatePort: RoutingStatePort {
             equalizerController.bandCount = equalizer.bands.bandCount
             equalizerController.globalBands = equalizer.bands
             equalizerController.globalEnabled = equalizer.enabled
+        }
+
+        if let enabled = snapshot.normalizationEnabled {
+            normalizationController.isEnabled = enabled
         }
     }
 

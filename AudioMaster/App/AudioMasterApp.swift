@@ -7,6 +7,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var deviceManager: AudioDeviceManager?
     private var bluetoothManager: BluetoothDeviceManager?
     private var appVolumeController: AppVolumeController?
+    private var normalizationController: NormalizationController?
     private var routingPresetController: RoutingPresetController?
     private var activityCoordinator: ResourceActivityCoordinator?
     private var menuBarController: MenuBarController?
@@ -44,14 +45,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             let volumeController = AppVolumeController(equalizerController: equalizerController)
             let coordinator = ResourceActivityCoordinator()
             volumeController.bind(activityCoordinator: coordinator)
+            let normalization = NormalizationController()
             let routingPort = LiveRoutingStatePort(
                 deviceManager: manager,
                 appVolumeController: volumeController,
-                equalizerController: equalizerController
+                equalizerController: equalizerController,
+                normalizationController: normalization
             )
             deviceManager = manager
             bluetoothManager = bluetooth
             appVolumeController = volumeController
+            normalizationController = normalization
             routingPresetController = RoutingPresetController(port: routingPort)
             activityCoordinator = coordinator
 
