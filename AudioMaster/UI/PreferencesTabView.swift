@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PreferencesTabView: View {
     @ObservedObject var equalizerController: EqualizerController
+    @ObservedObject var normalizationController: NormalizationController
     @State private var launchAtLogin = false
     @State private var showInMenuBar = true
     @State private var openWindowOnLaunch = AppDelegate.openWindowOnLaunch
@@ -27,6 +28,7 @@ struct PreferencesTabView: View {
                 appearanceSection
                 volumeSection
                 equalizerSection
+                audioProcessingSection
                 shortcutsSection
                 advancedSection
 
@@ -190,6 +192,18 @@ struct PreferencesTabView: View {
         }
     }
 
+    // MARK: - Audio Processing
+
+    private var audioProcessingSection: some View {
+        PreferenceSection(title: "Audio Processing") {
+            PreferenceToggle(
+                title: "Normalize loudness",
+                subtitle: "Adjust all audio to consistent perceived loudness (-14 LUFS)",
+                isOn: $normalizationController.isEnabled
+            )
+        }
+    }
+
     // MARK: - Shortcuts
 
     private var shortcutsSection: some View {
@@ -234,6 +248,7 @@ struct PreferencesTabView: View {
         volumeCurve = .logarithmic
         AppPreferences.resetToDefaults()
         equalizerController.resetToDefaults()
+        normalizationController.resetToDefaults()
         selectedGlobalPreset = .flat
         appearance = AppAppearance.system.rawValue
         debugLogging = false

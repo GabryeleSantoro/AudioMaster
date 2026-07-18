@@ -166,7 +166,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @MainActor
     func showMainWindow() {
-        guard let deviceManager, let bluetoothManager, let appVolumeController, let routingPresetController else { return }
+        guard
+            let deviceManager,
+            let bluetoothManager,
+            let appVolumeController,
+            let normalizationController,
+            let routingPresetController
+        else { return }
         NSApp.setActivationPolicy(.regular)
         NSApp.activate(ignoringOtherApps: true)
         if let window = mainWindow {
@@ -176,6 +182,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 deviceManager: deviceManager,
                 bluetoothManager: bluetoothManager,
                 appVolumeController: appVolumeController,
+                normalizationController: normalizationController,
                 routingPresetController: routingPresetController
             )
             mainWindow = window

@@ -6,12 +6,14 @@ final class MainWindow: NSWindow {
         deviceManager: AudioDeviceManager,
         bluetoothManager: BluetoothDeviceManager,
         appVolumeController: AppVolumeController,
+        normalizationController: NormalizationController,
         routingPresetController: RoutingPresetController
     ) {
         let contentView = MainWindowView(
             deviceManager: deviceManager,
             bluetoothManager: bluetoothManager,
             appVolumeController: appVolumeController,
+            normalizationController: normalizationController,
             routingPresetController: routingPresetController
         )
         let hostingController = NSHostingController(rootView: contentView)
