@@ -48,9 +48,14 @@ struct MainWindowView: View {
 
     private var sidebar: some View {
         VStack(spacing: 0) {
+            // Let traffic-light clicks pass through under fullSizeContentView.
+            Color.clear
+                .frame(height: 28)
+                .allowsHitTesting(false)
+
             brandHeader
                 .padding(.horizontal, 16)
-                .padding(.top, 20)
+                .padding(.top, 8)
                 .padding(.bottom, 18)
 
             VStack(spacing: 1) {

@@ -111,7 +111,7 @@ Adjust volume without reaching for the mouse.
 - dB display option
 - Volume keyboard shortcuts on/off
 - Appearance: System, Light, or Dark
-- Automatic update checking
+- Scheduled update checks + in-app DMG download with progress
 - Equalizer controls (global EQ, per-app EQ, band resolution, presets)
 - Debug logging and reset-to-defaults
 
@@ -155,7 +155,7 @@ Download the latest `.dmg` from [GitHub Releases](https://github.com/GabryeleSan
 | ✅     | Volume persistence across restarts                 |
 | ✅     | Bluetooth battery badges on audio devices          |
 | ✅     | Global & per-app equalizer with presets            |
-| ✅     | Automatic update checking                          |
+| ✅     | Scheduled update checks + in-app DMG download      |
 | ✅     | Volume keyboard shortcuts                          |
 | ✅     | Audio routing presets (save & restore setups)      |
 | ✅     | Appearance themes (System / Light / Dark)          |

@@ -70,6 +70,12 @@
 		B1000000000000000000003D /* NormalizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000042 /* NormalizationController.swift */; };
 		B1000000000000000000003E /* LoudnessNormalizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000043 /* LoudnessNormalizerTests.swift */; };
 		B1000000000000000000003F /* NormalizationControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000044 /* NormalizationControllerTests.swift */; };
+		B10000000000000000000040 /* UpdateVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000045 /* UpdateVersion.swift */; };
+		B10000000000000000000041 /* UpdateVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000046 /* UpdateVersionTests.swift */; };
+		B10000000000000000000042 /* UpdateScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000047 /* UpdateScheduler.swift */; };
+		B10000000000000000000043 /* UpdateSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000048 /* UpdateSchedulerTests.swift */; };
+		B10000000000000000000044 /* UpdateDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000049 /* UpdateDownloader.swift */; };
+		B10000000000000000000045 /* UpdateDownloaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000004A /* UpdateDownloaderTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -150,6 +156,12 @@
 		F10000000000000000000042 /* NormalizationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizationController.swift; sourceTree = "<group>"; };
 		F10000000000000000000043 /* LoudnessNormalizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoudnessNormalizerTests.swift; sourceTree = "<group>"; };
 		F10000000000000000000044 /* NormalizationControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizationControllerTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000045 /* UpdateVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateVersion.swift; sourceTree = "<group>"; };
+		F10000000000000000000046 /* UpdateVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateVersionTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000047 /* UpdateScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateScheduler.swift; sourceTree = "<group>"; };
+		F10000000000000000000048 /* UpdateSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSchedulerTests.swift; sourceTree = "<group>"; };
+		F10000000000000000000049 /* UpdateDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDownloader.swift; sourceTree = "<group>"; };
+		F1000000000000000000004A /* UpdateDownloaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDownloaderTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +224,9 @@
 				F1000000000000000000003F /* RoutingPresetControllerTests.swift */,
 				F10000000000000000000043 /* LoudnessNormalizerTests.swift */,
 				F10000000000000000000044 /* NormalizationControllerTests.swift */,
+				F10000000000000000000046 /* UpdateVersionTests.swift */,
+				F10000000000000000000048 /* UpdateSchedulerTests.swift */,
+				F1000000000000000000004A /* UpdateDownloaderTests.swift */,
 			);
 			path = AudioMasterTests;
 			sourceTree = "<group>";
@@ -233,6 +248,9 @@
 				F10000000000000000000035 /* ResourceActivityPolicy.swift */,
 				F10000000000000000000036 /* ResourceActivityCoordinator.swift */,
 				F1000000000000000000002E /* UpdateChecker.swift */,
+				F10000000000000000000045 /* UpdateVersion.swift */,
+				F10000000000000000000047 /* UpdateScheduler.swift */,
+				F10000000000000000000049 /* UpdateDownloader.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -486,6 +504,9 @@
 				B1000000000000000000003B /* NormalizationSettings.swift in Sources */,
 				B1000000000000000000003C /* LoudnessNormalizer.swift in Sources */,
 				B1000000000000000000003D /* NormalizationController.swift in Sources */,
+				B10000000000000000000040 /* UpdateVersion.swift in Sources */,
+				B10000000000000000000042 /* UpdateScheduler.swift in Sources */,
+				B10000000000000000000044 /* UpdateDownloader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,6 +530,9 @@
 				B1000000000000000000003A /* RoutingPresetControllerTests.swift in Sources */,
 				B1000000000000000000003E /* LoudnessNormalizerTests.swift in Sources */,
 				B1000000000000000000003F /* NormalizationControllerTests.swift in Sources */,
+				B10000000000000000000041 /* UpdateVersionTests.swift in Sources */,
+				B10000000000000000000043 /* UpdateSchedulerTests.swift in Sources */,
+				B10000000000000000000045 /* UpdateDownloaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

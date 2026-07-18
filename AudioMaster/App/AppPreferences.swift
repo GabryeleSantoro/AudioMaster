@@ -5,6 +5,7 @@ enum AppPreferences {
         static let showDecibels = "showDecibels"
         static let volumeShortcutsEnabled = "volumeShortcutsEnabled"
         static let automaticUpdatesEnabled = "automaticUpdatesEnabled"
+        static let lastAutomaticUpdateCheckAt = "lastAutomaticUpdateCheckAt"
         static let appearance = "appearance"
     }
 
@@ -31,6 +32,17 @@ enum AppPreferences {
             return UserDefaults.standard.bool(forKey: Keys.automaticUpdatesEnabled)
         }
         set { UserDefaults.standard.set(newValue, forKey: Keys.automaticUpdatesEnabled) }
+    }
+
+    static var lastAutomaticUpdateCheckAt: Date? {
+        get { UserDefaults.standard.object(forKey: Keys.lastAutomaticUpdateCheckAt) as? Date }
+        set {
+            if let newValue {
+                UserDefaults.standard.set(newValue, forKey: Keys.lastAutomaticUpdateCheckAt)
+            } else {
+                UserDefaults.standard.removeObject(forKey: Keys.lastAutomaticUpdateCheckAt)
+            }
+        }
     }
 
     static var appearance: AppAppearance {
