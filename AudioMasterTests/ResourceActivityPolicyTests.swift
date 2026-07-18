@@ -2,6 +2,19 @@ import XCTest
 @testable import AudioMaster
 
 final class ResourceActivityPolicyTests: XCTestCase {
+    func testHidingMainWindowAlwaysUsesAccessoryEvenWhenOpenWindowOnLaunchIsEnabled() {
+        XCTAssertTrue(
+            ResourceActivityPolicy.shouldUseAccessoryActivationPolicyAfterHidingMainWindow(
+                openWindowOnLaunch: true
+            )
+        )
+        XCTAssertTrue(
+            ResourceActivityPolicy.shouldUseAccessoryActivationPolicyAfterHidingMainWindow(
+                openWindowOnLaunch: false
+            )
+        )
+    }
+
     func testHiddenIdleUsesSlowAppVolumePolling() {
         let snapshot = ResourceActivitySnapshot(
             uiVisibility: .hidden,

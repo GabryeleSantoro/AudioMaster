@@ -38,9 +38,17 @@ final class MainWindow: NSWindow {
 
 extension MainWindow: NSWindowDelegate {
     func windowShouldClose(_ sender: NSWindow) -> Bool {
-        Task { @MainActor in
-            guard let appDelegate = NSApp.delegate as? AppDelegate else { return }
-            appDelegate.hideMainWindow()
+        // Returning false cancels AppKit's close. Hide synchronously on the main
+        // thread so the window disappears immediately; an async Task can leave it
+        // visible if the hide work never runs (e.g. failed delegate cast).
+        dispatchPrecondition(condition: .onQueue(.main))
+        MainActor.assumeIsolated {
+            if let appDelegate = AppDelegate.shared {
+                appDelegate.hideMainWindow()
+            } else {
+                sender.orderOut(nil)
+                NSApp.setActivationPolicy(.accessory)
+            }
         }
         return false
     }

@@ -14,6 +14,15 @@ struct ResourceActivitySnapshot: Equatable {
 }
 
 enum ResourceActivityPolicy {
+    /// Hiding the main window should always return to menu-bar accessory mode.
+    /// `openWindowOnLaunch` only controls launch behavior, not dismiss behavior.
+    static func shouldUseAccessoryActivationPolicyAfterHidingMainWindow(
+        openWindowOnLaunch: Bool
+    ) -> Bool {
+        _ = openWindowOnLaunch
+        return true
+    }
+
     static func appVolumeRefreshInterval(for snapshot: ResourceActivitySnapshot) -> TimeInterval {
         if snapshot.isSystemSleeping { return 0 }
         switch snapshot.uiVisibility {
