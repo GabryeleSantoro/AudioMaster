@@ -3,67 +3,168 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="AudioMaster — the free audio control center for macOS.">
+  <meta name="description" content="AudioMaster — the free audio control center for macOS. Per-app volume, EQ, device switching, and menu bar control.">
   <title>AudioMaster — Free audio control for macOS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="assets/icon.png" type="image/png">
 </head>
 <body>
   <div class="page">
+    <nav class="nav" aria-label="Primary">
+      <a class="nav__brand" href="#">
+        <img src="assets/icon.png" width="28" height="28" alt="">
+        <span>AudioMaster</span>
+      </a>
+      <div class="nav__links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a class="nav__download" href="https://github.com/GabryeleSantoro/AudioMaster/releases/latest" target="_blank" rel="noopener noreferrer">Download</a>
+      </div>
+    </nav>
+
     <main>
       <header class="hero">
-        <div class="hero__glow" aria-hidden="true"></div>
-        <img class="hero__icon" src="assets/icon.png" width="96" height="96" alt="AudioMaster app icon">
-        <h1 class="hero__brand">AudioMaster</h1>
-        <p class="hero__tagline">The free audio control center for macOS.</p>
-        <div class="hero__ctas">
-          <a class="btn btn--primary" href="https://github.com/GabryeleSantoro/AudioMaster/releases/latest" target="_blank" rel="noopener noreferrer">Download for Mac</a>
-          <a class="btn btn--bmc" href="https://www.buymeacoffee.com/gabryelesantoro" target="_blank" rel="noopener noreferrer">
-            <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" width="200" height="56">
-          </a>
+        <div class="hero__mesh" aria-hidden="true"></div>
+        <div class="hero__orb hero__orb--a" aria-hidden="true"></div>
+        <div class="hero__orb hero__orb--b" aria-hidden="true"></div>
+
+        <div class="hero__content reveal">
+          <p class="hero__eyebrow">Free · Open source · macOS 14.2+</p>
+          <img class="hero__icon" src="assets/icon.png" width="104" height="104" alt="AudioMaster app icon">
+          <h1 class="hero__brand">AudioMaster</h1>
+          <p class="hero__tagline">The free audio control center for macOS — per-app volume, EQ, devices, and presets from the menu bar.</p>
+
+          <div class="meters" aria-hidden="true">
+            <span class="meters__bar" style="--i:0"></span>
+            <span class="meters__bar" style="--i:1"></span>
+            <span class="meters__bar" style="--i:2"></span>
+            <span class="meters__bar" style="--i:3"></span>
+            <span class="meters__bar" style="--i:4"></span>
+            <span class="meters__bar" style="--i:5"></span>
+            <span class="meters__bar" style="--i:6"></span>
+            <span class="meters__bar" style="--i:7"></span>
+            <span class="meters__bar" style="--i:8"></span>
+            <span class="meters__bar" style="--i:9"></span>
+            <span class="meters__bar" style="--i:10"></span>
+            <span class="meters__bar" style="--i:11"></span>
+          </div>
+
+          <div class="hero__ctas">
+            <a class="btn btn--primary" href="https://github.com/GabryeleSantoro/AudioMaster/releases/latest" target="_blank" rel="noopener noreferrer">Download for Mac</a>
+            <a class="btn btn--bmc" href="https://www.buymeacoffee.com/gabryelesantoro" target="_blank" rel="noopener noreferrer">
+              <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" width="200" height="56">
+            </a>
+          </div>
+          <p class="hero__note">Universal binary for Apple Silicon and Intel</p>
         </div>
-        <p class="hero__note">Requires macOS 14.2+</p>
       </header>
+
       <section class="features" id="features" aria-labelledby="features-heading">
-        <div class="features__inner">
-          <h2 class="features__heading" id="features-heading">What it does</h2>
-          <p class="features__lede">Control your Mac’s audio from one place — apps, devices, and EQ.</p>
+        <div class="section__inner">
+          <div class="section__intro reveal">
+            <h2 class="section__heading" id="features-heading">What it does</h2>
+            <p class="section__lede">Everything you reach for System Settings to fix — in one calm control surface.</p>
+          </div>
           <ul class="features__grid">
-            <li class="feature">
-              <h3 class="feature__title">Per-app volume</h3>
-              <p class="feature__text">Set volume or mute for each app on its own.</p>
+            <li class="card reveal" style="--d:0">
+              <div class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 14v-2a2 2 0 0 1 2-2h1l3-5h1v12h-1l-3-5H6a2 2 0 0 1-2-2Z"/><path d="M15 9.5a4 4 0 0 1 0 5"/><path d="M17.5 7a7 7 0 0 1 0 10"/></svg>
+              </div>
+              <h3 class="card__title">Per-app volume</h3>
+              <p class="card__text">Lower Slack, keep Spotify loud, mute a browser tab — each app on its own slider, remembered across restarts.</p>
             </li>
-            <li class="feature">
-              <h3 class="feature__title">Equalizer</h3>
-              <p class="feature__text">Shape sound globally or per app with built-in presets.</p>
+            <li class="card reveal" style="--d:1">
+              <div class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 16V8M8 18V6M12 15V9M16 19V5M20 14V10"/></svg>
+              </div>
+              <h3 class="card__title">Equalizer</h3>
+              <p class="card__text">Global or per-app EQ with up to 31 bands and 15 presets — from Bass Boost to Podcast to Warm.</p>
             </li>
-            <li class="feature">
-              <h3 class="feature__title">Device switching</h3>
-              <p class="feature__text">See outputs and inputs and switch without System Settings.</p>
+            <li class="card reveal" style="--d:2">
+              <div class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 8h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/><circle cx="12" cy="13" r="1.5"/></svg>
+              </div>
+              <h3 class="card__title">Device switching</h3>
+              <p class="card__text">See every input and output, switch in one click, and watch devices appear the moment you plug them in.</p>
             </li>
-            <li class="feature">
-              <h3 class="feature__title">Bluetooth battery</h3>
-              <p class="feature__text">Live battery levels on wireless audio gear.</p>
+            <li class="card reveal" style="--d:3">
+              <div class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="7" y="4" width="10" height="16" rx="2"/><path d="M10 18h4"/><path d="M9 8h6"/></svg>
+              </div>
+              <h3 class="card__title">Bluetooth battery</h3>
+              <p class="card__text">Live battery badges on wireless headphones and speakers — no digging through Bluetooth settings.</p>
             </li>
-            <li class="feature">
-              <h3 class="feature__title">Menu bar control</h3>
-              <p class="feature__text">Quick volumes and devices from the menu bar.</p>
+            <li class="card reveal" style="--d:4">
+              <div class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M5 8h14v4H5z"/><path d="M8 12v4M12 12v6M16 12v3"/><circle cx="12" cy="5" r="1.5"/></svg>
+              </div>
+              <h3 class="card__title">Menu bar control</h3>
+              <p class="card__text">Always one click away. Quick popover for volumes, devices, and what’s playing — without a Dock icon in the way.</p>
             </li>
-            <li class="feature">
-              <h3 class="feature__title">Routing presets</h3>
-              <p class="feature__text">Save a full setup and restore it in one click.</p>
+            <li class="card reveal" style="--d:5">
+              <div class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M5 7h14v3H5zM5 14h14v3H5z"/><path d="M8 7v10M16 7v10"/></svg>
+              </div>
+              <h3 class="card__title">Routing presets</h3>
+              <p class="card__text">Save Work, Gaming, or Music — device, volumes, mutes, and EQ — then restore the whole setup instantly.</p>
             </li>
           </ul>
         </div>
       </section>
+
+      <section class="how" id="how" aria-labelledby="how-heading">
+        <div class="section__inner">
+          <div class="section__intro reveal">
+            <h2 class="section__heading" id="how-heading">How it works</h2>
+            <p class="section__lede">From menu bar to full control in a few seconds.</p>
+          </div>
+          <ol class="how__steps">
+            <li class="step reveal" style="--d:0">
+              <span class="step__num">1</span>
+              <div>
+                <h3 class="step__title">Launch to the menu bar</h3>
+                <p class="step__text">AudioMaster stays out of the Dock. First launch walks you through a short setup.</p>
+              </div>
+            </li>
+            <li class="step reveal" style="--d:1">
+              <span class="step__num">2</span>
+              <div>
+                <h3 class="step__title">Shape what’s playing</h3>
+                <p class="step__text">Adjust per-app volumes, switch devices, and tune the EQ from the popover or main window.</p>
+              </div>
+            </li>
+            <li class="step reveal" style="--d:2">
+              <span class="step__num">3</span>
+              <div>
+                <h3 class="step__title">Save the setup</h3>
+                <p class="step__text">Capture a routing preset and bring it back whenever you jump between contexts.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="cta-band" aria-labelledby="cta-heading">
+        <div class="cta-band__inner reveal">
+          <div class="cta-band__glow" aria-hidden="true"></div>
+          <h2 class="cta-band__heading" id="cta-heading">Free forever. Built for the Mac community.</h2>
+          <p class="cta-band__text">Download AudioMaster, and if it earns a place in your menu bar, a coffee keeps development going.</p>
+          <div class="cta-band__actions">
+            <a class="btn btn--primary btn--light" href="https://github.com/GabryeleSantoro/AudioMaster/releases/latest" target="_blank" rel="noopener noreferrer">Get the latest release</a>
+            <a class="btn btn--ghost" href="https://www.buymeacoffee.com/gabryelesantoro" target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
+          </div>
+        </div>
+      </section>
     </main>
+
     <footer class="footer">
       <a href="https://github.com/GabryeleSantoro/AudioMaster" target="_blank" rel="noopener noreferrer">Open source on GitHub</a>
       <span class="footer__credit">Made for the Mac community</span>
     </footer>
   </div>
+  <script src="script.js" defer></script>
 </body>
 </html>
