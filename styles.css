@@ -1,0 +1,229 @@
+:root {
+  --bg-start: #e8eef5;
+  --bg-end: #f7f9fc;
+  --text: #1c2430;
+  --text-muted: #5a6778;
+  --accent: #2f6db5;
+  --accent-hover: #285f9e;
+  --hairline: #d8e0ea;
+  --focus: #2f6db5;
+  --font: "DM Sans", system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: linear-gradient(165deg, var(--bg-start) 0%, var(--bg-end) 45%, #eef2f7 100%);
+  background-attachment: fixed;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem 2rem;
+  position: relative;
+}
+
+.hero__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 50% at 50% 30%, #c5d8ef 0%, transparent 70%);
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero__icon,
+.hero__brand,
+.hero__tagline,
+.hero__ctas,
+.hero__note {
+  position: relative;
+  z-index: 1;
+}
+
+.hero__icon {
+  width: 96px;
+  height: 96px;
+  border-radius: 22px;
+  box-shadow: 0 12px 32px rgba(47, 109, 181, 0.22);
+  margin-bottom: 1.75rem;
+}
+
+.hero__brand {
+  margin: 0 0 0.85rem;
+  font-size: clamp(2.5rem, 6vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+}
+
+.hero__tagline {
+  margin: 0 0 1.75rem;
+  max-width: 22rem;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.1rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.85rem 1.4rem;
+  box-shadow: 0 6px 18px rgba(47, 109, 181, 0.28);
+}
+
+.btn--primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.btn--bmc {
+  padding: 0;
+  line-height: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.btn--bmc img {
+  display: block;
+  width: 200px;
+  height: auto;
+}
+
+.btn--bmc:hover {
+  transform: translateY(-1px);
+}
+
+.hero__note {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #8a96a8;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem 1.35rem;
+  border-top: 1px solid var(--hairline);
+  font-size: 0.8125rem;
+  color: #7a8799;
+}
+
+.footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.footer a:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.footer__credit {
+  color: #7a8799;
+}
+
+@media (max-width: 420px) {
+  .footer {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__icon,
+  .hero__brand,
+  .hero__tagline,
+  .hero__ctas,
+  .hero__note {
+    animation: rise 0.55s ease both;
+  }
+
+  .hero__brand { animation-delay: 0.06s; }
+  .hero__tagline { animation-delay: 0.12s; }
+  .hero__ctas { animation-delay: 0.18s; }
+  .hero__note { animation-delay: 0.24s; }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn--primary,
+  .btn--bmc {
+    transition: none;
+  }
+
+  .btn--primary:hover,
+  .btn--bmc:hover {
+    transform: none;
+  }
+}
