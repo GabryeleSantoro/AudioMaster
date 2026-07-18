@@ -60,6 +60,29 @@ final class LoudnessNormalizerTests: XCTestCase {
         XCTAssertGreaterThan(gain, 1.0, "quiet signal should be boosted toward target loudness")
     }
 
+    // Production default strength (0.75) applies partial correction: boost a quiet
+    // tone, but less than full strength would.
+    func testProductionStrengthAppliesPartialCorrection() {
+        // Louder than the 0.02 quiet-tone case so full strength stays below the +12dB clamp.
+        let amplitude: Float = 0.08
+        let seconds = 1.5
+        let frequency = 1_000.0
+
+        let fullStrength = makeNormalizer(strength: 1.0)
+        let productionStrength = makeNormalizer(strength: 0.75)
+
+        let fullGain = drive(fullStrength, amplitude: amplitude, seconds: seconds, frequency: frequency)
+        let partialGain = drive(productionStrength, amplitude: amplitude, seconds: seconds, frequency: frequency)
+
+        XCTAssertGreaterThan(fullGain, 1.0, "sanity: full strength should boost quiet tone")
+        XCTAssertGreaterThan(partialGain, 1.0, "production strength should still boost quiet tone")
+        XCTAssertLessThan(partialGain, fullGain, "strength 0.75 applies less boost than full strength")
+
+        let fullGainDb = 20 * log10(fullGain)
+        let partialGainDb = 20 * log10(partialGain)
+        XCTAssertEqual(partialGainDb, 0.75 * fullGainDb, accuracy: 0.5)
+    }
+
     // Test 2c: Loud input should be attenuated (gain < 1) — the opposite
     // direction from the quiet case, confirming the sign of the gain
     // calculation (not just that it settles to some clamped constant).
