@@ -8,6 +8,7 @@ final class RoutingPresetTests: XCTestCase {
         XCTAssertNil(snapshot.outputDeviceName)
         XCTAssertNil(snapshot.masterVolume)
         XCTAssertNil(snapshot.equalizer)
+        XCTAssertNil(snapshot.normalizationEnabled)
         XCTAssertTrue(snapshot.appVolumes.isEmpty)
     }
 
@@ -49,5 +50,16 @@ final class RoutingPresetTests: XCTestCase {
         XCTAssertNil(snapshot.outputDeviceUID)
         XCTAssertNil(snapshot.masterVolume)
         XCTAssertNil(snapshot.equalizer)
+        XCTAssertNil(snapshot.normalizationEnabled)
+    }
+
+    func testNormalizationEnabledCodableRoundTrip() throws {
+        let snapshot = RoutingSnapshot(normalizationEnabled: true)
+        let decoded = try JSONDecoder().decode(
+            RoutingSnapshot.self,
+            from: JSONEncoder().encode(snapshot)
+        )
+        XCTAssertEqual(decoded, snapshot)
+        XCTAssertEqual(decoded.normalizationEnabled, true)
     }
 }
