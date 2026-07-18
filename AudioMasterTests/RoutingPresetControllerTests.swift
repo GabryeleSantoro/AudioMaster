@@ -123,3 +123,81 @@ final class FakeRoutingStatePort: RoutingStatePort {
         appliedSnapshots.append(snapshot)
     }
 }
+
+/// Exercises the real `LiveRoutingStatePort` (backed by real managers/controllers, no fakes)
+/// to prove the normalization enable/disable state survives a capture/apply round trip, which
+/// is what a save-preset-then-apply-preset flow relies on end to end.
+@MainActor
+final class LiveRoutingStatePortNormalizationTests: XCTestCase {
+    private var persistence: PersistenceController!
+    private var deviceManager: AudioDeviceManager!
+    private var equalizerController: EqualizerController!
+    private var normalizationController: NormalizationController!
+    private var appVolumeController: AppVolumeController!
+    private var port: LiveRoutingStatePort!
+    private var suiteName: String!
+
+    override func setUp() {
+        super.setUp()
+        suiteName = "test.liveRoutingStatePort.normalization.\(UUID().uuidString)"
+
+        persistence = PersistenceController(inMemory: true)
+        deviceManager = AudioDeviceManager(persistence: persistence)
+
+        equalizerController = EqualizerController()
+        equalizerController.resetToDefaults()
+
+        normalizationController = NormalizationController(defaults: UserDefaults(suiteName: suiteName)!)
+
+        appVolumeController = AppVolumeController(
+            equalizerController: equalizerController,
+            normalizationController: normalizationController
+        )
+
+        port = LiveRoutingStatePort(
+            deviceManager: deviceManager,
+            appVolumeController: appVolumeController,
+            equalizerController: equalizerController,
+            normalizationController: normalizationController
+        )
+    }
+
+    override func tearDown() {
+        port = nil
+        appVolumeController.stopMonitoring()
+        appVolumeController = nil
+        normalizationController = nil
+        equalizerController = nil
+        deviceManager.stopMonitoring()
+        deviceManager = nil
+        persistence = nil
+        UserDefaults().removePersistentDomain(forName: suiteName)
+        suiteName = nil
+        super.tearDown()
+    }
+
+    func testNormalizationEnabledRoundTripsThroughCaptureAndApply() {
+        normalizationController.isEnabled = true
+
+        let snapshot = port.captureSnapshot()
+        XCTAssertEqual(snapshot.normalizationEnabled, true)
+
+        normalizationController.isEnabled = false
+        port.apply(snapshot)
+
+        XCTAssertTrue(normalizationController.isEnabled)
+    }
+
+    func testApplyingSnapshotWithNilNormalizationLeavesCurrentStateUnchanged() {
+        normalizationController.isEnabled = true
+
+        port.apply(RoutingSnapshot(normalizationEnabled: nil))
+
+        XCTAssertTrue(normalizationController.isEnabled)
+
+        normalizationController.isEnabled = false
+        port.apply(RoutingSnapshot(normalizationEnabled: nil))
+
+        XCTAssertFalse(normalizationController.isEnabled)
+    }
+}
