@@ -15,7 +15,13 @@ final class AppVolumeRefreshPolicyTests: XCTestCase {
 
     func testRefreshDoesNotReplaceAppsWhenNothingChanged() {
         let equalizerController = EqualizerController()
-        let controller = AppVolumeController(equalizerController: equalizerController)
+        let normalizationController = NormalizationController(
+            defaults: UserDefaults(suiteName: "test.appVolumeRefresh.\(UUID().uuidString)")!
+        )
+        let controller = AppVolumeController(
+            equalizerController: equalizerController,
+            normalizationController: normalizationController
+        )
 
         controller.refresh()
         let first = controller.apps
@@ -27,7 +33,13 @@ final class AppVolumeRefreshPolicyTests: XCTestCase {
 
     func testAdaptiveTimerUsesCoordinatorInterval() {
         let equalizerController = EqualizerController()
-        let controller = AppVolumeController(equalizerController: equalizerController)
+        let normalizationController = NormalizationController(
+            defaults: UserDefaults(suiteName: "test.appVolumeRefresh.\(UUID().uuidString)")!
+        )
+        let controller = AppVolumeController(
+            equalizerController: equalizerController,
+            normalizationController: normalizationController
+        )
         let coordinator = ResourceActivityCoordinator()
         controller.bind(activityCoordinator: coordinator)
 

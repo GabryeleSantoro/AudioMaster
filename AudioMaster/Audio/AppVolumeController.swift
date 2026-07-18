@@ -13,6 +13,7 @@ final class AppVolumeController: ObservableObject {
     @Published var systemVolume: Double = 0.75
 
     let equalizerController: EqualizerController
+    let normalizationController: NormalizationController
 
     private var gains: [pid_t: Float] = [:]
     private var muted: Set<pid_t> = []
@@ -22,28 +23,33 @@ final class AppVolumeController: ObservableObject {
     private var workspaceObservers: [NSObjectProtocol] = []
     private var defaultOutputListener: AudioObjectPropertyListenerBlock?
     private var equalizerCancellable: AnyCancellable?
+    private var normalizationCancellable: AnyCancellable?
     private var activityCancellable: AnyCancellable?
     private var activityCoordinator: ResourceActivityCoordinator?
     private var eqRefreshTask: Task<Void, Never>?
+    private var normalizationRefreshTask: Task<Void, Never>?
     private var cachedAudioPIDs: Set<pid_t> = []
     private var lastFullProcessScan: Date = .distantPast
     private let ownPID = ProcessInfo.processInfo.processIdentifier
     private let logger = Logger(subsystem: "com.audiomaster.app", category: "AppVolumeController")
     private let gainsDefaultsKey = "com.audiomaster.appVolumeGains"
 
-    init(equalizerController: EqualizerController) {
+    init(equalizerController: EqualizerController, normalizationController: NormalizationController) {
         self.equalizerController = equalizerController
+        self.normalizationController = normalizationController
         if #available(macOS 14.2, *) {
             isProcessTapAvailable = true
         }
         loadSavedGains()
         refreshSystemVolume()
         observeEqualizerChanges()
+        observeNormalizationChanges()
     }
 
     deinit {
         refreshTimer?.invalidate()
         eqRefreshTask?.cancel()
+        normalizationRefreshTask?.cancel()
         for observer in workspaceObservers {
             NSWorkspace.shared.notificationCenter.removeObserver(observer)
         }
@@ -293,8 +299,30 @@ final class AppVolumeController: ObservableObject {
         }
     }
 
+    private func observeNormalizationChanges() {
+        normalizationCancellable = normalizationController.objectWillChange.sink { [weak self] _ in
+            self?.normalizationRefreshTask?.cancel()
+            self?.normalizationRefreshTask = Task { @MainActor [weak self] in
+                try? await Task.sleep(nanoseconds: 120_000_000)
+                guard !Task.isCancelled else { return }
+                self?.refreshNormalizationOnActiveMixers()
+            }
+        }
+    }
+
+    private func refreshNormalizationOnActiveMixers() {
+        guard #available(macOS 14.2, *) else { return }
+        let settings = normalizationController.settings
+        for (_, mixer) in mixers {
+            mixer.updateNormalization(settings)
+        }
+    }
+
     private func needsMixer(for entry: AppVolumeEntry) -> Bool {
         if gains[entry.pid] != nil || muted.contains(entry.pid) {
+            return true
+        }
+        if normalizationController.isEnabled {
             return true
         }
         return equalizerController.needsProcessing(for: entry.bundleID)
@@ -361,6 +389,7 @@ final class AppVolumeController: ObservableObject {
             }
             mixer.setGain(effective)
             mixer.updateEqualizer(eqSettings(for: pid))
+            mixer.updateNormalization(normalizationController.settings)
             return
         }
 
@@ -369,7 +398,8 @@ final class AppVolumeController: ObservableObject {
         let mixer = AppVolumeMixer(
             targetPID: pid,
             gain: effective,
-            eqSettings: eqSettings(for: pid)
+            eqSettings: eqSettings(for: pid),
+            normalizationSettings: normalizationController.settings
         )
         do {
             try mixer.start()
@@ -383,7 +413,7 @@ final class AppVolumeController: ObservableObject {
     }
 
     private func needsProcessing(pid: pid_t) -> Bool {
-        effectiveGain(pid: pid) != 1.0 || eqSettings(for: pid) != nil
+        effectiveGain(pid: pid) != 1.0 || eqSettings(for: pid) != nil || normalizationController.isEnabled
     }
 
     private func effectiveGain(pid: pid_t) -> Float {
@@ -438,7 +468,8 @@ final class AppVolumeController: ObservableObject {
             let mixer = AppVolumeMixer(
                 targetPID: pid,
                 gain: effectiveGain(pid: pid),
-                eqSettings: eqSettings(for: pid)
+                eqSettings: eqSettings(for: pid),
+                normalizationSettings: normalizationController.settings
             )
             do {
                 try mixer.start()
@@ -534,6 +565,10 @@ extension AppVolumeController {
 
     func applyRefreshPolicyForTesting() {
         rescheduleRefreshTimer()
+    }
+
+    func needsMixerForTesting(for entry: AppVolumeEntry) -> Bool {
+        needsMixer(for: entry)
     }
 }
 #endif

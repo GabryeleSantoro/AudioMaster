@@ -42,10 +42,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             let manager = AudioDeviceManager()
             let bluetooth = BluetoothDeviceManager()
             let equalizerController = EqualizerController()
-            let volumeController = AppVolumeController(equalizerController: equalizerController)
+            let normalization = NormalizationController()
+            let volumeController = AppVolumeController(
+                equalizerController: equalizerController,
+                normalizationController: normalization
+            )
             let coordinator = ResourceActivityCoordinator()
             volumeController.bind(activityCoordinator: coordinator)
-            let normalization = NormalizationController()
             let routingPort = LiveRoutingStatePort(
                 deviceManager: manager,
                 appVolumeController: volumeController,

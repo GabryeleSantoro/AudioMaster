@@ -16,12 +16,21 @@ final class AppVolumeMixer {
     private var started = false
     private var smoothedGain: Float = 1.0
     private var appliesEqualizer = false
+    private var appliesNormalization = false
 
-    init(targetPID: pid_t, gain: Float, eqSettings: EQBandSettings? = nil) {
+    init(
+        targetPID: pid_t,
+        gain: Float,
+        eqSettings: EQBandSettings? = nil,
+        normalizationSettings: NormalizationSettings? = nil
+    ) {
         self.targetPID = targetPID
         gainLock.withLock { $0 = gain }
         smoothedGain = gain
         updateEqualizer(eqSettings)
+        if let normalizationSettings {
+            updateNormalization(normalizationSettings)
+        }
     }
 
     func setGain(_ gain: Float) {
@@ -35,6 +44,11 @@ final class AppVolumeMixer {
         } else {
             appliesEqualizer = false
         }
+    }
+
+    func updateNormalization(_ settings: NormalizationSettings) {
+        equalizer.updateNormalization(settings: settings)
+        appliesNormalization = settings.isEnabled
     }
 
     func start() throws {
@@ -132,7 +146,8 @@ final class AppVolumeMixer {
 
             let bytes = min(inputBuffer.mDataByteSize, outputBuffer.mDataByteSize)
             let samples = Int(bytes) / MemoryLayout<Float>.size
-            let passthrough = start == 1.0 && target == 1.0 && !appliesEqualizer
+            let appliesProcessing = appliesEqualizer || appliesNormalization
+            let passthrough = start == 1.0 && target == 1.0 && !appliesProcessing
             if passthrough {
                 memcpy(outputPointer, inputPointer, Int(bytes))
             } else {
@@ -140,7 +155,7 @@ final class AppVolumeMixer {
                 var gain = start
                 for sample in 0..<samples {
                     var value = inputPointer[sample] * gain
-                    if appliesEqualizer {
+                    if appliesProcessing {
                         value = equalizer.process(sample: value)
                     }
                     outputPointer[sample] = value

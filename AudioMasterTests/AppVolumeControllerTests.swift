@@ -7,7 +7,12 @@ final class AppVolumeControllerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        controller = AppVolumeController(equalizerController: EqualizerController())
+        controller = AppVolumeController(
+            equalizerController: EqualizerController(),
+            normalizationController: NormalizationController(
+                defaults: UserDefaults(suiteName: "test.appVolume.\(UUID().uuidString)")!
+            )
+        )
     }
 
     override func tearDown() {
@@ -110,5 +115,25 @@ final class AppVolumeControllerTests: XCTestCase {
 
         controller.increaseLastModifiedVolume()
         XCTAssertEqual(controller.lastModifiedPID, app.pid)
+    }
+
+    func testNeedsMixerIsFalseByDefaultForPlainEntry() {
+        let entry = AppVolumeEntry(pid: 42_002, bundleID: "com.example.app", name: "Example", isPlayingAudio: true)
+        XCTAssertFalse(controller.needsMixerForTesting(for: entry))
+    }
+
+    func testNeedsMixerIsTrueWhenNormalizationEnabled() {
+        controller.normalizationController.isEnabled = true
+
+        let entry = AppVolumeEntry(pid: 42_003, bundleID: "com.example.app", name: "Example", isPlayingAudio: true)
+        XCTAssertTrue(controller.needsMixerForTesting(for: entry))
+    }
+
+    func testNeedsMixerReturnsToFalseWhenNormalizationDisabledAgain() {
+        controller.normalizationController.isEnabled = true
+        controller.normalizationController.isEnabled = false
+
+        let entry = AppVolumeEntry(pid: 42_004, bundleID: "com.example.app", name: "Example", isPlayingAudio: true)
+        XCTAssertFalse(controller.needsMixerForTesting(for: entry))
     }
 }
