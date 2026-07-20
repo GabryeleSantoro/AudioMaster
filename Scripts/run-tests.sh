@@ -2,7 +2,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-BUILD_DIR="${BUILD_DIR:-$ROOT/build}"
+# .noindex suffix excludes build products from Spotlight (no duplicate app instances).
+BUILD_DIR="${BUILD_DIR:-$ROOT/build.noindex}"
 
 echo "Running AudioMaster test suite..."
 

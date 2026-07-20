@@ -4,7 +4,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 APP_NAME="AudioMaster"
 SCHEME="AudioMaster"
-BUILD_DIR="${BUILD_DIR:-$ROOT/build}"
+# .noindex suffix excludes build products from Spotlight (no duplicate app instances).
+BUILD_DIR="${BUILD_DIR:-$ROOT/build.noindex}"
 VERSION="${1:?Usage: build-dmg.sh <version>}"
 BUILD_NUMBER="${BUILD_NUMBER:-1}"
 

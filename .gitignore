@@ -1,5 +1,8 @@
 # Xcode / build output
+# .noindex suffix keeps build products out of the Spotlight index so stray
+# per-branch AudioMaster.app copies don't show up as duplicate app instances.
 build/
+build.noindex/
 DerivedData/
 *.xcuserstate
 default.profraw
