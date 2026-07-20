@@ -22,6 +22,7 @@ final class AppVolumeController: ObservableObject {
     private var refreshInterval: TimeInterval = 2.0
     private var workspaceObservers: [NSObjectProtocol] = []
     private var defaultOutputListener: AudioObjectPropertyListenerBlock?
+    private var lastKnownDefaultOutputDeviceID: AudioDeviceID?
     private var equalizerCancellable: AnyCancellable?
     private var normalizationCancellable: AnyCancellable?
     private var activityCancellable: AnyCancellable?
@@ -456,6 +457,19 @@ final class AppVolumeController: ObservableObject {
         notifyMixersChanged()
     }
 
+    /// Decides whether a default-output-device notification should rebuild the
+    /// active process taps. Rebuilding recreates taps via
+    /// `AudioHardwareCreateProcessTap`, which re-triggers the system-audio
+    /// recording consent prompt, so we only rebuild on a genuine device change.
+    /// CoreAudio re-publishes this property on sleep/wake with the same device,
+    /// which previously caused a permission prompt on every wake.
+    private func shouldRebuildForDefaultOutputChange(newDeviceID: AudioDeviceID?) -> Bool {
+        guard let newDeviceID else { return false }
+        if newDeviceID == lastKnownDefaultOutputDeviceID { return false }
+        lastKnownDefaultOutputDeviceID = newDeviceID
+        return true
+    }
+
     private func rebuildActiveMixers() {
         guard #available(macOS 14.2, *) else { return }
 
@@ -488,10 +502,19 @@ final class AppVolumeController: ObservableObject {
             mElement: kAudioObjectPropertyElementMain
         )
 
+        // Seed the last-known device so the first (possibly spurious) callback,
+        // e.g. the one CoreAudio emits on wake with an unchanged device, does
+        // not rebuild taps and re-prompt for audio-capture consent.
+        lastKnownDefaultOutputDeviceID = try? CoreAudioHelpers.getDefaultDevice(scope: .output)
+
         let block: AudioObjectPropertyListenerBlock = { [weak self] _, _ in
             Task { @MainActor in
-                self?.rebuildActiveMixers()
-                self?.refreshSystemVolume()
+                guard let self else { return }
+                let currentID = try? CoreAudioHelpers.getDefaultDevice(scope: .output)
+                if self.shouldRebuildForDefaultOutputChange(newDeviceID: currentID) {
+                    self.rebuildActiveMixers()
+                }
+                self.refreshSystemVolume()
             }
         }
 
@@ -569,6 +592,14 @@ extension AppVolumeController {
 
     func needsMixerForTesting(for entry: AppVolumeEntry) -> Bool {
         needsMixer(for: entry)
+    }
+
+    func seedDefaultOutputDeviceIDForTesting(_ id: AudioDeviceID?) {
+        lastKnownDefaultOutputDeviceID = id
+    }
+
+    func shouldRebuildForDefaultOutputChangeForTesting(newDeviceID: AudioDeviceID?) -> Bool {
+        shouldRebuildForDefaultOutputChange(newDeviceID: newDeviceID)
     }
 }
 #endif

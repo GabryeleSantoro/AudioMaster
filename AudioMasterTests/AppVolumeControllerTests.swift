@@ -144,6 +144,27 @@ final class AppVolumeControllerTests: XCTestCase {
         XCTAssertTrue(controller.needsMixerForTesting(for: entry))
     }
 
+    // MARK: - Default output device changes (sleep/wake regression)
+
+    func testDefaultOutputChangeToSameDeviceDoesNotRebuild() {
+        // On wake, CoreAudio re-publishes the default-output property with the
+        // same device. Rebuilding taps then would re-prompt for audio capture.
+        controller.seedDefaultOutputDeviceIDForTesting(77)
+        XCTAssertFalse(controller.shouldRebuildForDefaultOutputChangeForTesting(newDeviceID: 77))
+    }
+
+    func testDefaultOutputChangeToDifferentDeviceRebuildsOnce() {
+        controller.seedDefaultOutputDeviceIDForTesting(77)
+        XCTAssertTrue(controller.shouldRebuildForDefaultOutputChangeForTesting(newDeviceID: 88))
+        // Same device again: no further rebuild.
+        XCTAssertFalse(controller.shouldRebuildForDefaultOutputChangeForTesting(newDeviceID: 88))
+    }
+
+    func testDefaultOutputChangeWithUnreadableDeviceDoesNotRebuild() {
+        controller.seedDefaultOutputDeviceIDForTesting(77)
+        XCTAssertFalse(controller.shouldRebuildForDefaultOutputChangeForTesting(newDeviceID: nil))
+    }
+
     func testNeedsMixerReturnsToFalseWhenNormalizationDisabledAgain() {
         controller.normalizationController.isEnabled = true
         controller.normalizationController.isEnabled = false
