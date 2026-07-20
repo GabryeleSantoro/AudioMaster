@@ -165,6 +165,25 @@ final class AppVolumeControllerTests: XCTestCase {
         XCTAssertFalse(controller.shouldRebuildForDefaultOutputChangeForTesting(newDeviceID: nil))
     }
 
+    // MARK: - Tap-start in-flight guard (double consent-prompt regression)
+
+    func testSecondStartIsBlockedWhileFirstIsInFlight() {
+        // Creating a process tap triggers the system audio-capture consent
+        // prompt. A second start for the same pid before the first finishes
+        // would create a second tap and re-prompt. The guard must block it.
+        XCTAssertTrue(controller.canBeginStartForTesting(pid: 42_010))
+        controller.markStartInFlightForTesting(42_010)
+        XCTAssertFalse(controller.canBeginStartForTesting(pid: 42_010))
+        // A different pid is unaffected.
+        XCTAssertTrue(controller.canBeginStartForTesting(pid: 42_011))
+    }
+
+    func testFinishingStartClearsInFlightGuard() {
+        controller.markStartInFlightForTesting(42_010)
+        controller.finishStartForTesting(pid: 42_010)
+        XCTAssertTrue(controller.canBeginStartForTesting(pid: 42_010))
+    }
+
     func testNeedsMixerReturnsToFalseWhenNormalizationDisabledAgain() {
         controller.normalizationController.isEnabled = true
         controller.normalizationController.isEnabled = false

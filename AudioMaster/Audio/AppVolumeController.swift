@@ -18,6 +18,10 @@ final class AppVolumeController: ObservableObject {
     private var gains: [pid_t: Float] = [:]
     private var muted: Set<pid_t> = []
     private var mixers: [pid_t: AppVolumeMixer] = [:]
+    /// PIDs whose process tap is currently being created off the main thread.
+    /// Guards against launching a second `AudioHardwareCreateProcessTap` for the
+    /// same pid, which would re-trigger the audio-capture consent prompt.
+    private var startingPIDs: Set<pid_t> = []
     private var refreshTimer: Timer?
     private var refreshInterval: TimeInterval = 2.0
     private var workspaceObservers: [NSObjectProtocol] = []
@@ -395,22 +399,68 @@ final class AppVolumeController: ObservableObject {
         }
 
         guard needsProcessing(pid: pid), isPlayingAudio(pid: pid) else { return }
+        // A tap for this pid is already being created; do not start a second one
+        // (that would re-trigger the audio-capture consent prompt).
+        guard canBeginStart(pid: pid) else { return }
 
+        startingPIDs.insert(pid)
         let mixer = AppVolumeMixer(
             targetPID: pid,
             gain: effective,
             eqSettings: eqSettings(for: pid),
             normalizationSettings: normalizationController.settings
         )
-        do {
-            try mixer.start()
+        logger.info("Creating process tap for pid \(pid, privacy: .public)")
+        // `mixer.start()` performs blocking Core Audio work and, on first use,
+        // presents the system audio-capture consent prompt. Run it off the main
+        // actor so the UI stays responsive, then resolve back on the main actor.
+        Task { @MainActor [weak self] in
+            let outcome = await Self.startOffMain(mixer)
+            self?.finishStart(pid: pid, mixer: mixer, outcome: outcome)
+        }
+    }
+
+    /// Whether a fresh tap may be created for `pid`: none exists and none is
+    /// currently being created.
+    private func canBeginStart(pid: pid_t) -> Bool {
+        mixers[pid] == nil && !startingPIDs.contains(pid)
+    }
+
+    @available(macOS 14.2, *)
+    private nonisolated static func startOffMain(_ mixer: AppVolumeMixer) async -> Result<Void, Error> {
+        await Task.detached(priority: .userInitiated) {
+            Result { try mixer.start() }
+        }.value
+    }
+
+    @available(macOS 14.2, *)
+    private func finishStart(pid: pid_t, mixer: AppVolumeMixer, outcome: Result<Void, Error>) {
+        startingPIDs.remove(pid)
+
+        // The app may have stopped playing or no longer need a mixer while the
+        // tap was being created. Tear the tap down instead of keeping it.
+        guard needsProcessing(pid: pid), isPlayingAudio(pid: pid) else {
+            mixer.stop()
+            notifyMixersChanged()
+            return
+        }
+
+        switch outcome {
+        case .success:
+            errors[pid] = nil
+            // Sync to the latest state in case gain/EQ changed mid-start.
+            mixer.setGain(effectiveGain(pid: pid))
+            mixer.updateEqualizer(eqSettings(for: pid))
+            mixer.updateNormalization(normalizationController.settings)
             mixers[pid] = mixer
-        } catch {
+        case .failure(let error):
+            mixer.stop()
             errors[pid] = describe(error)
             gains[pid] = 1.0
             muted.remove(pid)
             logger.error("Failed to start mixer for pid \(pid): \(error.localizedDescription)")
         }
+        notifyMixersChanged()
     }
 
     private func needsProcessing(pid: pid_t) -> Bool {
@@ -479,19 +529,10 @@ final class AppVolumeController: ObservableObject {
         for pid in activePIDs {
             mixers[pid]?.stop()
             mixers.removeValue(forKey: pid)
-            let mixer = AppVolumeMixer(
-                targetPID: pid,
-                gain: effectiveGain(pid: pid),
-                eqSettings: eqSettings(for: pid),
-                normalizationSettings: normalizationController.settings
-            )
-            do {
-                try mixer.start()
-                mixers[pid] = mixer
-            } catch {
-                errors[pid] = describe(error)
-            }
+            // Recreate through the guarded, off-main start path.
+            applyEffectiveGain(pid: pid)
         }
+        notifyMixersChanged()
     }
 
     @available(macOS 14.2, *)
@@ -600,6 +641,18 @@ extension AppVolumeController {
 
     func shouldRebuildForDefaultOutputChangeForTesting(newDeviceID: AudioDeviceID?) -> Bool {
         shouldRebuildForDefaultOutputChange(newDeviceID: newDeviceID)
+    }
+
+    func canBeginStartForTesting(pid: pid_t) -> Bool {
+        canBeginStart(pid: pid)
+    }
+
+    func markStartInFlightForTesting(_ pid: pid_t) {
+        startingPIDs.insert(pid)
+    }
+
+    func finishStartForTesting(pid: pid_t) {
+        startingPIDs.remove(pid)
     }
 }
 #endif
