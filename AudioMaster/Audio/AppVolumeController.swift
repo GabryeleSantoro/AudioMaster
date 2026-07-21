@@ -17,7 +17,7 @@ final class AppVolumeController: ObservableObject {
 
     private var gains: [pid_t: Float] = [:]
     private var muted: Set<pid_t> = []
-    private var mixers: [pid_t: AppVolumeMixer] = [:]
+    private var mixers: [pid_t: any AppVolumeMixing] = [:]
     /// PIDs whose process tap is currently being created off the main thread.
     /// Guards against launching a second `AudioHardwareCreateProcessTap` for the
     /// same pid, which would re-trigger the audio-capture consent prompt.
@@ -508,11 +508,11 @@ final class AppVolumeController: ObservableObject {
     }
 
     /// Decides whether a default-output-device notification should rebuild the
-    /// active process taps. Rebuilding recreates taps via
-    /// `AudioHardwareCreateProcessTap`, which re-triggers the system-audio
-    /// recording consent prompt, so we only rebuild on a genuine device change.
-    /// CoreAudio re-publishes this property on sleep/wake with the same device,
-    /// which previously caused a permission prompt on every wake.
+    /// active mixers. Rebuilding now re-points each surviving tap at the new
+    /// output via `rebindOutput()` (see `rebuildActiveMixers`), so it no longer
+    /// re-triggers the audio-capture consent prompt. We still gate on a genuine
+    /// device change to avoid needless aggregate-device churn, e.g. CoreAudio
+    /// re-publishing this property on sleep/wake with an unchanged device.
     private func shouldRebuildForDefaultOutputChange(newDeviceID: AudioDeviceID?) -> Bool {
         guard let newDeviceID else { return false }
         if newDeviceID == lastKnownDefaultOutputDeviceID { return false }
@@ -527,10 +527,21 @@ final class AppVolumeController: ObservableObject {
         guard !activePIDs.isEmpty else { return }
 
         for pid in activePIDs {
-            mixers[pid]?.stop()
-            mixers.removeValue(forKey: pid)
-            // Recreate through the guarded, off-main start path.
-            applyEffectiveGain(pid: pid)
+            guard let mixer = mixers[pid] else { continue }
+            do {
+                // Re-point the surviving tap at the new default output. This does
+                // NOT recreate the process tap, so no audio-capture consent prompt
+                // is triggered on a device change.
+                try mixer.rebindOutput()
+            } catch {
+                // Rebind failed (e.g. the new output vanished mid-switch). Fall
+                // back to a full teardown + guarded recreate; this may re-prompt,
+                // but only on the error path rather than every device change.
+                logger.error("Failed to rebind output for pid \(pid, privacy: .public): \(error.localizedDescription)")
+                mixer.stop()
+                mixers.removeValue(forKey: pid)
+                applyEffectiveGain(pid: pid)
+            }
         }
         notifyMixersChanged()
     }
@@ -653,6 +664,14 @@ extension AppVolumeController {
 
     func finishStartForTesting(pid: pid_t) {
         startingPIDs.remove(pid)
+    }
+
+    func injectMixerForTesting(pid: pid_t, _ mixer: any AppVolumeMixing) {
+        mixers[pid] = mixer
+    }
+
+    func rebuildActiveMixersForTesting() {
+        rebuildActiveMixers()
     }
 }
 #endif
