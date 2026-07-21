@@ -186,7 +186,7 @@ final class AppVolumeControllerTests: XCTestCase {
 
     // MARK: - Output device change preserves the tap (re-prompt regression)
 
-    func testDefaultOutputChangeRebindsTapInsteadOfRecreating() {
+    func testDefaultOutputChangeRebindsTapInsteadOfRecreating() async {
         // A genuine output-device change must re-point the existing tap at the new
         // output (rebindOutput) rather than destroying + recreating it. Recreating
         // the tap calls AudioHardwareCreateProcessTap again, which re-triggers the
@@ -194,7 +194,7 @@ final class AppVolumeControllerTests: XCTestCase {
         let fake = FakeMixer()
         controller.injectMixerForTesting(pid: 42_020, fake)
 
-        controller.rebuildActiveMixersForTesting()
+        await controller.rebindMixerForTesting(pid: 42_020)
 
         XCTAssertEqual(fake.rebindCount, 1, "the existing tap should be rebound, not recreated")
         XCTAssertEqual(fake.stopCount, 0, "the tap must not be torn down on a device change")

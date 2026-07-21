@@ -22,6 +22,11 @@ final class AppVolumeController: ObservableObject {
     /// Guards against launching a second `AudioHardwareCreateProcessTap` for the
     /// same pid, which would re-trigger the audio-capture consent prompt.
     private var startingPIDs: Set<pid_t> = []
+    /// PIDs whose mixer is currently rebinding its aggregate device off the main
+    /// thread (on a default-output change). While a pid is in this set, main-actor
+    /// teardown paths must not call `stop()` on its mixer — that would race with
+    /// the off-main Core Audio work mutating the same tap/aggregate state.
+    private var rebindingPIDs: Set<pid_t> = []
     private var refreshTimer: Timer?
     private var refreshInterval: TimeInterval = 2.0
     private var workspaceObservers: [NSObjectProtocol] = []
@@ -375,6 +380,9 @@ final class AppVolumeController: ObservableObject {
 
     private func applyEffectiveGain(pid: pid_t) {
         guard #available(macOS 14.2, *) else { return }
+        // The mixer is rebinding off-main; leave it alone. Any gain/EQ change is
+        // re-applied by `rebindMixer` once the rebind completes.
+        guard !rebindingPIDs.contains(pid) else { return }
 
         let mixerCountBefore = mixers.count
         defer {
@@ -484,7 +492,7 @@ final class AppVolumeController: ObservableObject {
             .union(muted)
             .union(errors.keys)
 
-        for pid in tracked where !isProcessAlive(pid) {
+        for pid in tracked where !isProcessAlive(pid) && !rebindingPIDs.contains(pid) {
             mixers[pid]?.stop()
             mixers.removeValue(forKey: pid)
             gains.removeValue(forKey: pid)
@@ -500,9 +508,11 @@ final class AppVolumeController: ObservableObject {
     }
 
     private func releaseAllMixers() {
-        for (_, mixer) in mixers {
+        for (pid, mixer) in mixers where !rebindingPIDs.contains(pid) {
             mixer.stop()
         }
+        // Rebinding mixers are dropped from the dict here; `rebindMixer` sees the
+        // identity mismatch on completion and tears them down off the hot path.
         mixers.removeAll()
         notifyMixersChanged()
     }
@@ -526,24 +536,61 @@ final class AppVolumeController: ObservableObject {
         let activePIDs = Array(mixers.keys)
         guard !activePIDs.isEmpty else { return }
 
+        // Rebind each mixer off the main actor: `rebindOutput` performs blocking
+        // Core Audio HAL work (aggregate-device teardown/creation) that would
+        // freeze the UI on the device switch if run on the main thread — the same
+        // reason a fresh tap `start()` runs off-main.
         for pid in activePIDs {
-            guard let mixer = mixers[pid] else { continue }
-            do {
-                // Re-point the surviving tap at the new default output. This does
-                // NOT recreate the process tap, so no audio-capture consent prompt
-                // is triggered on a device change.
-                try mixer.rebindOutput()
-            } catch {
-                // Rebind failed (e.g. the new output vanished mid-switch). Fall
-                // back to a full teardown + guarded recreate; this may re-prompt,
-                // but only on the error path rather than every device change.
-                logger.error("Failed to rebind output for pid \(pid, privacy: .public): \(error.localizedDescription)")
-                mixer.stop()
-                mixers.removeValue(forKey: pid)
-                applyEffectiveGain(pid: pid)
+            Task { @MainActor [weak self] in
+                await self?.rebindMixer(pid: pid)
             }
         }
+    }
+
+    @available(macOS 14.2, *)
+    private func rebindMixer(pid: pid_t) async {
+        guard let mixer = mixers[pid], !rebindingPIDs.contains(pid) else { return }
+
+        // Re-point the surviving tap at the new default output. This does NOT
+        // recreate the process tap, so no audio-capture consent prompt fires.
+        rebindingPIDs.insert(pid)
+        let outcome = await Self.rebindOffMain(mixer)
+        rebindingPIDs.remove(pid)
+
+        // The mixer was dropped from the dict while rebinding (e.g. the app quit
+        // and `releaseAllMixers` ran). Tear it down now that the off-main work is
+        // finished — doing it here avoids racing that teardown with the rebind.
+        guard mixers[pid] === mixer else {
+            mixer.stop()
+            notifyMixersChanged()
+            return
+        }
+
+        switch outcome {
+        case .success:
+            // Re-apply gain/EQ/normalization changes that were deferred while the
+            // pid was rebinding, then let a later refresh tear the mixer down if
+            // it is no longer needed.
+            mixer.setGain(effectiveGain(pid: pid))
+            mixer.updateEqualizer(eqSettings(for: pid))
+            mixer.updateNormalization(normalizationController.settings)
+        case .failure(let error):
+            // Rebind failed (e.g. the new output vanished mid-switch). Tear down
+            // and recreate through the guarded start path; this may re-prompt, but
+            // only on the error path rather than on every device change.
+            logger.error("Failed to rebind output for pid \(pid, privacy: .public): \(error.localizedDescription)")
+            mixer.stop()
+            mixers.removeValue(forKey: pid)
+            applyEffectiveGain(pid: pid)
+        }
         notifyMixersChanged()
+    }
+
+    @available(macOS 14.2, *)
+    private nonisolated static func rebindOffMain(_ mixer: any AppVolumeMixing) async -> Result<Void, Error> {
+        await Task.detached(priority: .userInitiated) {
+            Result { try mixer.rebindOutput() }
+        }.value
     }
 
     @available(macOS 14.2, *)
@@ -670,8 +717,10 @@ extension AppVolumeController {
         mixers[pid] = mixer
     }
 
-    func rebuildActiveMixersForTesting() {
-        rebuildActiveMixers()
+    func rebindMixerForTesting(pid: pid_t) async {
+        if #available(macOS 14.2, *) {
+            await rebindMixer(pid: pid)
+        }
     }
 }
 #endif
