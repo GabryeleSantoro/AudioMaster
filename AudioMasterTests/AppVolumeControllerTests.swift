@@ -165,6 +165,42 @@ final class AppVolumeControllerTests: XCTestCase {
         XCTAssertFalse(controller.shouldRebuildForDefaultOutputChangeForTesting(newDeviceID: nil))
     }
 
+    // MARK: - Tap-start in-flight guard (double consent-prompt regression)
+
+    func testSecondStartIsBlockedWhileFirstIsInFlight() {
+        // Creating a process tap triggers the system audio-capture consent
+        // prompt. A second start for the same pid before the first finishes
+        // would create a second tap and re-prompt. The guard must block it.
+        XCTAssertTrue(controller.canBeginStartForTesting(pid: 42_010))
+        controller.markStartInFlightForTesting(42_010)
+        XCTAssertFalse(controller.canBeginStartForTesting(pid: 42_010))
+        // A different pid is unaffected.
+        XCTAssertTrue(controller.canBeginStartForTesting(pid: 42_011))
+    }
+
+    func testFinishingStartClearsInFlightGuard() {
+        controller.markStartInFlightForTesting(42_010)
+        controller.finishStartForTesting(pid: 42_010)
+        XCTAssertTrue(controller.canBeginStartForTesting(pid: 42_010))
+    }
+
+    // MARK: - Output device change preserves the tap (re-prompt regression)
+
+    func testDefaultOutputChangeRebindsTapInsteadOfRecreating() {
+        // A genuine output-device change must re-point the existing tap at the new
+        // output (rebindOutput) rather than destroying + recreating it. Recreating
+        // the tap calls AudioHardwareCreateProcessTap again, which re-triggers the
+        // system audio-capture consent prompt on every device change.
+        let fake = FakeMixer()
+        controller.injectMixerForTesting(pid: 42_020, fake)
+
+        controller.rebuildActiveMixersForTesting()
+
+        XCTAssertEqual(fake.rebindCount, 1, "the existing tap should be rebound, not recreated")
+        XCTAssertEqual(fake.stopCount, 0, "the tap must not be torn down on a device change")
+        XCTAssertTrue(controller.isActive(pid: 42_020), "the mixer must remain active after rebind")
+    }
+
     func testNeedsMixerReturnsToFalseWhenNormalizationDisabledAgain() {
         controller.normalizationController.isEnabled = true
         controller.normalizationController.isEnabled = false
@@ -178,4 +214,20 @@ final class AppVolumeControllerTests: XCTestCase {
         XCTAssertFalse(controller.equalizerController.needsProcessing(for: entry.bundleID))
         XCTAssertFalse(controller.needsMixerForTesting(for: entry))
     }
+}
+
+/// Records controller interactions so tests can assert the tap is rebound rather
+/// than destroyed and recreated on an output-device change, without touching
+/// Core Audio.
+private final class FakeMixer: AppVolumeMixing {
+    private(set) var rebindCount = 0
+    private(set) var stopCount = 0
+    private(set) var startCount = 0
+
+    func setGain(_ gain: Float) {}
+    func updateEqualizer(_ settings: EQBandSettings?) {}
+    func updateNormalization(_ settings: NormalizationSettings) {}
+    func start() throws { startCount += 1 }
+    func rebindOutput() throws { rebindCount += 1 }
+    func stop() { stopCount += 1 }
 }

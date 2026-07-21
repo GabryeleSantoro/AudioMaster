@@ -3,9 +3,25 @@ import CoreAudio
 import Foundation
 import os.lock
 
+/// Abstraction over a per-process volume mixer so the controller can be tested
+/// without touching Core Audio. The protocol is intentionally ungated; only the
+/// concrete `AppVolumeMixer` requires macOS 14.2.
+protocol AppVolumeMixing: AnyObject {
+    func setGain(_ gain: Float)
+    func updateEqualizer(_ settings: EQBandSettings?)
+    func updateNormalization(_ settings: NormalizationSettings)
+    func start() throws
+    /// Re-point the mixer at the current default output device WITHOUT recreating
+    /// the process tap. Recreating the tap re-triggers the audio-capture consent
+    /// prompt; the tap captures the target process and is independent of the
+    /// output device, so only the wrapping aggregate device needs rebuilding.
+    func rebindOutput() throws
+    func stop()
+}
+
 /// Per-process volume mixer using Core Audio Process Taps (macOS 14.2+).
 @available(macOS 14.2, *)
-final class AppVolumeMixer {
+final class AppVolumeMixer: AppVolumeMixing {
     private let targetPID: pid_t
     private let gainLock = OSAllocatedUnfairLock<Float>(initialState: 1.0)
     private let equalizer = EqualizerProcessor()
@@ -66,12 +82,48 @@ final class AppVolumeMixer {
         try processTapCheck(AudioHardwareCreateProcessTap(description, &tap), "AudioHardwareCreateProcessTap")
         tapID = tap
 
+        try buildAggregateAndStart()
+    }
+
+    /// Rebuild the aggregate device + IO proc around the current default output
+    /// while keeping the existing process tap alive, so no audio-capture consent
+    /// prompt is triggered on an output-device change.
+    func rebindOutput() throws {
+        guard tapID != 0 else {
+            // No tap has been created yet: nothing to preserve, do a full start
+            // (this DOES prompt, but only the very first time).
+            try start()
+            return
+        }
+        teardownAggregate()
+        try buildAggregateAndStart()
+    }
+
+    /// Tear down the IO proc + aggregate device but leave `tapID` intact.
+    private func teardownAggregate() {
+        if let procID = ioProcID, aggregateID != 0 {
+            if started {
+                AudioDeviceStop(aggregateID, procID)
+            }
+            AudioDeviceDestroyIOProcID(aggregateID, procID)
+            ioProcID = nil
+        }
+        if aggregateID != 0 {
+            AudioHardwareDestroyAggregateDevice(aggregateID)
+            aggregateID = 0
+        }
+        started = false
+    }
+
+    /// Build the aggregate device wrapping the current default output + the
+    /// existing tap, wire the IO proc, and start rendering. Requires `tapID != 0`.
+    private func buildAggregateAndStart() throws {
         let defaultOutput: AudioObjectID = try processTapGet(
             AudioObjectID(kAudioObjectSystemObject),
             kAudioHardwarePropertyDefaultOutputDevice
         )
         let outputUID = try processTapGetString(defaultOutput, kAudioDevicePropertyDeviceUID)
-        let tapUID = try processTapGetString(tap, kAudioTapPropertyUID)
+        let tapUID = try processTapGetString(tapID, kAudioTapPropertyUID)
 
         let aggregateDescription: [String: Any] = [
             kAudioAggregateDeviceNameKey as String: "\(AudioMasterDeviceNaming.aggregatePrefix)\(targetPID)",
